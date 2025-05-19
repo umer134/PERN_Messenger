@@ -1,0 +1,31 @@
+*{
+    box-sizing: border-box;
+}
+
+.sign-page {
+    width: 500px;
+    margin: 50px auto;
+}
+
+.signIn, .signUp {
+  width: 25%;
+  padding: 12px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.2s;
+
+}
+
+.signIn:hover, .signUp:hover {
+  background-color: #0056b3;
+}
+
+.signIn.active, .signUp.active {
+  color: #007bff;
+  background-color: white;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
