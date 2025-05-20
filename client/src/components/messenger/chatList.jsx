@@ -1,20 +1,27 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setActiveChatId, setActiveChatUserId } from '../../features/chat/chatSlice';
-import { useGetChatsQuery } from '../../features/chat/chatApi';
-import socket from '../../features/socketIO/socket'
+import { toast } from 'react-toastify';
+import CustomToast from '../customToast/CustomToast';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
-import './chatList.css'
+import { useGetChatsQuery } from '../../features/chat/chatApi';
+import { setActiveChatId, setActiveChatUserId } from '../../features/chat/chatSlice';
+import socket from '../../features/socketIO/socket'
 import { BASE_URL } from '../../constants';
+import './chatList.css'
 
 const ChatList = () => {
   const {chatId, activeChatId} = useSelector((state)=> state.chat);
   const dispatch = useDispatch();
-  const { data: chats, isLoading, error, refetch } = useGetChatsQuery();
+  const { data: chats, isLoading, error, refetch } = useGetChatsQuery({pollingInterval:10000});
 
   useEffect(() => {
     socket.on('receive_message', (message) => {
+      toast(<CustomToast 
+        username={message.sender.username}
+        content={message.content}
+        avatar={`${BASE_URL}${message.sender.avatar || <FontAwesomeIcon icon={faUser} size='2x'/>}`}
+      />)
       refetch(message.chatId);
     });
     

@@ -83,7 +83,7 @@ const ChatWindow = ({chatId}) => {
         toUserId: activeChatUserId,
         message: {
           content: text,
-          sender: {id: user.id, username: user.name},
+          sender: {id: user.id, username: user.name, avatar: user.avatar},
           chatId: chatId,
           sent_at: Date.now()
         }

@@ -2,6 +2,8 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUser,faArrowRightFromBracket } from '@fortawesome/free-solid-svg-icons' 
+import { ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 import { logoutUser } from "../features/auth/authSlice";
 import socket from "../features/socketIO/socket";
 import { BASE_URL } from "../constants";
@@ -27,6 +29,11 @@ const MainPage = () => {
 
     return (
         <div className="message-app">
+            <div className="notific-block">
+                <ToastContainer
+                    position="bottom-right" autoClose={3000}
+                />
+            </div>
             <div className="container">
                 <div className="user-container">
                 <div className="logout-logo">

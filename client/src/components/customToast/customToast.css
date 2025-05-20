@@ -1,0 +1,30 @@
+.custom-toast {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background-color: #f4f4f4;
+  padding: 10px 14px;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  color: #333;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.toast-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid #ccc;
+}
+
+.toast-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.toast-content strong {
+  color: #222;
+  font-size: 0.95rem;
+  margin-bottom: 2px;
+}
