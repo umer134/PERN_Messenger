@@ -11,6 +11,7 @@ import './chatWindow.css';
 import { setActiveChatId, setActiveChatUserId, setIsReadIndicator } from '../../features/chat/chatSlice';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPaperPlane, faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+import ChatInput from './ChatInput';
 
 const ChatWindow = ({chatId}) => {
   const [text, setText] = useState('');
@@ -157,19 +158,7 @@ const ChatWindow = ({chatId}) => {
   })}
       <div ref={messagesEndRef} />
       </div>
-
-      <div className="message-input">
-        <input 
-          type="text" 
-          placeholder="Type a message..." 
-          value={text} 
-          onChange={(e) => setText(e.target.value)}
-          onKeyDown={handleKeyPress}
-        />
-        <button onClick={handleSendMessage} className='send-message-btn'>
-          <FontAwesomeIcon icon={faPaperPlane} size='lg' style={{color:"#4242c9"}}/>
-        </button>
-      </div>
+      <ChatInput text={text} setText={setText} onSend={handleSendMessage} />
     </div>
   );
 };

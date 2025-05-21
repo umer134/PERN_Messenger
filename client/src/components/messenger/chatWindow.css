@@ -77,11 +77,11 @@
 .message-input input {
     width: 100%;
     /* height: 300%; */
-    height: 40px;
+    height: 60px;
     padding: 12px 15px 12px 40px;
     border: 1px solid #e1e1e1;
     border-radius: 24px;
-    font-size: 16px;
+    font-size: 20px;
     outline: none;
     /* color: #e7e7e7; */
     background: #6284a2;
@@ -99,6 +99,24 @@
 .message-input input::-moz-placeholder { color: rgb(223, 217, 217); }           /* Firefox */
 .message-input input:-ms-input-placeholder { color: rgb(223, 217, 217); }       /* IE 10+ */
 
+.emoji-button {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  font-size: 22px;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.emoji-picker-container {
+  position: absolute;
+  bottom: 50px;
+  left: 0;
+  z-index: 1000;
+}
 
 .send-message-btn {
     position: absolute;
