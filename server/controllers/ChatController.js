@@ -48,7 +48,9 @@ class ChatController {
             const {content} = req.body;
             const files = req.files;
             const senderId = req.user.id;
-
+            if(!content && !files) {
+                throw ApiError.BadRequest('Empty message');
+            }
             const sendResult = await chatService.sendMessage(chatId, content, files, senderId);
             return res.json(sendResult);
         } catch(e) {

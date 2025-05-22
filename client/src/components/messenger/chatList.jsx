@@ -58,7 +58,7 @@ const ChatList = () => {
                 <span className="chat-username">{chat.interlocutor?.username || 'Unknown'}</span>
               </div>
               <div className="chat-preview">
-                <p className="chat-last-message">{chat.lastMessage?.content || 'No messages'}</p>
+                <p className="chat-last-message">{chat.lastMessage?.content || '📎file'}</p>
                 {!chat.lastMessage?.is_read && chat.lastMessage.sender_id === chat.interlocutor.id 
                 ?
                  <div className='newMessIndicator'></div>

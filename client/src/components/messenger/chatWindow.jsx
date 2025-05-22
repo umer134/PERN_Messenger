@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import socket from '../../features/socketIO/socket';
-import { BASE_URL } from '../../constants';
 import { 
   useGetMessagesQuery,
   useSendMessageMutation,
@@ -9,11 +8,12 @@ import {
   useGetChatsQuery
 } from '../../features/chat/chatApi';
 import './chatWindow.css';
-import { setActiveChatId, setActiveChatUserId, setIsReadIndicator } from '../../features/chat/chatSlice';
+import { setActiveChatId, setActiveChatUserId } from '../../features/chat/chatSlice';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import ChatInput from './ChatInput';
-import MessageFiles from './MessageFiles';
+import AttachedFilesPreview from './AttachedFilesPreview';
+import MessagesContainer from './MessagesContainer';
 
 const ChatWindow = ({chatId}) => {
   const [text, setText] = useState('');
@@ -68,7 +68,7 @@ const ChatWindow = ({chatId}) => {
   }, [close]);
 
   const handleSendMessage = async () => {
-    if (!text.trim() || !files) return;
+    if (!text.trim() && !files.length > 0) return;
     
     const tempId = Date.now(); 
     const newMessage = {
@@ -101,9 +101,12 @@ const ChatWindow = ({chatId}) => {
           chatId: chatId,
           sent_at: Date.now()
         }
-      }))
+      }));
+
       setOptimisticMessages(prev => prev.filter(m => m.id !== tempId));
+      setFiles([]);
       setText('');
+
     } catch (error) {
       console.error('Failed to send message:', error);
       setOptimisticMessages(prev => prev.filter(m => m.id !== tempId));
@@ -138,57 +141,13 @@ const ChatWindow = ({chatId}) => {
 
   return (
     <div className="chat-window" > 
-        <button onClick={() => setClose(true)} className='chat-exist-btn'>
-          <FontAwesomeIcon icon={faArrowLeft} size='2x' />
-        </button>
+      <button onClick={() => setClose(true)} className='chat-exist-btn'>
+        <FontAwesomeIcon icon={faArrowLeft} size='2x' />
+      </button>
       <div className="messages-container">
-         {allMessages.map((message) => {
-            const isOwn = message.sender?.id !== activeChatUserId;
-            return (
-              <div
-                key={message.id}
-                className={`message ${isOwn ? 'own' : 'other'} ${message.isOptimistic ? 'optimistic' : ''}`}
-                style={message.isOptimistic ? { opacity: 0.6 } : {}}
-              >
-                <div className="message-header">
-                  <span className="sender">{message.sender?.username === user.name ? 'You' : message.sender?.username }</span>
-                </div>
-                <MessageFiles files={message?.attachedFiles} />
-                <div className="message-content">{message.content}</div>
-                {isOwn && (
-                <div className='message-status'>
-                  {
-                  //message.is_read ? '✓✓' : '✓'
-                  }
-                </div>
-                )}
-              </div>
-            );
-          })}
-      <div ref={messagesEndRef} />
-      <div>
-        {files.length > 0 && (
-          <div className="attached-files-preview">
-            {Array.from(files).map((file, index) => (
-              <div key={index} className="file-preview">
-                {file.type.startsWith('image') ? (
-                  <img src={URL.createObjectURL(file)} alt="preview" className="preview-img" />
-                ) : (
-                  <div className="file-icon">{file.name}</div>
-                )}
-                <button
-                  className="remove-file-btn"
-                  onClick={() =>
-                    setFiles((prev) => prev.filter((_, i) => i !== index))
-                  }
-                >
-                  ✕
-                </button>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
+        <MessagesContainer messages={allMessages} user={user} activeChatUserId={activeChatUserId}/>
+        <AttachedFilesPreview files={files} setFiles={setFiles} />
+        <div ref={messagesEndRef} />
       </div>
       <ChatInput text={text} setFiles={setFiles} setText={setText} onSend={handleSendMessage} />
     </div>

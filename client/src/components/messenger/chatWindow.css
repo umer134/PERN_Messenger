@@ -192,3 +192,30 @@
   font-size: 12px;
   cursor: pointer;
 }
+
+.message-attachments {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.attachment-item {
+  text-decoration: none;
+  display: block;
+}
+
+.attachment-image {
+  width: 100%;
+  max-height: 150px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.attachment-file {
+  background: #f0f0f0;
+  border-radius: 8px;
+  padding: 10px;
+  text-align: center;
+  font-size: 14px;
+}

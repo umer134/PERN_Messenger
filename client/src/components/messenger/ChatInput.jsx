@@ -40,7 +40,8 @@ const ChatInput = ({text, setFiles, setText, onSend}) => {
     };
 
     const handleKeyPress = (e) => {
-        if(e === 'Enter') {
+        if(e.key === 'Enter') {
+            console.log('enter')
             onSend();
         }
     }

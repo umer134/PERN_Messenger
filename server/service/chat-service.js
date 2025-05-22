@@ -107,7 +107,7 @@ class ChatService {
     const message = await MessageModel.create({
         chat_id: chatId,
         sender_id: senderId,
-        content
+        content: content || null,
     }, { transaction });
 
     if(files && files.length > 0) {
