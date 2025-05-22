@@ -4,12 +4,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPaperPlane, faSmile } from '@fortawesome/free-solid-svg-icons';
 
 
-const ChatInput = ({text, setText, onSend}) => {
+const ChatInput = ({text, setFiles, setText, onSend}) => {
     const [showEmojiPicker, setShowEmojiPicker] = useState(false);
     const inputRef = useRef(null);
     const pickerRef = useRef(null);
 
     useEffect(() => {
+
         const handleClickOutside = (event) => {
             if(pickerRef.current && !pickerRef.current.contains(event.target)){
                 setShowEmojiPicker(false);
@@ -31,6 +32,11 @@ const ChatInput = ({text, setText, onSend}) => {
     const handleEmojiClick = (emojiData) => {
         setText(prev => prev + emojiData.emoji);
         inputRef.current.focus();
+    };
+
+    const handleFileUpload = (files) => {
+        const selectedFiles = Array.from(files);
+        setFiles((prev) => [...prev, ...selectedFiles]);
     };
 
     const handleKeyPress = (e) => {
@@ -69,6 +75,15 @@ const ChatInput = ({text, setText, onSend}) => {
             <button onClick={onSend} className="send-message-btn">
                 <FontAwesomeIcon icon={faPaperPlane} style={{ color: "#4242c9" }} />
             </button>
+            <input
+                type="file"
+                id="file-upload"
+                style={{ display: 'none' }}
+                onChange={(e) => handleFileUpload(e.target.files)}
+                />
+            <label htmlFor="file-upload" className="file-upload-btn">
+            📎
+            </label>
         </div>
     )
 

@@ -1,6 +1,6 @@
 //const sequelize = require('sequelize');
 const {Op} = require('sequelize');
-const { sequelize, ChatModel, ChatMemberModel, UserModel, MessageModel } = require('../models');
+const { sequelize, ChatModel, ChatMemberModel, UserModel, MessageModel, MessageFilesModel } = require('../models');
 const ApiError = require("../exceptions/api-error");
 
 class ChatService {
@@ -86,7 +86,7 @@ class ChatService {
     return privateChat || null;
   }
 
-  async sendMessage (chatId, content, senderId) {
+  async sendMessage (chatId, content, files, senderId) {
     const transaction = await sequelize.transaction();
     
     const chatExists = await ChatModel.findByPk(chatId, { transaction });
@@ -109,6 +109,16 @@ class ChatService {
         sender_id: senderId,
         content
     }, { transaction });
+
+    if(files && files.length > 0) {
+      const fileRecords = files.map((file) => ({
+        message_id: message.id,
+        file_path: `/uploads/message_files/${file.filename}`,
+      }));
+
+      await MessageFilesModel.bulkCreate(fileRecords, {transaction});
+      
+    }
 
     await transaction.commit(); // Фиксация транзакции
     return message;
@@ -140,7 +150,13 @@ class ChatService {
         model: UserModel,
         as: 'sender',
         attributes: ['id', 'username', 'avatar_url']
-      }],
+      },
+      {
+        model: MessageFilesModel,
+        as: 'attachedFiles',
+        attributes: ['file_path']
+      }
+      ],
       order: [['sent_at', 'DESC']],
       limit,
       transaction

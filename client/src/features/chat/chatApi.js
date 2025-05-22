@@ -44,10 +44,10 @@ export const chatApi = createApi({
             providesTags: ['Chat']
         }),
         sendMessage: builder.mutation({
-            query: ({chatId, content}) => ({
+            query: ({chatId, formData}) => ({
                 url: `/chats/${chatId}/messages`,
                 method: 'POST',
-                body: {content}
+                body: formData
             }),
             invalidatesTags: (result, error, {chatId}) => [
                 { type: 'Messages', id: chatId }, 

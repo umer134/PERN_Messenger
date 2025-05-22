@@ -46,9 +46,10 @@ class ChatController {
         try {
             const {chatId} = req.params;
             const {content} = req.body;
+            const files = req.files;
             const senderId = req.user.id;
 
-            const sendResult = await chatService.sendMessage(chatId, content, senderId);
+            const sendResult = await chatService.sendMessage(chatId, content, files, senderId);
             return res.json(sendResult);
         } catch(e) {
             next(e);

@@ -1,8 +1,5 @@
 const { DataTypes, NOW } = require('sequelize');
 const sequelize = require('../config/db');
-const MessageModel = require('./messages-model');
-const ChatMemberModel = require('./chatMembers-model');
-const UserModel = require('./userModel');
 
 const ChatModel = sequelize.define('chats', {
     id: {type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true},

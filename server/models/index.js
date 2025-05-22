@@ -6,6 +6,7 @@ const ChatModel = require('./chat-model');
 const ChatMemberModel = require('./chatMembers-model');
 const MessageModel = require('./messages-model');
 const UserModel = require('./userModel');
+const MessageFilesModel = require('./messagefiles-model');
 
 // Ассоциации
 
@@ -40,11 +41,16 @@ UserModel.belongsToMany(ChatModel, {
     as: 'chats'
 });
 
+// Message - Messages-Files 
+MessageModel.hasMany(MessageFilesModel, { foreignKey: 'message_id', as: 'attachedFiles' });
+MessageFilesModel.belongsTo(MessageModel, { foreignKey: 'message_id', as: 'message' });
+
 // Экспортируем всё
 module.exports = {
     sequelize,
     ChatModel,
     ChatMemberModel,
     MessageModel,
-    UserModel
+    UserModel,
+    MessageFilesModel,
 };

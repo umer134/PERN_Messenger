@@ -109,6 +109,7 @@
   font-size: 22px;
   cursor: pointer;
   z-index: 10;
+  color: #ffd35b;
 }
 
 .emoji-picker-container {
@@ -120,7 +121,7 @@
 
 .send-message-btn {
     position: absolute;
-    right: 15px;
+    right: 45px;
     top: 50%;
     transform: translateY(-50%);
     color: #999;
@@ -129,10 +130,65 @@
     background: none
 }
 
+.file-upload-btn {
+  position: absolute;
+  right: 10px;
+  font-size: 28px;
+  top: 10px;
+}
+
 .chat-exist-btn {
   border: 0;
   background: none;
   margin-top: 10px;
 }
 
+.attached-files-preview {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin: 10px 0;
+}
 
+.file-preview {
+  position: relative;
+  display: inline-block;
+  border: 1px solid #ccc;
+  padding: 5px;
+  border-radius: 8px;
+  background: #f9f9f9;
+}
+
+.preview-img {
+  max-width: 100px;
+  max-height: 100px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.file-icon {
+  width: 100px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #eee;
+  border-radius: 4px;
+  font-size: 12px;
+  text-align: center;
+  padding: 5px;
+}
+
+.remove-file-btn {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  background: red;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  font-size: 12px;
+  cursor: pointer;
+}
