@@ -29,26 +29,30 @@ const OtherProfile = ({ user, removeUser }) => {
     };
 
     return (
-        <div className="other-profile-item">
-            <div className="other-profile-avatar-block">
-                <button onClick={() => removeUser(null)}>
-                    <FontAwesomeIcon icon={faArrowLeft} size="2x" />
-                    <div style={{fontSize:20}}>{user.username}</div>
+        <div className="other-profile">
+            <div className="profile-header">
+                <button className="back-button" onClick={() => removeUser(null)}>
+                <FontAwesomeIcon icon={faArrowLeft} />
                 </button>
-                <div className="other-profile-avatar">
-                    {user.avatar ?
-                    <img src={`${BASE_URL}${user.avatar}`} alt="" /> : 
-                    <FontAwesomeIcon icon={faUser} size="2x"/>
-                    }
+                <div className="avatar">
+                {user.avatar ? (
+                    <img src={`${BASE_URL}${user.avatar}`} alt="avatar" />
+                ) : (
+                    <FontAwesomeIcon icon={faUser} size="2x" />
+                )}
                 </div>
+                <h2 className="username">{user.username}</h2>
             </div>
-            <button onClick={handleOpenChat} className="other-profile-chat">
-                <FontAwesomeIcon icon={faUserPlus} size="2x" fontSize={20} style={{
-                    paddingRight: 25,
-                    borderRight: "1px solid black",
-                    paddingLeft: 20}} />
-                <FontAwesomeIcon icon={faMessage} size="2x"fontSize={50} style={{width:100, paddingLeft:15}}/>
-            </button>
+            <div className="profile-actions">
+                <button onClick={handleOpenChat}>
+                <FontAwesomeIcon icon={faUserPlus} />
+                <span>Add</span>
+                </button>
+                <button onClick={handleOpenChat}>
+                <FontAwesomeIcon icon={faMessage} />
+                <span>Message</span>
+                </button>
+            </div>
             {openChatModal && <ModalChat onClose={handleCloseModal} />}
         </div>
     );
