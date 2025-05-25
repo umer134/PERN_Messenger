@@ -1,0 +1,97 @@
+.burger-container {
+    position: relative;
+    margin: 10px 20px;
+    z-index: 1000;
+    margin-left: 40px;
+    margin-top: 20px
+}
+
+.burger-icon {
+    width: 35px;
+    height: 26px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    cursor: pointer;
+}
+
+.burger-icon .bar {
+    height: 4px;
+    width: 100%;
+    background-color: #333;
+    border-radius: 4px;
+    transition: 0.3s ease;
+}
+
+.menu-dropdown {
+    position: absolute;
+    top: 40px;
+    left: 0;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    width: 260px;
+    padding: 10px 15px;
+    animation: dropdownFade 0.2s ease;
+    z-index: 1000;
+}
+
+@keyframes dropdownFade {
+    from {
+        opacity: 0;
+        transform: translateY(-5px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Переиспользуем текущие стили */
+.menu-dropdown .user-container {
+    margin-left: 0;
+    width: 100%;
+}
+
+.menu-dropdown .logout-logo {
+    margin-top: 10px;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.menu-dropdown .avatar {
+    width: 65px;
+    height: 65px;
+    background: #c0d7eb;
+    padding-top: 15px;
+}
+
+.menu-dropdown .avatar img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.menu-dropdown .menu-item {
+    padding: 10px 10px;
+    margin-top: 8px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+    font-size: 16px;
+}
+
+.menu-dropdown .menu-item:hover {
+    background-color: #f0f0f0;
+}
+
+
+body.dark .menu-dropdown {
+  background-color: #423f3f;
+}
+
+body.dark .logout-logo button {
+  color: aliceblue;
+}

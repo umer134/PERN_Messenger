@@ -1,0 +1,78 @@
+/* Общая темная тема */
+body.dark {
+  background-color: #1e1e1e;
+  color: #f1f1f1;
+}
+body.dark input {
+    background: #333;
+}
+
+/* avatar */
+
+body.dark .avatar {
+    background-color: #303030;
+}
+
+body.dark .chat-avatar {
+    background-color: #303030;
+}
+
+/* Пример для чата */
+body.dark .chat-window {
+  background-color: #2b2b2b;
+  border-color: #444;
+}
+
+body.dark .message.own {
+  background-color: #3c5135;
+}
+
+body.dark .message.other {
+  background-color: #2d2d2d;
+}
+
+body.dark .message-input input {
+  background-color: #333;
+  border-color: #444;
+  color: #fff;
+}
+
+body.dark .message-input input::placeholder {
+  color: #ccc;
+}
+
+body.dark .other-profile {
+  background-color: #2a2a2a;
+  color: #ddd;
+}
+
+body.dark .profile-actions button {
+  background-color: #3a3a3a;
+  color: #eee;
+}
+
+body.dark .chat-exist-btn {
+    color: rgb(66, 66, 201);
+    padding-left: 8px;
+    padding-bottom: 8px;
+}
+
+/* ChatList */
+
+body.dark .chat-item {
+  display: flex;
+  align-items: center;
+  padding: 12px 15px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  border-bottom: 1px solid black;
+}
+
+body.dark .chat-item:hover {
+  background-color: #2d2d2d;
+}
+
+body.dark .chat-item.active {
+  background-color: #2d2d2d;
+}
+

@@ -9,3 +9,6 @@ uploads/
 
 # System
 .DS_Store
+
+#readme.md
+.readme.md

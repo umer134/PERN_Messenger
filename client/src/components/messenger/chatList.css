@@ -5,6 +5,7 @@
     position: absolute;
     left: 30px;
     bottom: 0;
+    z-index: 1;
 }
 
 .chat-container {
@@ -14,12 +15,14 @@
     position: absolute;
     left: 0;
     bottom: 0;
+    z-index: 1;
 }
 
 .chat-list {
     position: absolute;
     left: 10px;
     width: 90%;
+    z-index: 1;
 }
 
 .chat-item {

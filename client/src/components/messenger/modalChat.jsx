@@ -18,10 +18,11 @@ const ModalChat = ({ onClose }) => {
 
         try {
             const chat = await createChat({ userId }).unwrap();
-
+            const formData = new FormData();
+            formData.append('content', text)
             await sendMessage({
                 chatId: chat.id,
-                content: text
+                formData
             });
 
             dispatch(setActiveChatId(chat.id));
