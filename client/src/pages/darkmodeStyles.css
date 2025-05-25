@@ -31,13 +31,13 @@ body.dark .message.other {
   background-color: #2d2d2d;
 }
 
-body.dark .message-input input {
+body.dark .message-input textarea {
   background-color: #333;
   border-color: #444;
   color: #fff;
 }
 
-body.dark .message-input input::placeholder {
+body.dark .message-input textarea::placeholder {
   color: #ccc;
 }
 

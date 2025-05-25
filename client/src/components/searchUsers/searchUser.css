@@ -11,10 +11,18 @@
   border-bottom: 1px solid;
 }
 
+body.dark .search-container .search-input {
+  color: aliceblue;
+}
+
 .search-container button {
   background: none;
   border: none;
   font-size: 20px;
+}
+
+body.dark .search-container button {
+  color: aliceblue;
 }
 
 .other-profiles_list {
@@ -77,6 +85,10 @@
   cursor: pointer;
   font-size: 20px;
   color: #555;
+}
+
+body.dark .back-button {
+  color: aliceblue;
 }
 
 .avatar {

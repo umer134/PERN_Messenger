@@ -8,6 +8,7 @@ const ChatInput = ({text, setFiles, setText, onSend}) => {
     const [showEmojiPicker, setShowEmojiPicker] = useState(false);
     const inputRef = useRef(null);
     const pickerRef = useRef(null);
+     const textareaRef = useRef(null);
 
     useEffect(() => {
 
@@ -27,7 +28,14 @@ const ChatInput = ({text, setFiles, setText, onSend}) => {
             document.removeEventListener('mousedown', handleClickOutside);
         };
 
-    }, [showEmojiPicker])
+    }, [showEmojiPicker]);
+
+     useEffect(() => {
+        if (textareaRef.current) {
+            textareaRef.current.style.height = "auto"; // Сброс
+            textareaRef.current.style.height = Math.min(textareaRef.current.scrollHeight, 400) + "px";
+        }
+    }, [text]);
 
     const handleEmojiClick = (emojiData) => {
         setText(prev => prev + emojiData.emoji);
@@ -40,7 +48,7 @@ const ChatInput = ({text, setFiles, setText, onSend}) => {
     };
 
     const handleKeyPress = (e) => {
-        if(e.key === 'Enter') {
+        if(e.key === 'Enter' && !e.shiftKey) {
             console.log('enter')
             onSend();
         }
@@ -65,13 +73,18 @@ const ChatInput = ({text, setFiles, setText, onSend}) => {
                 </div>
             )}
 
-            <input
-                ref={inputRef}
-                type="text"
+            <textarea
+                ref={(el) => {
+                    inputRef.current = el;
+                    textareaRef.current = el;
+                }}
                 placeholder="Type a message..."
                 value={text}
                 onChange={(e) => setText(e.target.value)}
                 onKeyDown={handleKeyPress}
+                className="chat-textarea"
+                rows={1}
+                style={{ maxHeight: '400px', overflowY: 'auto', resize: 'none' }}
             />
             <button onClick={onSend} className="send-message-btn">
                 <FontAwesomeIcon icon={faPaperPlane} style={{ color: "#4242c9" }} />

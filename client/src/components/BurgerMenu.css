@@ -2,7 +2,7 @@
     position: relative;
     margin: 10px 20px;
     z-index: 1000;
-    margin-left: 40px;
+    margin-left: 50px;
     margin-top: 20px
 }
 
@@ -87,6 +87,25 @@
     background-color: #f0f0f0;
 }
 
+.burger-icon.open .bar:nth-child(1) {
+    transform: rotate(45deg) translate(6px, 6px);
+}
+
+.burger-icon.open .bar:nth-child(2) {
+    opacity: 0;
+}
+
+.burger-icon.open .bar:nth-child(3) {
+    transform: rotate(-45deg) translate(7px, -6px);
+}
+
+.burger-icon .bar {
+    transition: all 0.3s ease;
+}
+
+body.dark .burger-icon .bar {
+    background-color: aliceblue;
+}
 
 body.dark .menu-dropdown {
   background-color: #423f3f;

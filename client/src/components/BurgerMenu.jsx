@@ -10,12 +10,17 @@ import { BASE_URL } from "../constants";
 const BurgerMenu = ({ user }) => {
     const [open, setOpen] = useState(false);
     const dispatch = useDispatch();
+
+    const toggleMenu = () => {
+        setOpen(!open);
+    }
+
     const handleLogout = () => {
-            dispatch(logoutUser());
+        dispatch(logoutUser());
     };
     return (
         <div className="burger-container">
-            <div className="burger-icon" onClick={() => setOpen(!open)}>
+            <div className={`burger-icon ${open ? "open" : ""}`} onClick={toggleMenu}>
                 <div className="bar"></div>
                 <div className="bar"></div>
                 <div className="bar"></div>

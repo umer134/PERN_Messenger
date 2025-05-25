@@ -101,10 +101,40 @@
 .message-input input::-moz-placeholder { color: rgb(223, 217, 217); }           /* Firefox */
 .message-input input:-ms-input-placeholder { color: rgb(223, 217, 217); }       /* IE 10+ */
 
+.chat-textarea {
+    width: 100%;
+    max-height: 400px;
+    min-height: 60px;
+    padding: 12px 15px 12px 40px;
+    border: 1px solid #e1e1e1;
+    border-radius: 24px;
+    font-size: 20px;
+    outline: none;
+    background: #6284a2;
+    color: white;
+    resize: none;
+    overflow-y: auto;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    line-height: 1.4;
+    position: absolute;
+    bottom: -50px;
+}
+
+.chat-textarea::placeholder {
+    color: rgb(223, 217, 217);
+    opacity: 1;
+}
+
+/* Префиксы */
+.chat-textarea::-webkit-input-placeholder { color: rgb(223, 217, 217); }
+.chat-textarea::-moz-placeholder { color: rgb(223, 217, 217); }
+.chat-textarea:-ms-input-placeholder { color: rgb(223, 217, 217); }
+
 .emoji-button {
   position: absolute;
   left: 10px;
-  top: 50%;
+  top: 20px;
   transform: translateY(-50%);
   background: none;
   border: none;
@@ -124,7 +154,7 @@
 .send-message-btn {
     position: absolute;
     right: 45px;
-    top: 50%;
+    top: 20px;
     transform: translateY(-50%);
     color: #999;
     font-size: 19px;
@@ -136,7 +166,7 @@
   position: absolute;
   right: 10px;
   font-size: 28px;
-  top: 10px;
+  top: 0px;
 }
 
 .chat-exist-btn {
