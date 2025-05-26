@@ -17,5 +17,6 @@ router.get('/refresh', UserController.refresh);
 router.get('/users', authMiddleware, UserController.getUsers);
 router.get('/user/:userId', authMiddleware, UserController.getUser);
 router.get('/search', authMiddleware, UserController.searchUsers);
+router.put('/user/update', authMiddleware, UserController.updateUser);
 
 module.exports = router;

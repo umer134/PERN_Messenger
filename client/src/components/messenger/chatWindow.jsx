@@ -28,8 +28,6 @@ const ChatWindow = ({chatId}) => {
   const [markMessageAsRead] = useReadMessageMutation();
   const dispatch = useDispatch();
 
-  console.log('files', data)
-
   useEffect(() => {
   const handleReceiveMessage = (message) => {
     if (message.chatId === chatId) {
@@ -117,8 +115,6 @@ const ChatWindow = ({chatId}) => {
     ...(data?.messages || []),
     ...optimisticMessages
   ].sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
-
-  console.log('allMes', allMessages)
 
    // scroll settings place 
   const messagesEndRef = useRef(null);

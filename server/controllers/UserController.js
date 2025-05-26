@@ -113,6 +113,22 @@ class UserController {
             next(e)
         }
     }
+
+    async updateUser (req, res, next) {
+        try {
+            const { name } = req.body;
+            const userId  = req.user.id;
+
+            console.log('name: ', name)
+            console.log('userID: ', userId)
+
+            const updateUserData = await userService.updateUser(userId, name);
+
+            return res.json(updateUserData);
+        } catch (e) {
+            next(e)
+        }
+    }
 }
 
 module.exports = new UserController();

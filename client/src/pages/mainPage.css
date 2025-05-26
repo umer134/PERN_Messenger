@@ -15,14 +15,6 @@ main {
   margin-top: 90px;
 }
 
-.logout-logo {
-    margin-top: 30px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-around;
-}
-
 .avatar{
         /* margin-left: 40px; */
     width: 85px;

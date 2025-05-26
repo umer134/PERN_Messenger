@@ -1,0 +1,12 @@
+
+
+.edit-name-input {
+        padding: 20px 0;
+    font-size: 2em;
+    width: 120px;
+   outline: none;       /* убирает синюю рамку при фокусе */
+  border: none;        /* убирает границу вообще */
+  box-shadow: none;    /* на случай, если браузер добавляет её */
+  background: none;    /* если нужно сделать его полностью "чистым" */
+}
+

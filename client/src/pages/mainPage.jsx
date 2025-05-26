@@ -12,6 +12,7 @@ import BurgerMenu from "../components/BurgerMenu";
 
 const MainPage = () => {
     const { user, isLoading, } = useSelector((state) => state.auth);
+    const { profile } = useSelector((state) => state.profile);
     const { activeChatId, } = useSelector((state) => state.chat);
     const { theme } = useSelector((state) => state.theme);
 
@@ -39,7 +40,7 @@ const MainPage = () => {
             </div>
             <header style={{width:'100%'}}>
                 <div className="container">
-                    <BurgerMenu user={user} />
+                    <BurgerMenu user={profile} />
                     <div className="search-block">
                         <SearchUsers /> 
                     </div>
@@ -47,7 +48,7 @@ const MainPage = () => {
             </header>
             <main>
                 <div className="chats">
-                    <ChatList user={user} />
+                    <ChatList user={profile} />
                 </div>
                 <div>
                     {activeChatId && <ChatWindow chatId={activeChatId} />}

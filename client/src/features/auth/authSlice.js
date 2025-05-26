@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { chatApi } from "../chat/chatApi";
 import { clearChatState } from "../chat/chatSlice";
+import { clearProfile, setProfile } from "../profile/profileSlice";
 import $api from "../../http";
 
 const initialState = {
@@ -11,9 +12,10 @@ const initialState = {
 };
 
 export const login = createAsyncThunk('login', 
-    async({email, password}, {rejectWithValue}) => {
+    async({email, password}, {rejectWithValue, dispatch}) => {
         try {
             const response = await $api.post('/login', {email, password});
+            dispatch(setProfile(response.data.user));
             return response.data;
         } catch (e) {
             return rejectWithValue(e.response?.data?.message || 'Authorization error');
@@ -22,9 +24,10 @@ export const login = createAsyncThunk('login',
 )
 
 export const registration = createAsyncThunk('registration', 
-    async(formData, {rejectWithValue}) => {
+    async(formData, {rejectWithValue, dispatch}) => {
         try {
             const response = await $api.post('/registration', formData);
+            dispatch(setProfile(response.data.user));
             return response.data;
         } catch(e) {
             return rejectWithValue(e.response?.data?.message || "registration error");
@@ -33,9 +36,10 @@ export const registration = createAsyncThunk('registration',
 )
 
 export const checkAuth = createAsyncThunk('refresh', 
-    async(_, {rejectWithValue}) => {
+    async(_, {rejectWithValue, dispatch}) => {
         try {
             const response = await $api.get('/refresh');
+            dispatch(setProfile(response.data.user));
             return response.data;
         } catch(e) {
             return rejectWithValue(e.response?.data?.message || "auth error");
@@ -49,6 +53,7 @@ export const logoutUser = createAsyncThunk('logoutUser',
             const response = await $api.post('/logout');
             dispatch(chatApi.util.resetApiState());
             dispatch(clearChatState());
+            dispatch(clearProfile());
             window.location.href = '/login'
             return response.data;
         } catch(e) {
@@ -61,6 +66,9 @@ const authSlice = createSlice({
     name: "auth",
     initialState,
     reducers: {
+        setUser(state, action) {
+            state.user = action.payload;
+        },
         clearError(state) {
             state.error = null;
         },
@@ -126,5 +134,5 @@ const authSlice = createSlice({
     },
 })
 
-export const {logout, clearError} = authSlice.actions;
+export const {logout, clearError, setUser} = authSlice.actions;
 export default authSlice.reducer;

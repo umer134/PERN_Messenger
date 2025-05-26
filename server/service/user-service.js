@@ -1,4 +1,4 @@
-const {Op} = require('sequelize');
+const {Op, where} = require('sequelize');
 const mailService = require("./mail-service");
 const uudi = require('uuid');
 const bcrypt = require('bcrypt');
@@ -87,11 +87,10 @@ class UserService {
     }
 
     async searchUsers(query) {
-        
         if (!query || typeof query !== 'string') {
           throw ApiError.BadRequest('Search query is required');
         }
-      
+
         try {
           const users = await UserModel.findAll({
             where: {
@@ -107,6 +106,27 @@ class UserService {
           throw ApiError.BadRequest('Search failed', [
             { msg: 'Database error' }
           ]);
+        }
+      }
+
+    async updateUser (userId, name) {
+        if(!userId || !name) {
+            throw ApiError.BadRequest('name is required');
+        }
+        
+        try {
+             await UserModel.update({
+                username: name,
+            }, {where: { id: userId}});
+
+            const updateUserData = await UserModel.findOne({
+                where: {id: userId},
+                attributes: {exclude: ['password', 'refreshToken']}
+            });
+
+            return updateUserData;
+        } catch(e) {
+            console.log('error', e)
         }
       }
 }

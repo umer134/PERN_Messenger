@@ -54,10 +54,18 @@
     width: 100%;
 }
 
-.menu-dropdown .logout-logo {
-    margin-top: 10px;
-    justify-content: space-between;
+.avatar-other {
+  display: flex;
+  justify-content: space-between;
+}
+
+.logout-toggleTheme {
+    /* margin-top: 30px; */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     gap: 10px;
+    /* justify-content: space-around; */
 }
 
 .menu-dropdown .avatar {
@@ -111,6 +119,6 @@ body.dark .menu-dropdown {
   background-color: #423f3f;
 }
 
-body.dark .logout-logo button {
+body.dark .logout-toggleTheme button {
   color: aliceblue;
 }

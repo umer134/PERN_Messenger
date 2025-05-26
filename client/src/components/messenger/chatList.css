@@ -3,7 +3,7 @@
     height: 75%;
     width: 25%;
     /* position: absolute; */
-    margin-left: 34px;
+    /* margin-left: 34px; */
     z-index: 1;
 }
 
@@ -17,7 +17,7 @@
 
 .chat-list {
     /* position: absolute; */
-    width: 90%;
+    width: 100%;
     z-index: 1;
 }
 
