@@ -59,7 +59,11 @@ const AvatarMenu = ({ user, expanded, setExpanded }) => {
           }}
         />
       ) : (
-        <FontAwesomeIcon icon={faUser} size="2x" />
+        <FontAwesomeIcon icon={faUser} size="2x" 
+        onClick={() => {
+            setExpanded(!expanded);
+          }} 
+        />
       )}
 
       {showMenu && (

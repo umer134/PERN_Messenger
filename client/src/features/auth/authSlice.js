@@ -11,7 +11,7 @@ const initialState = {
     error: null,
 };
 
-export const login = createAsyncThunk('login', 
+export const login = createAsyncThunk('auth/login', 
     async({email, password}, {rejectWithValue, dispatch}) => {
         try {
             const response = await $api.post('/login', {email, password});
@@ -23,7 +23,7 @@ export const login = createAsyncThunk('login',
     }
 )
 
-export const registration = createAsyncThunk('registration', 
+export const registration = createAsyncThunk('auth/registration', 
     async(formData, {rejectWithValue, dispatch}) => {
         try {
             const response = await $api.post('/registration', formData);
@@ -35,7 +35,7 @@ export const registration = createAsyncThunk('registration',
     }
 )
 
-export const checkAuth = createAsyncThunk('refresh', 
+export const checkAuth = createAsyncThunk('auth/refresh', 
     async(_, {rejectWithValue, dispatch}) => {
         try {
             const response = await $api.get('/refresh');
@@ -47,7 +47,7 @@ export const checkAuth = createAsyncThunk('refresh',
     }
 )
 
-export const logoutUser = createAsyncThunk('logoutUser', 
+export const logoutUser = createAsyncThunk('auth/logoutUser', 
     async(_, {dispatch, rejectWithValue}) => {
         try {
             const response = await $api.post('/logout');

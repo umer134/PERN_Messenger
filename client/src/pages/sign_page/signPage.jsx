@@ -6,7 +6,7 @@ import RegistrationForm from "../../components/auth/registrationForm";
 import './signPage.css';
 
 const SignPage = () => {
-    const { user } = useSelector((state) => state.auth);
+    const { user, } = useSelector((state) => state.auth);
     const navigate = useNavigate()
     const [singUp, setSignUp] = useState(true);
     const [singIn, setSignIn] = useState(false);
