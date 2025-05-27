@@ -2,13 +2,13 @@ import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
-import socket from "../features/socketIO/socket";
-import SearchUsers from "../components/searchUsers/searchUsers";
-import ChatList from "../components/messenger/chatList";
-import ChatWindow from "../components/messenger/chatWindow";
+import socket from "../../features/socketIO/socket";
+import SearchUsers from "../../components/searchUsers/searchUsers";
+import ChatList from "../../components/messenger/chatList";
+import ChatWindow from "../../components/messenger/chatWindow";
 import './mainPage.css'
-import './darkmodeStyles.css'
-import BurgerMenu from "../components/BurgerMenu";
+import '../darkmodeStyles.css'
+import BurgerMenu from "../../components/burger_menu/BurgerMenu";
 
 const MainPage = () => {
     const { user, isLoading, } = useSelector((state) => state.auth);

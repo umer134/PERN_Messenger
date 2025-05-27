@@ -1,0 +1,60 @@
+
+.avatar-other.expanded {
+    flex-direction: column;
+}
+
+.avatar-other.expanded .logout-toggleTheme.expanded {
+  flex-direction: row;
+  margin-top: 10px;
+}
+
+.avatar {
+  position: relative;
+  transition: all 0.3s ease; /* Плавное изменение размера */
+}
+
+.avatar.expanded {
+  width: 100%; /* Размер увеличенной аватарки */
+  height: 150px;
+  /* border-radius: 50%;  */
+  border-radius: 0;
+}
+
+.avatar.expanded img {
+    border-radius: 0;
+}
+.avatar-menu {
+  display: none; /* Скрываем меню по умолчанию */
+  position: absolute;
+    top: 25px;
+    right: 1px;
+    font-size: 30px;
+    /* transform: translateX(-50%); */
+    background: none;
+    padding: 10px;
+    border-radius: 8px;
+}
+
+.avatar.expanded .avatar-menu {
+  display: block; /* Показываем меню при расширении аватара */
+}
+
+.avatar-menu button {
+  color: aliceblue;
+  padding: 5px 10px;
+  margin: 5px 0;
+  background-color: #f0f0f0;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.avatar-menu button:hover {
+  background-color: #e0e0e0;
+}
+
+.avatar-settings-menu {
+  color: aliceblue;
+    position: absolute;
+    right: 35px;
+}

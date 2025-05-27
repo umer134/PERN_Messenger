@@ -1,3 +1,4 @@
+
 .burger-container {
     position: relative;
     margin: 10px 20px;
@@ -31,7 +32,7 @@
     border: 1px solid #ccc;
     border-radius: 12px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    width: 260px;
+    width: 290px;
     padding: 10px 15px;
     animation: dropdownFade 0.2s ease;
     z-index: 1000;

@@ -107,28 +107,33 @@ class UserService {
             { msg: 'Database error' }
           ]);
         }
-      }
+    }
 
-    async updateUser (userId, name) {
-        if(!userId || !name) {
-            throw ApiError.BadRequest('name is required');
+    async updateUser(userId, updateFields) {
+        if (!userId) {
+            throw ApiError.BadRequest("userId is required");
         }
-        
-        try {
-             await UserModel.update({
-                username: name,
-            }, {where: { id: userId}});
 
-            const updateUserData = await UserModel.findOne({
-                where: {id: userId},
-                attributes: {exclude: ['password', 'refreshToken']}
+        // Нельзя обновлять ничего, если updateFields пустой
+        if (!Object.keys(updateFields).length) {
+            throw ApiError.BadRequest("No fields provided for update");
+        }
+
+        try {
+            await UserModel.update(updateFields, { where: { id: userId } });
+
+            const updatedUser = await UserModel.findOne({
+                where: { id: userId },
+                attributes: { exclude: ["password", "refreshToken"] }
             });
 
-            return updateUserData;
-        } catch(e) {
-            console.log('error', e)
+            return updatedUser;
+        } catch (e) {
+            console.log("error", e);
+            throw ApiError.Internal("Ошибка при обновлении пользователя");
         }
-      }
+    }
+
 }
 
 

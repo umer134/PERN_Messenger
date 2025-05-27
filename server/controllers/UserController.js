@@ -114,21 +114,25 @@ class UserController {
         }
     }
 
-    async updateUser (req, res, next) {
-        try {
-            const { name } = req.body;
-            const userId  = req.user.id;
+    async updateUser(req, res, next) {
+    try {
+        const userId = req.user.id;
+        const { name } = req.body;
+        const avatarFile = req.file; // <-- вот он, файл
+        console.log('reFileName', req.file.filename)
+        const updateFields = {};
+        if (name) updateFields.username = name;
+        if (avatarFile) updateFields.avatar_url = `/uploads/avatars/${avatarFile.filename}`;
 
-            console.log('name: ', name)
-            console.log('userID: ', userId)
+        console.log('fields', name);
+        console.log('fieldsFile', avatarFile); // <-- тут будет информация о файле
 
-            const updateUserData = await userService.updateUser(userId, name);
-
-            return res.json(updateUserData);
-        } catch (e) {
-            next(e)
-        }
+        const updatedUser = await userService.updateUser(userId, updateFields);
+        return res.json(updatedUser);
+    } catch (e) {
+        next(e);
     }
+}
 }
 
 module.exports = new UserController();

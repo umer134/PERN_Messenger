@@ -14,13 +14,10 @@ export const profileApi = createApi({
         }),
         endpoints: (builder) => ({
             updateProfile: builder.mutation({
-                query:({name}) => ({
+                query:(formdata) => ({
                     url: '/user/update',
                     method: 'PUT',
-                    body: {name},
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
+                    body: formdata,
                 }),
                 async onQueryStarted(_, {dispatch, queryFulfilled}) {
                     try {

@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import LoginForm from "../components/auth/loginForm";
-import RegistrationForm from "../components/auth/registrationForm";
-import './signPage.css'
+import LoginForm from "../../components/auth/loginForm";
+import RegistrationForm from "../../components/auth/registrationForm";
+import './signPage.css';
 
 const SignPage = () => {
     const { user } = useSelector((state) => state.auth);
