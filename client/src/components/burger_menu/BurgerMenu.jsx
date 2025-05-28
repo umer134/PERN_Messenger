@@ -53,8 +53,8 @@ const BurgerMenu = ({ user }) => {
                 )}
                 </div>
                 </div>
-                <div className="menu-item">⚙️ Настройки</div>
-                <div className="menu-item" onClick={handleLogout}>🚪 Выйти</div>
+                <div className="menu-item">⚙️ settings</div>
+                <div className="menu-item" onClick={handleLogout}>🚪 exit</div>
                 </div>
             )}
         </div>
