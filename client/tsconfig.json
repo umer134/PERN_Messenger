@@ -1,5 +1,7 @@
 {
   "compilerOptions": {
+    "types": ["vite/client", "node", "jest", "vitest/globals",],
+    
     "target": "ES2022",
     "lib": ["DOM", "DOM.Iterable", "ES2022"],
 
@@ -22,5 +24,14 @@
 
     "noEmit": true
   },
-  "include": ["src"]
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "src/**/*.js",
+    "src/**/*.jsx",
+    "src/**/*.test.ts",
+    "src/**/*.test.tsx",
+    "_tests_/**/*.ts",
+    "_tests_/**/*.tsx"
+  ]
 }
