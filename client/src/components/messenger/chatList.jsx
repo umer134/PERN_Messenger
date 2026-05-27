@@ -7,7 +7,7 @@ import { faUser } from '@fortawesome/free-solid-svg-icons';
 import { useGetChatsQuery } from '../../features/chat/chatApi';
 import { setActiveChatId, setActiveChatUserId } from '../../features/chat/chatSlice';
 import socket from '../../features/socketIO/socket'
-import { BASE_URL } from '../../constants';
+import { BASE_URL } from '../../constants/env.constants';
 import './chatList.css'
 
 const ChatList = () => {

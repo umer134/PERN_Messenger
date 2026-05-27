@@ -6,7 +6,7 @@ import {faMessage} from '@fortawesome/free-regular-svg-icons'
 import { setActiveChatId, setActiveChatUserId, setUserId } from "../../features/chat/chatSlice";
 import { useFindChatQuery } from "../../features/chat/chatApi";
 import ModalChat from "../messenger/modalChat";
-import { BASE_URL } from "../../constants";
+import { BASE_URL } from "../../constants/env.constants";
 
 const OtherProfile = ({ user, removeUser }) => {
     const [openChatModal, setOpenChatModal] = useState(false);

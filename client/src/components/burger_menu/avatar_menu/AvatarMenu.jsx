@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
-import { BASE_URL } from "../../../constants";
+import { BASE_URL } from "../../../constants/env.constants";
 import { useEffect, useState } from "react";
 import { useRef } from "react"; // обязательно
 import ChangeAvatarModal from "../../edit/editProfile/edit_avatar/changeAvatarModal";
