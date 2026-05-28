@@ -3,6 +3,10 @@ const express = require('express');
 const cors = require('cors');
 const path = require('path');
 const cookieParser = require('cookie-parser');
+
+const swaggerUi = require('swagger-ui-express');
+const swaggerSpec = require('./swagger');
+
 const sequelize = require('./config/db');
 const http = require('http'); // добавляем http
 const { Server } = require('socket.io'); // импортируем socket.io
@@ -12,7 +16,17 @@ const chatRouter = require('./routes/chatRoutes');
 const errorMiddleware = require('./middlewares/error-middleware');
 
 const PORT = process.env.PORT || 5000;
+
 const app = express();
+
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
+app.get('/api-spec.json', (req, res) => {
+  res.setHeader('Content-Type', 'application/json');
+  res.send(swaggerSpec);
+});
+
 const server = http.createServer(app); // создаём http-сервер вручную
 
 const io = new Server(server, {
