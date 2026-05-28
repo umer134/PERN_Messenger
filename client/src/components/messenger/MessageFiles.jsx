@@ -1,6 +1,8 @@
-import { BASE_URL } from "../../constants/env.constants";
+import { useEnv } from "../../hooks/useEnv";
+
 
 const MessageFiles = ({files}) => {
+    const { baseUrl: BASE_URL } = useEnv();
 
     if(!files || files.length === 0) return null;
 

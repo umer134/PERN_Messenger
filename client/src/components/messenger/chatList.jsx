@@ -7,10 +7,11 @@ import { faUser } from '@fortawesome/free-solid-svg-icons';
 import { useGetChatsQuery } from '../../features/chat/chatApi';
 import { setActiveChatId, setActiveChatUserId } from '../../features/chat/chatSlice';
 import socket from '../../features/socketIO/socket'
-import { BASE_URL } from '../../constants/env.constants';
 import './chatList.css'
+import { useEnv } from '../../hooks/useEnv';
 
 const ChatList = () => {
+  const { baseUrl: BASE_URL } = useEnv();
   const {chatId, activeChatId} = useSelector((state)=> state.chat);
   const dispatch = useDispatch();
   const { data: chats, isLoading, error, refetch } = useGetChatsQuery({pollingInterval:10000});

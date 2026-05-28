@@ -1,13 +1,14 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
-import { BASE_URL } from "../../../constants/env.constants";
 import { useEffect, useState } from "react";
 import { useRef } from "react"; // обязательно
 import ChangeAvatarModal from "../../edit/editProfile/edit_avatar/changeAvatarModal";
 import { useUpdateProfileMutation } from "../../../features/profile/profileApi";
+import { useEnv } from "../../../hooks/useEnv";
 
 
 const AvatarMenu = ({ user, expanded, setExpanded }) => {
+  const { baseUrl: BASE_URL } = useEnv();
   const [showMenu, setShowMenu] = useState(false);
   const [openMenu, setOpenMenu] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null); // <== выбранный файл
