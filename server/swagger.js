@@ -31,7 +31,7 @@ const options = {
         },
       },
       schemas: {
-        User: {
+        Me: {
           type: 'object',
           properties: {
             id: { type: 'string', format: 'uuid' },
@@ -43,14 +43,15 @@ const options = {
           },
           required: ['id', 'name', 'email', 'isActivated'],
         },
-        SearchUser: {
+        UserPreview: {
           type: 'object',
           properties: {
-            id: {
-              type: 'string', format: 'uuid'
-            },
+            id: { type: 'string', format: 'uuid' },
             name: { type: 'string' },
-            avatar: { type: 'string', nullable: true },
+            avatar: {
+              type: 'string',
+              nullable: true
+            }
           }
         },
         LoginRequest: {
@@ -64,7 +65,7 @@ const options = {
         LoginResponse: {
           type: 'object',
           properties: {
-            user: { $ref: '#/components/schemas/User' },
+            user: { $ref: '#/components/schemas/Me' },
             accessToken: { type: 'string' },
             refreshToken: { type: 'string' },
           },

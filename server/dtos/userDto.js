@@ -1,15 +1,11 @@
 module.exports = class UserDTO {
-    name;
-    email;
-    id;
-    isActivated;
-    avatar;
+  id;
+  name;
+  avatar;
 
-    constructor(model) {
-       this.name = model.username;
-       this.email = model.email
-       this.id = model.id
-       this.isActivated = model.isActivated
-       this.avatar = model.avatar_url
-    }
+  constructor (model) {
+    this.id = model.id;
+    this.name = model.username;
+    this.avatar = model.avatar_url;
+  }
 }

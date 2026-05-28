@@ -128,40 +128,34 @@ router.get('/refresh', UserController.refresh);
  *             schema:
  *               type: array
  *               items:
- *                 $ref: '#/components/schemas/User'
+ *                 $ref: '#/components/schemas/UserPreview'
  */
 router.get('/users', authMiddleware, UserController.getUsers);
 
 /**
  * @swagger
- * /api/user/{userId}:
+ * /api/me:
  *   get:
  *     summary: Получить информацию о пользователе
  *     tags:
  *       - Users
  *     security:
  *       - BearerAuth: []
- *     parameters:
- *       - name: userId
- *         in: path
- *         required: true
- *         schema:
- *           type: string
  *     responses:
  *       200:
  *         description: Данные пользователя
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/User'
+ *               $ref: '#/components/schemas/Me'
  *       404:
  *         description: Пользователь не найден
  */
-router.get('/user/:userId', authMiddleware, UserController.getUser);
+router.get('/me', authMiddleware, UserController.getMe);
 
 /**
  * @swagger
- * /api/search:
+ * /api/users/search:
  *   get:
  *     summary: Поиск пользователей
  *     tags:
@@ -183,13 +177,13 @@ router.get('/user/:userId', authMiddleware, UserController.getUser);
  *             schema:
  *               type: array
  *               items:
- *                 $ref: '#/components/schemas/SearchUser'
+ *                 $ref: '#/components/schemas/UserPreview'
  */
-router.get('/search', authMiddleware, UserController.searchUsers);
+router.get('/users/search', authMiddleware, UserController.searchUsers);
 
 /**
  * @swagger
- * /api/user/update:
+ * /api/me:
  *   put:
  *     summary: Обновить профиль пользователя
  *     tags:
@@ -214,8 +208,8 @@ router.get('/search', authMiddleware, UserController.searchUsers);
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/User'
+ *               $ref: '#/components/schemas/Me'
  */
-router.put('/user/update', authMiddleware, upload.single('avatar'),  UserController.updateUser);
+router.put('/me', authMiddleware, upload.single('avatar'),  UserController.updateMe);
 
 module.exports = router;

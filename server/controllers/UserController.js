@@ -92,10 +92,10 @@ class UserController {
         }
     }
 
-    async getUser (req, res, next) {
+    async getMe (req, res, next) {
         try {
-            const { userId } = req.params;
-            const user = await userService.getUser(userId);
+            const userId = req.user.id;
+            const user = await userService.getMe(userId);
             return res.json(user);
         } catch(e) {
             next(e)
@@ -114,21 +114,18 @@ class UserController {
         }
     }
 
-    async updateUser(req, res, next) {
+    async updateMe(req, res, next) {
     try {
         const userId = req.user.id;
         const { name } = req.body;
         const avatarFile = req.file; // <-- вот он, файл
-        console.log('reFileName', req.file.filename)
+
         const updateFields = {};
         if (name) updateFields.username = name;
         if (avatarFile) updateFields.avatar_url = `/uploads/avatars/${avatarFile.filename}`;
 
-        console.log('fields', name);
-        console.log('fieldsFile', avatarFile); // <-- тут будет информация о файле
-
-        const updatedUser = await userService.updateUser(userId, updateFields);
-        return res.json(updatedUser);
+        const updatedMe = await userService.updateMe(userId, updateFields);
+        return res.json(updatedMe);
     } catch (e) {
         next(e);
     }

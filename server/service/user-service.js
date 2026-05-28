@@ -5,7 +5,8 @@ const bcrypt = require('bcrypt');
 const tokenService = require("./token-service");
 const UserModel = require("../models/userModel");
 const UserDto = require('../dtos/userDto')
-const ApiError = require('../exceptions/api-error')
+const MeDTO = require('../dtos/meDto');
+const ApiError = require('../exceptions/api-error');
  
 
 
@@ -20,11 +21,11 @@ class UserService {
         const activationLink = uudi.v4()
         const user = await UserModel.create({username:name, email, password: hashPassord, avatar_url, activationLink});
         await mailService.sendActivationMail(email, `${process.env.API_URL}/api/activate/${activationLink}`);
-        const userDto = new UserDto(user);
-        const tokens = tokenService.generateToken({...userDto});
-        await tokenService.saveToken(userDto.id, tokens.refreshToken);
+        const meDto = new MeDTO(user);
+        const tokens = tokenService.generateToken({...meDto});
+        await tokenService.saveToken(meDto.id, tokens.refreshToken);
 
-        return {...tokens, user: userDto};
+        return {...tokens, user: meDto};
     }
 
     async activate (activationLink) {
@@ -44,13 +45,13 @@ class UserService {
         
         const isPasswordEquals = await bcrypt.compare(password, user.password);
         if(!isPasswordEquals) {
-            throw ApiError.BadRequest('uncorrect password');
+            throw ApiError.BadRequest('incorrect password');
         }
-        const userDto = new UserDto(user);
-        const tokens = tokenService.generateToken({...userDto});
+        const meDto = new MeDTO(user);
+        const tokens = tokenService.generateToken({...meDto});
 
-        await tokenService.saveToken(userDto.id, tokens.refreshToken);
-        return {...tokens, user: userDto}
+        await tokenService.saveToken(meDto.id, tokens.refreshToken);
+        return {...tokens, user: meDto}
     }
 
     async refresh (reshreshToken) {
@@ -64,11 +65,11 @@ class UserService {
             throw ApiError.UnauthorizedError();
         }
         const user = await UserModel.findOne({where: {id: userData.id}})
-        const userDto = new UserDto(user);
-        const tokens = tokenService.generateToken({...userDto});
+        const meDto = new MeDTO(user);
+        const tokens = tokenService.generateToken({...meDto});
 
-        await tokenService.saveToken(userDto.id, tokens.refreshToken);
-        return {...tokens, user: userDto}
+        await tokenService.saveToken(meDto.id, tokens.refreshToken);
+        return {...tokens, user: meDto}
     }
 
     async logout (refreshToken) {
@@ -78,12 +79,12 @@ class UserService {
 
     async getUsers () {
         const users = await UserModel.findAll();
-        return users;
+        return users.map(user => new UserDto(user));
     }
 
-    async getUser (userId) {
+    async getMe (userId) {
         const user = await UserModel.findOne({where: {id: userId}});
-        return user;
+        return new MeDTO(user);
     }
 
     async searchUsers(query) {
@@ -100,7 +101,8 @@ class UserService {
             limit: 10
           });
          
-          return users; 
+          return users.map(user => new UserDto(user));
+
         } catch (dbError) {
             console.log('dbEr', dbError);
           throw ApiError.BadRequest('Search failed', [
@@ -109,10 +111,7 @@ class UserService {
         }
     }
 
-    async updateUser(userId, updateFields) {
-        if (!userId) {
-            throw ApiError.BadRequest("userId is required");
-        }
+    async updateMe(userId, updateFields) {
 
         // Нельзя обновлять ничего, если updateFields пустой
         if (!Object.keys(updateFields).length) {
@@ -127,7 +126,7 @@ class UserService {
                 attributes: { exclude: ["password", "refreshToken"] }
             });
 
-            return updatedUser;
+            return new MeDTO(updatedUser);
         } catch (e) {
             console.log("error", e);
             throw ApiError.Internal("Ошибка при обновлении пользователя");
