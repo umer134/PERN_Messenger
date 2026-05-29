@@ -6,6 +6,7 @@ export const API_ENDPOINTS = {
     REGISTER: `${env.apiUrl}/auth/register`,
     LOGOUT: `${env.apiUrl}/auth/logout`,
     REFRESH: `${env.apiUrl}/auth/refresh`,
+    ACTIVATE: `${env.apiUrl}/auth/activate`,
   },
   USERS: {
     GET_ALL: `${env.apiUrl}/users`,

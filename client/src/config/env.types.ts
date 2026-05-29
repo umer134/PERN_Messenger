@@ -7,8 +7,3 @@
   readonly DEV: boolean;
 }
 
-declare global {
-  interface ImportMeta {
-    readonly env: ImportMetaEnv;
-  }
-}

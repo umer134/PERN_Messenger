@@ -1,4 +1,4 @@
-import { paths } from "../schema";
+import { paths } from "../../../shared/api/schema";
 
 type AuthEndpoint = 
   | '/api/login'
@@ -12,6 +12,8 @@ export type AuthLogRequestModel =
 
 export type AuthResponse = 
   paths[AuthEndpoint]['post']['responses']['200']['content']['application/json'];
+
+export type AuthMeResponse = AuthResponse['user'];
 
 export type RefreshResponse = 
   paths['/api/refresh']['get']['responses']['200']['content']['application/json'];
