@@ -2,13 +2,18 @@ import { useMutation } from '@tanstack/react-query'
 import { AuthApi } from '../api/auth.api'
 import { AuthService } from '../services/auth.service'
 import { AuthAdapter } from '../model/auth.adapter';
+import { AuthResponse, LoginDto } from '../model/auth.types';
 
 export function useLogin() {
-  return useMutation({
-    mutationFn: AuthApi.login,
+  return useMutation<AuthResponse, Error, LoginDto>({
+    mutationFn: async (dto) => {
+      const response = await AuthApi.login(dto);
+
+      return AuthAdapter.toEntity(response.data);
+    },
 
     onSuccess(response) {
-      AuthService.bootstrap(AuthAdapter.toEntity(response.data));
+      AuthService.bootstrap(response);
     }
   })
 }

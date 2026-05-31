@@ -28,4 +28,5 @@ export class AuthAdapter {
       avatar: dto.avatar, 
     }
   }
+
 }

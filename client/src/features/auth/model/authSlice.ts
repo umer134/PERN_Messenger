@@ -1,59 +1,43 @@
-
-import {
-  createSlice,
-  PayloadAction,
-} from '@reduxjs/toolkit';
-
-import { AuthMeResponse }
-from './auth.model';
+import { createSlice, PayloadAction, } from '@reduxjs/toolkit';
+import { AuthMeResponse } from './auth.model';
 
 type AuthState = {
   me: AuthMeResponse | null;
   isAuth: boolean;
+  isInitialized: boolean;
 };
 
 const initialState:
   AuthState = {
     me: null,
     isAuth: false,
+    isInitialized: false
   };
 
-const authSlice =
-  createSlice({
+const authSlice = createSlice({
     name: 'auth',
 
     initialState,
 
     reducers: {
-      setSession(
-        state,
-        action:
-          PayloadAction<AuthMeResponse>
-      ) {
-        state.me =
-          action.payload;
-
-        state.isAuth =
-          true;
+      setSession(state, action: PayloadAction<AuthMeResponse>) {
+        state.me = action.payload;
+        state.isAuth = true;
       },
-
-      clearSession(
-        state
-      ) {
-        state.me =
-          null;
-
-        state.isAuth =
-          false;
+      clearSession(state) {
+        state.me = null;
+        state.isAuth = false;
       },
+      setInitialized(state) {
+        state.isInitialized = true;
+      }
     },
   });
 
 export const {
   setSession,
   clearSession,
-} =
-  authSlice.actions;
+  setInitialized
+} = authSlice.actions;
 
-export default
-  authSlice.reducer;
+export default authSlice.reducer;

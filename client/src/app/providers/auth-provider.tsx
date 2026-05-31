@@ -2,6 +2,8 @@ import { useEffect } from "react";
 import { TokenStore } from "../../shared/lib/token-store";
 import { refreshSession } from "../../shared/api/refresh-manager";
 import { AuthService } from "../../features/auth/services/auth.service";
+import { store } from "./store";
+import { setInitialized } from "../../features/auth/model/authSlice";
 
 export function AuthProvider({ children }) {
 
@@ -18,6 +20,8 @@ export function AuthProvider({ children }) {
 
       } catch {
         AuthService.logout();
+      } finally {
+        store.dispatch(setInitialized());
       }
     };
 

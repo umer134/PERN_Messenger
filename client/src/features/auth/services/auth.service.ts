@@ -1,7 +1,7 @@
 import { setSession, clearSession } from '../model/authSlice';
 import { TokenStore } from "../../../shared/lib/token-store";
 import { AuthResponse } from "../model/auth.types";
-import { store } from '../../../store/store';
+import { store } from '../../../app/providers/store';
 
 export class AuthService {
   static bootstrap(auth: AuthResponse) {

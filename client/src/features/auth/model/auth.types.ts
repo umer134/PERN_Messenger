@@ -6,7 +6,7 @@ export interface LoginDto {
 }
 export interface RegisterDto extends LoginDto {
   username: string;
-  avatar: string | null;
+  avatar?: File;
 }
 export interface AuthResponse {
   accessToken: string;

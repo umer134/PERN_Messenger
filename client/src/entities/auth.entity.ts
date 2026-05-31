@@ -26,7 +26,7 @@ export class AuthEntity {
     }
   }
 
-  static fromApiResponse(data:AuthResponse):AuthEntity {
+  static fromApiResponse(data:AuthResponse): AuthEntity {
     return new AuthEntity(data);
   }
 
