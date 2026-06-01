@@ -2,7 +2,7 @@ import { useRegister } from "../../hooks/useRegister";
 import { RegisterFormData } from "../../model/validation/register.schema";
 import { RegForm } from "./RegForm";
 
-export function Register() {
+export function Register({onSwitch}) {
   const { mutateAsync, isPending, error } = useRegister();
 
   const handleSubmit = async (values: RegisterFormData) => {
@@ -15,6 +15,6 @@ export function Register() {
   };
 
   return (
-    <RegForm onSubmit={handleSubmit} isLoading={isPending} error={error?.message} />
+    <RegForm onSubmit={handleSubmit} onSwitch={onSwitch} isLoading={isPending} error={error?.message} />
   )
 }

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { logoutUser } from "../../features/auth/authSlice";
+
 import ToggleTheme from './togglemode/ToggleTheme';
 import './BurgerMenu.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -20,7 +20,7 @@ const BurgerMenu = ({ user }) => {
     }
 
     const handleLogout = () => {
-        dispatch(logoutUser());
+        //dispatch(logoutUser());
     };
     return (
         <div className="burger-container">

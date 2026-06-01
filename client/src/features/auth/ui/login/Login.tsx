@@ -2,8 +2,8 @@ import { useLogin } from "../../hooks/useLogin"
 import { LoginFormData } from "../../model/validation/login.schema";
 import { LoginForm } from "./LoginForm";
 
-export function Login() {
-  const { mutateAsync, isPending, error } = useLogin();
+export function Login({onSwitch}) {
+  const { mutateAsync, isPending, error, } = useLogin();
 
   const handleSubmit = async (values: LoginFormData ) => {
     await mutateAsync({
@@ -14,6 +14,7 @@ export function Login() {
 
   return (
     <LoginForm
+      onSwitch={onSwitch}
       onSubmit={handleSubmit}
       isLoading={isPending}
       error={error?.message}

@@ -1,14 +1,22 @@
 import { useForm } from "react-hook-form";
-import { RegisterFormData, RegisterSchema } from "../../model/validation/register.schema"
 import { zodResolver } from "@hookform/resolvers/zod";
+
+import { RegisterFormData, RegisterSchema } from "../../model/validation/register.schema"
+
+import { Field } from "../../../../shared/ui/field/Field";
+import { Input } from "../../../../shared/ui/input/Input";
+import { PasswordInput } from "../../../../shared/ui/password-input/PasswordInput";
+import { Button } from "../../../../shared/ui/button/Button";
+import { AuthHeader } from "../../../../shared/ui/auth-header/AuthHeader";
 
 type Props = {
   onSubmit: (values: RegisterFormData) => Promise<unknown>;
   isLoading: boolean;
   error?: string;
+  onSwitch: () => void;
 };
 
-export const RegForm = ({ onSubmit, isLoading, error }: Props) => {
+export const RegForm = ({ onSubmit, isLoading, error, onSwitch }: Props) => {
 
   const { register, handleSubmit, setValue, formState: { errors } } = 
     useForm<RegisterFormData>({
@@ -27,40 +35,53 @@ export const RegForm = ({ onSubmit, isLoading, error }: Props) => {
     <form
       onSubmit={handleSubmit(onSubmit)}
     >
-      <div>
-        <input autoComplete="username" type="text" placeholder="username" {...register("username")} />
-        {errors.username && (
-          <p>{errors.username.message}</p>
+      <AuthHeader
+        title="Create account"
+        subtitle="Start your journey"
+      />
+
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+        <Field label="Username" error={errors.username?.message}>
+          <Input {...register("username")} />    
+        </Field>
+
+        <Field label="Email" error={errors.email?.message}>
+          <Input {...register("email")} />
+        </Field>
+        <Field label="Password" error={errors.password?.message}>
+          <PasswordInput {...register("password")} />
+        </Field>
+
+        <Field label="Confirm password" error={errors.confirmPassword?.message}>
+          <PasswordInput {...register("confirmPassword")} />
+        </Field>
+
+        <Field label="Avatar" error={errors.avatar?.message as any}>
+          <input type="file" accept="image/*" onChange={(e) => setValue("avatar", e.target.files?.[0] as any, { shouldValidate: true, shouldDirty: true })} />
+        </Field>
+
+        {error && (
+          <div style={{ color: '#EF4444', fontSize: 13 }}>
+            {error}
+          </div>
         )}
+     
+        <Button
+          type="submit"
+          loading={isLoading}
+          variant="primary"
+        >
+          Create account
+        </Button>
+
+        <Button
+          type="button"
+          variant="ghost"
+          onClick={onSwitch}
+        >
+          I already have an account
+        </Button>
       </div>
-      <div>
-        <input autoComplete="email" type="email" placeholder="email" {...register("email")} />
-        {errors.email && (
-          <p>{errors.email.message}</p>
-        )}
-      </div>
-      <div>
-        <input autoComplete="new-password" type="password" placeholder="password" {...register("password")} />
-        {errors.password && (
-          <p>{errors.password.message}</p>
-        )}
-      </div>
-      <div>
-        <input type="password" placeholder="confirm password" {...register("confirmPassword")} />
-        {errors.confirmPassword && (
-          <p>{errors.confirmPassword.message}</p>
-        )}
-      </div>
-      <div>
-        <input type="file" accept="image/*" onChange={(e) => setValue("avatar", e.target.files?.[0], { shouldValidate: true, shouldDirty: true })} />
-        {errors.avatar?.message && (
-          <p>{String(errors.avatar.message)}</p>
-        )}
-      </div>
-      {error && (<p>{error}</p>)}
-      <button type="submit" disabled={isLoading}>
-        Register
-      </button>
     </form>
   );
 };

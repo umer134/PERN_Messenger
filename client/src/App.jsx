@@ -2,7 +2,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import {  Navigate }  from "react-router-dom";
 import MainPage from './pages/main_page/mainPage';
-import SignPage from './pages/sign_page/signPage';
+import { SignPage } from './pages/sign_page/signPage';
 import ProtectedRoute from './app/protected-route';
 
 function App() {
