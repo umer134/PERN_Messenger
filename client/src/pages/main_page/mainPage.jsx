@@ -7,7 +7,6 @@ import SearchUsers from "../../components/searchUsers/searchUsers";
 import ChatList from "../../components/messenger/chatList";
 import ChatWindow from "../../components/messenger/chatWindow";
 import './mainPage.css'
-import '../darkmodeStyles.css'
 import BurgerMenu from "../../components/burger_menu/BurgerMenu";
 
 const MainPage = () => {

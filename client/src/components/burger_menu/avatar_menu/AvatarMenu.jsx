@@ -32,11 +32,19 @@ const AvatarMenu = ({ user, expanded, setExpanded }) => {
     e.target.value = null;
   };
 
-  const handleSaveAvatar = (blob) => {
-  const file = new File([blob], 'avatar.jpg', { type: blob.type }); // ← теперь с именем и расширением
-  const formData = new FormData();
-  formData.append('avatar', file);
-  updateProfile(formData);
+  const handleSaveAvatar = async (blob) => {
+    const file = new File([blob], `avatar-${Date.now()}.jpg`, { type: blob.type });
+    const formData = new FormData();
+    formData.append('avatar', file);
+
+    try {
+      const result = await updateProfile(formData).unwrap();
+      if (result?.avatar_url) {
+        setAvatarUrl(result.avatar_url);
+      }
+    } catch (error) {
+      console.error('Failed to update avatar', error);
+    }
   };
 
   useEffect(() => {

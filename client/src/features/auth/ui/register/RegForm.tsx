@@ -1,4 +1,5 @@
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
+import { useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { RegisterFormData, RegisterSchema } from "../../model/validation/register.schema"
@@ -8,6 +9,7 @@ import { Input } from "../../../../shared/ui/input/Input";
 import { PasswordInput } from "../../../../shared/ui/password-input/PasswordInput";
 import { Button } from "../../../../shared/ui/button/Button";
 import { AuthHeader } from "../../../../shared/ui/auth-header/AuthHeader";
+import { AvatarPicker } from "../../../../shared/ui/avatar-picker/AvatarPicker";
 
 type Props = {
   onSubmit: (values: RegisterFormData) => Promise<unknown>;
@@ -18,7 +20,7 @@ type Props = {
 
 export const RegForm = ({ onSubmit, isLoading, error, onSwitch }: Props) => {
 
-  const { register, handleSubmit, setValue, formState: { errors } } = 
+  const { register, control, handleSubmit, setValue, formState: { errors } } = 
     useForm<RegisterFormData>({
       resolver: zodResolver(RegisterSchema),
       mode: "onBlur",
@@ -28,17 +30,45 @@ export const RegForm = ({ onSubmit, isLoading, error, onSwitch }: Props) => {
         email: "",
         password: "",
         confirmPassword: "",
+        avatar: undefined,
       },
   });
+
+  useEffect(() => {
+    register('avatar');
+  }, [register]);
+
+  const avatar = useWatch({
+    control,
+    name: 'avatar'
+  })
 
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
     >
-      <AuthHeader
-        title="Create account"
-        subtitle="Start your journey"
-      />
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          marginBottom: 20,
+        }}
+      >
+        <AuthHeader
+          title="Create account"
+          subtitle="Start your journey"
+        />
+
+        <AvatarPicker
+          value={avatar}
+          onChange={(file) => {
+            console.log('NEW FILE', file);
+            setValue('avatar', file, { shouldDirty: true, shouldValidate: true });
+          }}
+        />
+
+      </div>
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
         <Field label="Username" error={errors.username?.message}>
@@ -54,10 +84,6 @@ export const RegForm = ({ onSubmit, isLoading, error, onSwitch }: Props) => {
 
         <Field label="Confirm password" error={errors.confirmPassword?.message}>
           <PasswordInput {...register("confirmPassword")} />
-        </Field>
-
-        <Field label="Avatar" error={errors.avatar?.message as any}>
-          <input type="file" accept="image/*" onChange={(e) => setValue("avatar", e.target.files?.[0] as any, { shouldValidate: true, shouldDirty: true })} />
         </Field>
 
         {error && (
