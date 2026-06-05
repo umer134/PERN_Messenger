@@ -8,16 +8,17 @@ import ChatList from "../../components/messenger/chatList";
 import ChatWindow from "../../components/messenger/chatWindow";
 import './mainPage.css'
 import BurgerMenu from "../../components/burger_menu/BurgerMenu";
+import { useAppSelector } from "../../app/hooks";
 
 const MainPage = () => {
-    const { user, isLoading, } = useSelector((state) => state.auth);
+    const { me } = useAppSelector(state => state.auth.me)
     const { profile } = useSelector((state) => state.profile);
     const { activeChatId, } = useSelector((state) => state.chat);
     const { theme } = useSelector((state) => state.theme);
 
     useEffect(() => {
-    socket.emit('join_chat', (user.id));
-    }, [user]);
+    socket.emit('join_chat', (me.id));
+    }, [me]);
 
     useEffect(() => {
         if(theme === 'dark') {

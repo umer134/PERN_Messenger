@@ -13,9 +13,6 @@ export interface AuthResponse {
   refreshToken?: string;
   me: AuthMeResponse;
 }
-
-export type AuthFormData = RegisterDto & {
-  confirmPassword?: string;
-  acceptTerms?: boolean;
+export interface RegisterApiDto extends Omit<RegisterDto, 'username'> {
+  name: string;
 }
-

@@ -2,11 +2,11 @@ import { env } from '../config/env.config';
 
 export const API_ENDPOINTS = {
   AUTH: {
-    LOGIN: `${env.apiUrl}/auth/login`,
-    REGISTER: `${env.apiUrl}/auth/register`,
-    LOGOUT: `${env.apiUrl}/auth/logout`,
-    REFRESH: `${env.apiUrl}/auth/refresh`,
-    ACTIVATE: `${env.apiUrl}/auth/activate`,
+    LOGIN: `${env.apiUrl}/api/login`,
+    REGISTER: `${env.apiUrl}/api/registration`,
+    LOGOUT: `${env.apiUrl}/api/logout`,
+    REFRESH: `${env.apiUrl}/api/refresh`,
+    ACTIVATE: `${env.apiUrl}/api/activate`,
   },
   USERS: {
     GET_ALL: `${env.apiUrl}/users`,

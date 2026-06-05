@@ -1,7 +1,6 @@
-import axios from 'axios';
-import { TokenStore } from '../lib/token-store';
 import { API_ENDPOINTS } from '../../constants/endpoints';
 import { AuthResponse } from '../../features/auth/model/auth.types';
+import { refreshClient } from './refreshClient';
 
 const { AUTH } = API_ENDPOINTS;
 
@@ -10,32 +9,12 @@ let refreshPromise:
 
 export async function refreshSession() {
   if (!refreshPromise) {
-    refreshPromise =
-      (async () => {
-        const refreshToken =
-          TokenStore.getRefreshToken();
+    refreshPromise = (async () => {
+      const { data } =
+        await refreshClient.get<AuthResponse>(AUTH.REFRESH);
 
-        if (!refreshToken) {
-          throw new Error(
-            'No refresh token'
-          );
-        }
-
-        const { data } =
-          await axios.post<AuthResponse>(
-            `${AUTH.REFRESH}`,
-            { refreshToken }
-          );
-
-        TokenStore.setTokens({
-          accessToken:
-            data.accessToken,
-          refreshToken:
-            data.refreshToken,
-        });
-
-        return data;
-      })();
+      return data;
+    })();
 
     refreshPromise.finally(() => {
       refreshPromise = null;

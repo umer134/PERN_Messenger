@@ -7,7 +7,9 @@ import { AuthResponse, RegisterDto } from "../model/auth.types";
 export function useRegister() {
   return useMutation<AuthResponse, Error, RegisterDto>({
     mutationFn: async (dto) => {
-      const response = await AuthApi.register(dto);
+      const adaptedDto = AuthAdapter.registerDtoToFormData(dto);
+      
+      const response = await AuthApi.register(adaptedDto);
       
       return AuthAdapter.toEntity(response.data);
     },

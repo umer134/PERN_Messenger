@@ -12,6 +12,20 @@ export class AuthAdapter {
     })
   }
 
+  static registerDtoToFormData(dto: RegisterDto): FormData {
+    const formData = new FormData();
+
+    formData.append('name', dto.username);
+    formData.append('email', dto.email);
+    formData.append('password', dto.password);
+    
+    if(dto.avatar) {
+      formData.append('avatar', dto.avatar);
+    }
+
+    return formData
+  }
+
   static toApi(auth: AuthEntity): AuthResponse {
     return {
       accessToken: auth.accessToken,

@@ -1,14 +1,13 @@
 import { API_ENDPOINTS } from "../../../constants/endpoints";
 import { apiCLient } from "../../../shared/api/http-client";
-import { LoginDto, RegisterDto } from "../model/auth.types";
+import { LoginDto } from "../model/auth.types";
 import { AuthResponse } from "../model/auth.model";
 import { TokenStore } from "../../../shared/lib/token-store";
 
 const { AUTH } = API_ENDPOINTS;
-
 export class AuthApi {
 
-  static register(dto: RegisterDto) {
+  static register(dto: FormData) {
     return apiCLient.post<AuthResponse>(
       AUTH.REGISTER,
       dto,
@@ -22,10 +21,9 @@ export class AuthApi {
     );
   }
   
-  static refresh(refreshToken: string){
-    return apiCLient.post<AuthResponse>(
+  static refresh(){
+    return apiCLient.get<AuthResponse>(
       AUTH.REFRESH,
-      { refreshToken }
     );
   }
 
