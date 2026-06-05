@@ -2,34 +2,24 @@ import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
-import socket from "../../features/socketIO/socket";
-import SearchUsers from "../../components/searchUsers/searchUsers";
-import ChatList from "../../components/messenger/chatList";
-import ChatWindow from "../../components/messenger/chatWindow";
+import SearchUsers from "../../../components/searchUsers/searchUsers";
+import ChatList from "../../../components/messenger/chatList";
+import ChatWindow from "../../../components/messenger/chatWindow";
 import './mainPage.css'
-import BurgerMenu from "../../components/burger_menu/BurgerMenu";
-import { useAppSelector } from "../../app/hooks";
+import BurgerMenu from "../../../components/burger_menu/BurgerMenu";
+import { useAppSelector } from "../../../app/hooks";
+import { useMainPageBootstrap } from "../lib/mainPage.bootstrap";
+
 
 const MainPage = () => {
-    const { me } = useAppSelector(state => state.auth.me)
-    const { profile } = useSelector((state) => state.profile);
+    const { id } = useAppSelector(state => state.currentUser);
     const { activeChatId, } = useSelector((state) => state.chat);
-    const { theme } = useSelector((state) => state.theme);
+    
+    let profile = useAppSelector((state) => state.currentUser);
 
-    useEffect(() => {
-    socket.emit('join_chat', (me.id));
-    }, [me]);
+   useMainPageBootstrap(id ?? id);
 
-    useEffect(() => {
-        if(theme === 'dark') {
-            document.body.classList.add('dark');
-        }
-        else if (theme === 'light') {
-            document.body.classList.remove('dark');
-        }
-    }, [theme]);
-
-    if (isLoading) return <div>Loading...</div>;
+    if (!id) return <div>Loading...</div>;
 
     return (
         <div className="message-app">

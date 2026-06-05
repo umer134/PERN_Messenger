@@ -1,4 +1,4 @@
-import { ProfileApiResponse } from "../types/user.types";
+import { ProfileApiResponse } from "../types/currentUser.types";
 
 export class ProfileEntity {
   private readonly _id: string;

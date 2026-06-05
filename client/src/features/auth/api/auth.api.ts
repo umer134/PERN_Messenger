@@ -1,8 +1,6 @@
 import { API_ENDPOINTS } from "../../../constants/endpoints";
 import { apiCLient } from "../../../shared/api/http-client";
-import { LoginDto } from "../model/auth.types";
-import { AuthResponse } from "../model/auth.model";
-import { TokenStore } from "../../../shared/lib/token-store";
+import { AuthLogRequestModel, AuthResponse } from "../model/auth.model";
 
 const { AUTH } = API_ENDPOINTS;
 export class AuthApi {
@@ -14,7 +12,7 @@ export class AuthApi {
     );
   }
 
-  static login(dto: LoginDto){
+  static login(dto: AuthLogRequestModel){
     return apiCLient.post<AuthResponse>(
       AUTH.LOGIN,
       dto,
@@ -28,11 +26,8 @@ export class AuthApi {
   }
 
   static logout(){
-    const refreshToken = TokenStore.getRefreshToken();
-    
     return apiCLient.post(
       AUTH.LOGOUT,
-      { refreshToken }
     );
   }
 

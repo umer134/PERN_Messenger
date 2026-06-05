@@ -1,5 +1,5 @@
-import { ProfileEntity } from "../../entities/user/model/user.entity";
-import { ProfileApiResponse, UpdateProfileDto } from "../../entities/user/types/user.types";
+import { ProfileEntity } from "../../entities/current-user/model/current-user.entity";
+import { ProfileApiResponse, UpdateProfileDto } from "../../entities/current-user/types/currentUser.types";
 
 export class profileAdapter {
 

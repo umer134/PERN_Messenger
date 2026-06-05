@@ -8,6 +8,10 @@ export const API_ENDPOINTS = {
     REFRESH: `${env.apiUrl}/api/refresh`,
     ACTIVATE: `${env.apiUrl}/api/activate`,
   },
+  ME: {
+    GET: `${env.apiUrl}/api/me`,
+    UPDATE: `${env.apiUrl}/api/me`,
+  },
   USERS: {
     GET_ALL: `${env.apiUrl}/users`,
     GET_BY_ID: (id: string) => `${env.apiUrl}/users/${id}`,
