@@ -5,6 +5,7 @@ import profileReducer from '../../features/profile/profileSlice';
 import { profileApi } from '../../features/profile/profileApi';
 import chatReducer from "../../features/chat/chatSlice";
 import searchUsersReducer from "../../features/search/usersSlice";
+import messageActionsReducer from '../../features/message-actions/model/message-actions.slice';
 // import darkmodeReducer from "../features/darkmode/darkmodeSlice";
 import { chatApi } from "../../features/chat/chatApi";
 
@@ -17,6 +18,7 @@ export const store = configureStore({
         searchUsers: searchUsersReducer,
         [chatApi.reducerPath]: chatApi.reducer,
         chat: chatReducer,
+        messageActions: messageActionsReducer,
         // theme: darkmodeReducer,
     },
     middleware: (getDefaultMiddleware) => {

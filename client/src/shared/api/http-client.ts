@@ -63,8 +63,9 @@ apiCLient.interceptors.response.use(
       } catch {
         TokenStore.clear();
 
-        window.location.href =
-          '/login';
+        if (window.location.pathname !== '/login') {
+          window.location.href = '/login';
+        }
       }
     }
 
