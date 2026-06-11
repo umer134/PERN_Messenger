@@ -16,7 +16,7 @@ export class AuthService {
     }
   }
 
-  private static bootstrap(auth: AuthResponse) {
+  static bootstrap(auth: AuthResponse) {
     TokenStore.setAccessToken(auth.accessToken);
     store.dispatch(setSession(auth.me));
   }

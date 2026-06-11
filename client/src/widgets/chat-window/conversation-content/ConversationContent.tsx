@@ -21,12 +21,14 @@ export const ConversationContent = ({conversationId,}: Props) => {
       message.attachments
         .filter(
           attachment =>
-            attachment.type === "image"
+            attachment.type === "image" ||
+            attachment.type === "video" || 
+            attachment.type === "audio"
         )
         .map(attachment => ({
           id: attachment.id,
 
-          type: "image" as const,
+          type: attachment.type as "image" | "video" | "audio",
 
           url: attachment.url ?? "",
 
@@ -55,7 +57,13 @@ export const ConversationContent = ({conversationId,}: Props) => {
       else if (
         file.type.startsWith("audio/")
       ) {
-        type = "voice";
+        if (
+          file.name.endsWith(".webm")
+        ) {
+          type = "voice";
+        } else {
+          type = "audio";
+        }
       }
       else if (
         file.type.startsWith("video/")

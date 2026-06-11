@@ -15,40 +15,20 @@ type Props = {
 export const ThumbnailRenderer = ({
   media,
 }: Props) => {
-  if (
-    media.type === "image" &&
-    media.thumbnailUrl
-  ) {
-    return (
-      <img
-        src={media.thumbnailUrl}
-        alt={media.name}
-        className={s.thumbnailImage}
-      />
-    );
-  }
+  switch (media.type) {
+    case "image":
+      return (
+        <img
+          src={media.url}
+          alt={media.name}
+          className={s.thumbnailImage}
+        />
+      );
 
-  if (
-    media.type === "video" &&
-    media.thumbnailUrl
-  ) {
-    return (
-      <img
-        src={media.thumbnailUrl}
-        alt=""
-      />
-    );
-  }
+    case "video":
+      return <Video size={20} />;
 
-  if (
-    media.type === "audio"
-  ) {
-    return (
-      <Music size={20} />
-    );
+    case "audio":
+      return <Music size={20} />;
   }
-
-  return (
-    <Image size={20} />
-  );
 };

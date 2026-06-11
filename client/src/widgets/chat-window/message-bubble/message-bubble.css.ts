@@ -23,7 +23,7 @@ export const bubble = style({
 
 export const myBubble = style({
   background: vars.color.surface,
-  color: vars.color.primaryText,
+  color: vars.color.text,
 });
 
 export const text = style({
