@@ -1,0 +1,55 @@
+const messageService = require('../service/message-service'); 
+
+const ApiError = require("../exceptions/api-error");
+
+class MessageController {
+
+  async sendMessage (req, res, next) {
+    try {
+      const senderId = req.user.id;
+
+      const { chatId, recipientId, content, replyToId } = req.body;
+
+      const files = req.files;
+
+      if(!content && !files) {
+        throw ApiError.BadRequest('Empty message');
+      }
+
+      const result = await messageService.sendMessage({
+        senderId, chatId, recipientId, content, replyToId, files
+      });
+
+      return res.json(result);
+
+    } catch (e) {
+      next(e);
+    }
+  }
+
+  async editMessage (req, res, next) {
+    try {
+      const senderId = req.user.id;
+      const { messageId, newContent } = req.body;
+
+      const result = await messageService.editMessage(messageId, senderId, newContent);
+      return res.json(result);
+    } catch (e) {
+      next(e);
+    }
+  };  
+
+  async deleteMessage (req, res, next) {
+    try {
+      const senderId = req.user.id;
+      const { messageId } = req.params;
+
+      const result = await messageService.deleteMessage(messageId, senderId);
+      return res.json(result);
+    } catch (e) {
+      next(e);
+    }
+  }
+};
+
+module.exports = new MessageController();

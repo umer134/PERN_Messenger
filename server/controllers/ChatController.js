@@ -6,10 +6,10 @@ class ChatController {
 
     async createChat (req, res, next) {
         try {
-            const { userId } = req.body;
-            const currentUser = user.id;
+            const { recipientId } = req.body;
+            const senderId = user.id;
             
-            const chatData = await chatService.createChat(userId, currentUser);
+            const chatData = await chatService.createChat(recipientId, senderId);
             return res.json(chatData);
         } catch (e) {
             next(e);
@@ -43,13 +43,13 @@ class ChatController {
     async sendMessage (req, res, next) {
         try {
             const {chatId} = req.params;
-            const {content} = req.body;
+            const {content, replyToId} = req.body;
             const files = req.files;
             const senderId = req.user.id;
             if(!content && !files) {
                 throw ApiError.BadRequest('Empty message');
             }
-            const sendResult = await chatService.sendMessage(chatId, content, files, senderId);
+            const sendResult = await chatService.sendMessage(chatId, content, files, senderId, replyToId);
             return res.json(sendResult);
         } catch(e) {
             next(e);

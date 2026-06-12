@@ -31,6 +31,158 @@ const options = {
         },
       },
       schemas: {
+        Message: {
+          type: 'object',
+          properties: {
+            id: { type: 'string', format: 'uuid' },
+            chat_id: { type: 'string', format: 'uuid' },
+            sender_id: { type: 'string', format: 'uuid', nullable: true },
+            content: { type: 'string', nullable: true },
+            reply_to_id: { type: 'string', format: 'uuid', nullable: true },
+            sent_at: { type: 'string', format: 'date-time' },
+            edited_at: { type: 'string', format: 'date-time', nullable: true },
+            deleted_at: { type: 'string', format: 'date-time', nullable: true },
+            is_read: { type: 'boolean' },
+          },
+          required: ['id', 'chat_id', 'sent_at', 'is_read'],
+        },
+        EditMessageRequest: {
+          type: 'object',
+          properties: {
+            messageId: { type: 'string', format: 'uuid' },
+            newContent: { type: 'string' },
+          },
+          required: ['messageId', 'newContent'],
+        },
+        SendDirectMessageRequest: {
+          type: 'object',
+          properties: {
+            chatId: { type: 'string', format: 'uuid', nullable: true },
+            recipientId: { type: 'string', format: 'uuid', nullable: true },
+            content: { type: 'string', nullable: true },
+            replyToId: { type: 'string', format: 'uuid', nullable: true },
+            files: {
+              type: 'array',
+              items: { type: 'string', format: 'binary' },
+            },
+          },
+        },
+        SendDirectMessageResponse: {
+          type: 'object',
+          properties: {
+            chatId: { type: 'string', format: 'uuid', nullable: true },
+            message: { $ref: '#/components/schemas/Message' },
+          },
+          required: ['message'],
+        },
+        DeleteMessageResponse: {
+          type: 'object',
+          properties: {
+            success: { type: 'boolean' },
+            messageId: { type: 'string', format: 'uuid' },
+          },
+          required: ['success', 'messageId'],
+        },
+        ChatMemberPreview: {
+          type: 'object',
+          properties: {
+            id: { type: 'string', format: 'uuid' },
+            name: { type: 'string' },
+            avatar: { type: 'string', nullable: true },
+          },
+          required: ['id', 'name'],
+        },
+        ChatFile: {
+          type: 'object',
+          properties: {
+            file_path: { type: 'string' },
+          },
+          required: ['file_path'],
+        },
+        ChatMessage: {
+          type: 'object',
+          properties: {
+            id: { type: 'string', format: 'uuid' },
+            chat_id: { type: 'string', format: 'uuid' },
+            sender_id: { type: 'string', format: 'uuid', nullable: true },
+            content: { type: 'string', nullable: true },
+            sent_at: { type: 'string', format: 'date-time' },
+            is_read: { type: 'boolean' },
+          },
+          required: ['id', 'chat_id', 'sent_at', 'is_read'],
+        },
+        ChatMessageWithRelations: {
+          type: 'object',
+          properties: {
+            id: { type: 'string', format: 'uuid' },
+            chat_id: { type: 'string', format: 'uuid' },
+            sender_id: { type: 'string', format: 'uuid', nullable: true },
+            content: { type: 'string', nullable: true },
+            sent_at: { type: 'string', format: 'date-time' },
+            is_read: { type: 'boolean' },
+            sender: { $ref: '#/components/schemas/UserPreview' },
+            attachedFiles: {
+              type: 'array',
+              items: { $ref: '#/components/schemas/ChatFile' },
+            },
+          },
+          required: ['id', 'chat_id', 'sent_at', 'is_read', 'sender', 'attachedFiles'],
+        },
+        Chat: {
+          type: 'object',
+          properties: {
+            id: { type: 'string', format: 'uuid' },
+            is_group: { type: 'boolean' },
+            group_name: { type: 'string', nullable: true },
+            group_avatar: { type: 'string', nullable: true },
+            created_at: { type: 'string', format: 'date-time' },
+            members: {
+              type: 'array',
+              items: { $ref: '#/components/schemas/ChatMemberPreview' },
+            },
+            messages: {
+              type: 'array',
+              items: { $ref: '#/components/schemas/Message' },
+            },
+          },
+          required: ['id', 'is_group', 'created_at'],
+        },
+        CreateChatRequest: {
+          type: 'object',
+          properties: {
+            userId: { type: 'string', format: 'uuid' },
+          },
+          required: ['userId'],
+        },
+        SendMessageRequest: {
+          type: 'object',
+          properties: {
+            content: { type: 'string', nullable: true },
+            files: {
+              type: 'array',
+              items: { type: 'string', format: 'binary' },
+            },
+            reply_to_id: { type: 'string', format: 'uuid', nullable: true},
+          },
+        },
+        MessagesPage: {
+          type: 'object',
+          properties: {
+            messages: {
+              type: 'array',
+              items: { $ref: '#/components/schemas/ChatMessageWithRelations' },
+            },
+            nextCursor: { type: 'string', nullable: true },
+          },
+          required: ['messages', 'nextCursor'],
+        },
+        ReadMessageResponse: {
+          type: 'object',
+          properties: {
+            updated: { type: 'integer' },
+          },
+          required: ['updated'],
+        },
         Me: {
           type: 'object',
           properties: {

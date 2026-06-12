@@ -4,8 +4,48 @@ const { sequelize, ChatModel, ChatMemberModel, UserModel, MessageModel, MessageF
 const ApiError = require("../exceptions/api-error");
 
 class ChatService {
+
+  async findOrCreatePrivateChat(senderId, recipientId, transaction) {
+    const existingChat = await ChatModel.findOne({
+      subQuery: false,
+      include: [{
+        model: ChatMemberModel,
+        as: 'chatMembers',
+        attributes: [],
+        where: {
+          user_id: [senderId, recipientId]
+        }
+      }],
+      group: ['chats.id'],
+      having: sequelize.literal(
+        `COUNT(DISTINCT "chatMembers"."user_id") = 2`
+      ),
+      transaction
+    });
+
+    if (existingChat) {
+      return existingChat;
+    }
+
+    const newChat = await ChatModel.create({
+      is_group: false
+    }, { transaction });
+
+    await ChatMemberModel.bulkCreate([
+      {
+        chat_id: newChat.id,
+        user_id: senderId
+      },
+      {
+        chat_id: newChat.id,
+        user_id: recipientId
+      }
+    ], { transaction });
+
+    return newChat;
+  }  
   
-  async createChat (userId, currentUser) {
+  async createChat (recipientId, senderId) {
     const existingChat = await ChatModel.findOne({
       subQuery: false, // ⬅️ ключевая строка
       include: [{
@@ -13,7 +53,7 @@ class ChatService {
         as: 'chatMembers',
         attributes: [],
         where: {
-          user_id: [currentUser, userId]
+          user_id: [senderId, recipientId]
         }
       }],
       group: ['chats.id'],
@@ -27,8 +67,8 @@ class ChatService {
     const newChat = await ChatModel.create({ is_group: false });
 
     await ChatMemberModel.bulkCreate([
-      { chat_id: newChat.id, user_id: currentUser },
-      { chat_id: newChat.id, user_id: userId }
+      { chat_id: newChat.id, user_id: senderId },
+      { chat_id: newChat.id, user_id: recipientId }
     ]);
   
     return newChat;
@@ -86,7 +126,7 @@ class ChatService {
     return privateChat || null;
   }
 
-  async sendMessage (chatId, content, files, senderId) {
+  async sendMessage (chatId, content, files, senderId, replyToId) {
     const transaction = await sequelize.transaction();
     
     const chatExists = await ChatModel.findByPk(chatId, { transaction });
@@ -108,6 +148,7 @@ class ChatService {
         chat_id: chatId,
         sender_id: senderId,
         content: content || null,
+        reply_to_id: replyToId || null,
     }, { transaction });
 
     if(files && files.length > 0) {

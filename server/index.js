@@ -13,6 +13,7 @@ const { Server } = require('socket.io'); // импортируем socket.io
 
 const userRouter = require('./routes/userRoutes');
 const chatRouter = require('./routes/chatRoutes');
+const messageRouter = require('./routes/messageRoutes');
 const errorMiddleware = require('./middlewares/error-middleware');
 
 const PORT = process.env.PORT || 5000;
@@ -74,6 +75,7 @@ app.use('/uploads', express.static(path.resolve(__dirname, 'uploads')));
 // роуты
 app.use('/api', userRouter);
 app.use('/api', chatRouter);
+app.use('/api', messageRouter);
 
 // ошибки
 app.use(errorMiddleware);
