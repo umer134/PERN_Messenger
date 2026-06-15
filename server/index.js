@@ -8,8 +8,11 @@ const swaggerUi = require('swagger-ui-express');
 const swaggerSpec = require('./swagger');
 
 const sequelize = require('./config/db');
+
 const http = require('http'); // добавляем http
 const { Server } = require('socket.io'); // импортируем socket.io
+
+const { initSocket } = require("./socket/socket");
 
 const userRouter = require('./routes/userRoutes');
 const chatRouter = require('./routes/chatRoutes');
@@ -28,34 +31,9 @@ app.get('/api-spec.json', (req, res) => {
   res.send(swaggerSpec);
 });
 
-const server = http.createServer(app); // создаём http-сервер вручную
+const server = http.createServer(app); 
 
-const io = new Server(server, {
-  pingTimeout: 30000,  // Ждём 30 сек перед разрывом "мертвого" соединения
-  pingInterval: 5000,  // Пинг каждые 5 сек для проверки активности
-  cors: {
-    origin: 'http://localhost:5173',
-    credentials: true
-  }
-});
-
-// Socket.IO логика
-io.on('connection', (socket) => {
-  console.log('Новое подключение:', socket.id);
-
-  socket.on('join_chat', (userId) => {
-    socket.join(userId);
-    console.log(`Пользователь ${userId} присоединился`);
-  });
-
-  socket.on('send_message', ({ toUserId, message }) => {
-    io.to(toUserId).emit('receive_message', message);
-  });
-
-  socket.on('disconnect', () => {
-    console.log('Отключение сокета:', socket.id);
-  });
-});
+const io = initSocket(server);
 
 // middlewares
 app.use(cors({

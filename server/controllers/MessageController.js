@@ -27,6 +27,19 @@ class MessageController {
     }
   }
 
+  async markAsRead(req, res, next) {
+    try {
+      const chatId = req.params.chatId;
+      const userId = req.user.id;
+
+      const result = await messageService.markAsRead(chatId, userId);
+
+      return res.json(result);
+    } catch (e) {
+      next(e);
+    }
+  }
+
   async editMessage (req, res, next) {
     try {
       const senderId = req.user.id;

@@ -1,11 +1,11 @@
 module.exports = class UserDTO {
   id;
-  name;
+  username;
   avatar;
 
   constructor (model) {
     this.id = model.id;
-    this.name = model.username;
-    this.avatar = model.avatar_url;
+    this.username = model.username;
+    this.avatar = model.avatar;
   }
 }

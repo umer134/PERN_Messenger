@@ -100,8 +100,10 @@ class UserService {
             attributes: ['id', 'username', ['avatar_url', 'avatar']],
             limit: 10
           });
+
+          console.log(users.map(u => u.toJSON()));
          
-          return users.map(user => new UserDto(user));
+          return users;
 
         } catch (dbError) {
             console.log('dbEr', dbError);

@@ -3,6 +3,8 @@ import { User, Users } from "lucide-react";
 import { ConversationPreview } from "../../../entities/conversation/model/conversation.types";
 
 import * as s from "./conversation-item.css";
+import { useMediaViewer } from "../../../features/media-viewer/lib/useMediaViewer";
+import { Avatar } from "../../../shared/ui/Avatar";
 
 type Props = {
   conversation: ConversationPreview;
@@ -17,18 +19,45 @@ export const ConversationItem = ({
   selected,
   onClick,
 }: Props) => {
+
+  const { open } = useMediaViewer();
+
   return (
     <div
       className={`${s.root} ${selected ? s.selected : ""}`}
       onClick={onClick}
     >
-      <div className={s.avatar}>
-        {conversation.isGroup ? (
-          <Users size={20} />
-        ) : (
-          <User size={20} />
-        )}
-      </div>
+      {conversation.avatar ? (
+        <Avatar
+          src={conversation.avatar}
+          alt={conversation.title}
+          status={conversation.isOnline ? "online" : "offline"}
+          onClick={(e) => {
+            e.stopPropagation();
+            
+            if(!conversation.avatar) return;
+
+            open(
+              [
+                {
+                  id: conversation.id,
+                  type: "image",
+                  url: conversation.avatar,
+                  name: conversation.title,
+                }
+              ], 0
+            );
+          }}
+        />
+      ) : (
+        <div className={s.avatar}>
+          {conversation.isGroup ? (
+            <Users size={20} />
+          ) : (
+            <User size={20} />
+          )}
+        </div>
+      )}
 
       <div className={s.content}>
         <div className={s.topRow}>

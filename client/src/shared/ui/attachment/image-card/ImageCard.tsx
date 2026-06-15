@@ -28,7 +28,7 @@ export const ImageCard = ({
       onClick={onClick}
     >
       <img
-        src={src}
+        src={`http://localhost:5002${src}`}
         alt={alt}
         className={s.image}
       />

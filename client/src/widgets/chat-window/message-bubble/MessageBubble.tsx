@@ -103,7 +103,7 @@ export const MessageBubble = ({
           <span>
             {message.sentAt}
           </span>
-          {message.status && (
+          {message.status && isMine && (
             <MessageStatus
               status={message.status}
             />

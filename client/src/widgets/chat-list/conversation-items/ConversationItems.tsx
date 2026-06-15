@@ -5,14 +5,14 @@ import { ConversationItem } from "../conversation-item/ConversationItem";
 type Props = {
   conversations: ConversationPreview[];
 
-  selectedConversationId: string | null;
+  selectedConversation: ConversationPreview | null;
 
-  onSelect: (id: string) => void;
+  onSelect: (data: ConversationPreview) => void;
 };
 
 export const ConversationItems = ({
   conversations,
-  selectedConversationId,
+  selectedConversation,
   onSelect,
 }: Props) => {
   return (
@@ -22,9 +22,9 @@ export const ConversationItems = ({
           key={conversation.id}
           conversation={conversation}
           selected={
-            selectedConversationId === conversation.id
+            selectedConversation === conversation
           }
-          onClick={() => onSelect(conversation.id)}
+          onClick={() => onSelect(conversation)}
         />
       ))}
     </div>

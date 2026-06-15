@@ -30,6 +30,8 @@ const router = Router();
  */
 router.post('/messages', uploadFiles.array('files'), authMiddleware, MessageController.sendMessage);
 
+router.patch('/messages/read/:chatId', authMiddleware, MessageController.markAsRead)
+
 /**
  * @swagger
  * /api/messages:

@@ -13,7 +13,8 @@ class UserController {
             }
             const {name, email, password} = req.body;
             const avatarPath = req.file ? `/uploads/avatars/${req.file.filename}` : null;
-            console.log('avatarPath', avatarPath)
+            console.log('reqFile: ', req.file);
+            console.log('avatarPath:', avatarPath);
             const userData = await userService.registration(name, email, password, avatarPath);
             res.cookie('refreshToken', userData.refreshToken, {
                 maxAge: 30 * 24 * 60 * 60 * 1000,
@@ -104,10 +105,11 @@ class UserController {
 
     async searchUsers (req, res, next) {
         try {
-            const { query } = req.query;
-            if(!query) return res.json([]);
+            const { username } = req.query;
+            if(!username) return res.json([]);
             
-            const user = await userService.searchUsers(query);
+            const user = await userService.searchUsers(username);
+            console.log('SEARCH RESULT RAW:', user);
             return res.json(user);
         } catch(e) {
             next(e)

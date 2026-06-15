@@ -16,4 +16,6 @@ export type ConversationPreview = {
   isVirtual?: string;
 
   participantId?: string;
+
+  isOnline?: boolean;
 };

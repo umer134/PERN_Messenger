@@ -3,6 +3,7 @@ import { User, Users } from "lucide-react";
 import * as s from "./conversation-header.css";
 
 import { ConversationDetails } from "../../../entities/conversation/model/conversation-details.types";
+import { Avatar } from "../../../shared/ui/Avatar";
  
 type Props = {
   conversation: ConversationDetails;
@@ -14,10 +15,16 @@ export const ConversationHeader = ({
   return (
     <header className={s.root}>
       <div className={s.avatar}>
-        {conversation?.isGroup ? (
+        {conversation.avatar ? (
+          <Avatar
+            src={conversation.avatar}
+          />
+        ) : (
+        conversation?.isGroup ? (
           <Users size={18} />
         ) : (
           <User size={18} />
+        )
         )}
       </div>
 

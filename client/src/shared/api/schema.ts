@@ -652,8 +652,7 @@ export interface components {
             files?: string[];
         };
         SendDirectMessageResponse: {
-            /** Format: uuid */
-            chatId?: string | null;
+            conversation: components["schemas"]["ConversationPreview"];
             message: components["schemas"]["Message"];
         };
         DeleteMessageResponse: {
@@ -710,6 +709,20 @@ export interface components {
         CreateChatRequest: {
             /** Format: uuid */
             userId: string;
+        };
+        ConversationPreview: {
+            /** Format: uuid */
+            id: string;
+            title: string;
+            avatar?: string | null;
+            isGroup: boolean;
+            unreadCount: number;
+            lastMessage?: string | null;
+            /** Format: date-time */
+            updatedAt: string;
+            /** Format: uuid */
+            participantId?: string | null;
+            isOnline: boolean;
         };
         SendMessageRequest: {
             content?: string | null;

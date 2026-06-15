@@ -2,11 +2,12 @@ const ApiError = require("../exceptions/api-error");
 const { MessageModel, ChatModel, sequelize, MessageFilesModel } = require("../models");
 const MessageDto = require('../dtos/messageDto');
 const chatService = require("./chat-service");
-
+const { Op } = require("sequelize");
+const { getID } = require('../socket/socket');
 
 class MessageService {
 
-  async sendMessage(senderId, chatId, recipientId, content, replyToId, files) {
+  async sendMessage({senderId, chatId, recipientId, content, replyToId, files}) {
     const transaction = await sequelize.transaction();
 
     try {
@@ -52,15 +53,48 @@ class MessageService {
 
       await transaction.commit();
 
+      const conversation =
+        await chatService.buildConversationPreview(
+          chat.id,
+          senderId
+        );
+      
+      const payload = {
+        id: message.id,
+        chat_id: message.chat_id,
+        sender_id: message.sender_id,
+        content: message.content,
+        sent_at: message.sent_at,
+        is_read: message.is_read,
+        attachedFiles: message.attachedFiles,
+      };
+
+      const io = getID();
+
+      io.to(chat.id).emit("messages:new", payload);
+
       return {
-        chatId: chatId,
+        conversation,
         message
       };
+      
 
     } catch (e) {
       await transaction.rollback();
       throw e;
     }
+  }
+
+  async markAsRead(chatId, userId) {
+    const [updatedCount] = await MessageModel.update({ is_read: true }, {
+      where: { chat_id: chatId, sender_id: {
+        [Op.ne]: userId }, is_read: false
+      }
+    });
+
+    return { 
+      updated: updatedCount
+    };
   }
 
   async editMessage(messageId, userId, newContent) {

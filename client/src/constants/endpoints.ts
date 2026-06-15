@@ -15,20 +15,23 @@ export const API_ENDPOINTS = {
   USERS: {
     GET_ALL: `${env.apiUrl}/users`,
     GET_BY_ID: (id: string) => `${env.apiUrl}/users/${id}`,
+    GET_BY_USERNAME: (username: string) => `${env.apiUrl}/api/users/search?username=${username}`,
     UPDATE: (id: string) => `${env.apiUrl}/users/${id}`,
     DELETE: (id: string) => `${env.apiUrl}/users/${id}`,
   },
   CHATS: {
-    GET_ALL: `${env.apiUrl}/chats`,
+    GET_ALL: `${env.apiUrl}/api/chats`,
     GET_BY_ID: (id: string) => `${env.apiUrl}/chats/${id}`,
     CREATE: `${env.apiUrl}/chats`,
     UPDATE: (id: string) => `${env.apiUrl}/chats/${id}`,
     DELETE: (id: string) => `${env.apiUrl}/chats/${id}`,
   },
   MESSAGES: {
-    GET_ALL: `${env.apiUrl}/messages`,
+    GET: (chatId: string) => `${env.apiUrl}/messages/${chatId}`,
+    GET2: (chatId: string) => `${env.apiUrl}/api/chats/${chatId}/messages`,
     GET_BY_ID: (id: string) => `${env.apiUrl}/messages/${id}`,
-    CREATE: `${env.apiUrl}/messages`,
+    CREATE: `${env.apiUrl}/api/messages`,
+    READ: (chatId: string) => `${env.apiUrl}/api/messages/read/${chatId}`,
     UPDATE: (id: string) => `${env.apiUrl}/messages/${id}`,
     DELETE: (id: string) => `${env.apiUrl}/messages/${id}`,
   }

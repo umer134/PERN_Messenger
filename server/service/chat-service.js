@@ -75,29 +75,25 @@ class ChatService {
   }
 
   async getUserChats(userId) {
-    return ChatModel.findAll({
+    const chats = await ChatModel.findAll({
       include: [
         {
           model: ChatMemberModel,
           as: 'chatMembers',
           where: { user_id: userId },
-          attributes: [] // мы не достаём info из связующей таблицы
-        },
-        {
-          model: MessageModel,
-          as: 'messages',
-          separate: true, // грузим отдельно, чтобы limit работал
-          order: [['sent_at', 'DESC']],
-          limit: 1,
-          attributes: ['sender_id','content', 'sent_at', 'is_read']
-        },
-        {
-          model: UserModel,
-          as: 'members',
-          attributes: ['id', 'username', ['avatar_url', 'avatar']] // если надо показать других участников
+          attributes: []
         }
       ]
     });
+
+    return Promise.all(
+      chats.map(chat =>
+        this.buildConversationPreview(
+          chat.id,
+          userId
+        )
+      )
+    );
   }
 
   async findUserChat(fromUserId, toUserId) {
@@ -228,6 +224,76 @@ class ChatService {
     );
 
     return {updated: updatedCount}
+  }
+
+  async buildConversationPreview(chatId, currentUserId, transaction = null) {
+    const chat = await ChatModel.findByPk(chatId, {
+      include: [
+        {
+          model: UserModel,
+          as: 'members',
+          attributes: [
+            'id',
+            'username',
+            ['avatar_url', 'avatar']
+          ]
+        },
+        {
+          model: MessageModel,
+          as: 'messages',
+          separate: true,
+          limit: 1,
+          order: [['sent_at', 'DESC']],
+          attributes: [
+            'content',
+            'sent_at'
+          ]
+        }
+      ],
+      transaction
+    });
+
+    console.log('CHAT MEMBERS RAW:', JSON.stringify(chat.members, null, 2));
+
+    if (!chat) {
+      throw ApiError.BadRequest("Chat not found");
+    }
+
+    const otherMember = chat.members.find(
+      member => member.id !== currentUserId
+    );
+
+    const otherMemberData = otherMember?.toJSON();
+
+    const lastMessage = chat.messages[0];
+
+    return {
+      id: chat.id,
+
+      title: chat.is_group
+        ? chat.group_name
+        : otherMember?.username,
+
+      avatar: chat.is_group
+        ? chat.group_avatar
+        : otherMemberData?.avatar,
+
+      isGroup: chat.is_group,
+
+      unreadCount: 0,
+
+      lastMessage:
+        lastMessage?.content ?? "",
+
+      updatedAt:
+        lastMessage?.sent_at ??
+        chat.created_at,
+
+      participantId:
+        otherMember?.id,
+
+      isOnline: false,
+    };
   }
 
 }

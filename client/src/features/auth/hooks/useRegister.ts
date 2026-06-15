@@ -9,6 +9,15 @@ export function useRegister() {
     mutationFn: async (dto) => {
       const adaptedDto = AuthAdapter.registerDtoToFormData(dto);
       
+      console.log(
+    adaptedDto instanceof FormData
+  );
+
+
+  for (const [k, v] of adaptedDto.entries()) {
+    console.log(k, v);
+  }
+
       const response = await AuthApi.register(adaptedDto);
       
       return AuthAdapter.toEntity(response.data);

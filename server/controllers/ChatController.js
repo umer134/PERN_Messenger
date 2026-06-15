@@ -19,21 +19,18 @@ class ChatController {
         try {
             const userId = req.user.id;
             const usersData = await chatService.getUserChats(userId);
+            console.log(usersData);
             return res.json(usersData);
         } catch(e) {
             next(e);
-        }
+        }s
     }
     async findUserChat(req, res, next) {
         try {
             const {userId: rawUserId} = req.params;
             const senderId = req.user.id;
 
-            const userId = parseInt(rawUserId);
-            if (isNaN(userId)) {
-              throw ApiError.BadRequest("Invalid chat ID");
-            }
-
+            const userId = rawUserId;
             const chat = await chatService.findUserChat(senderId, userId);
             return res.json(chat);
         } catch(e) {
@@ -62,10 +59,8 @@ class ChatController {
             const { cursor, limit: rawLimit } = req.query;
             
             // Валидация chatId
-            const chatId = parseInt(rawChatId);
-            if (isNaN(chatId)) {
-              throw ApiError.BadRequest("Invalid chat ID");
-            }
+            const chatId = rawChatId;
+
             const limit = Math.min(parseInt(rawLimit) || 50, 100);
             const messageData = await chatService.getMessages(chatId, userId, cursor, limit);
             

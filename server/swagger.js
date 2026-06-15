@@ -70,10 +70,10 @@ const options = {
         SendDirectMessageResponse: {
           type: 'object',
           properties: {
-            chatId: { type: 'string', format: 'uuid', nullable: true },
+            conversation: { $ref: '#/components/schemas/ConversationPreview' },
             message: { $ref: '#/components/schemas/Message' },
           },
-          required: ['message'],
+          required: ['conversation', 'message'],
         },
         DeleteMessageResponse: {
           type: 'object',
@@ -153,6 +153,61 @@ const options = {
             userId: { type: 'string', format: 'uuid' },
           },
           required: ['userId'],
+        },
+        ConversationPreview: {
+          type: 'object',
+          properties: {
+            id: {
+              type: 'string',
+              format: 'uuid'
+            },
+
+            title: {
+              type: 'string'
+            },
+
+            avatar: {
+              type: 'string',
+              nullable: true
+            },
+
+            isGroup: {
+              type: 'boolean'
+            },
+
+            unreadCount: {
+              type: 'integer'
+            },
+
+            lastMessage: {
+              type: 'string',
+              nullable: true
+            },
+
+            updatedAt: {
+              type: 'string',
+              format: 'date-time'
+            },
+
+            participantId: {
+              type: 'string',
+              format: 'uuid',
+              nullable: true
+            },
+
+            isOnline: {
+              type: 'boolean'
+            }
+          },
+
+          required: [
+            'id',
+            'title',
+            'isGroup',
+            'unreadCount',
+            'updatedAt',
+            'isOnline'
+          ]
         },
         SendMessageRequest: {
           type: 'object',
