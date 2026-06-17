@@ -1,5 +1,14 @@
 import { style } from '@vanilla-extract/css';
 
+export const wrapper = style({
+  position: "relative",
+
+  flex: 1,
+  minHeight: 0,
+
+  display: "flex",
+});
+
 export const root = style({
   flex: 1,
   minHeight: 0,
@@ -39,4 +48,48 @@ export const content = style({
   flexDirection: "column",
 
   gap: 12,
+});
+
+import { keyframes } from "@vanilla-extract/css";
+
+
+export const showButton = keyframes({
+  from:{
+    opacity:0,
+    transform:"translateY(20px)"
+  },
+
+  to:{
+    opacity:1,
+    transform:"translateY(0)"
+  }
+});
+
+export const scrollButton = style({
+  position: "absolute",
+
+  right: 24,
+  bottom: 24,
+
+  width: 42,
+  height: 42,
+
+  borderRadius: "50%",
+
+  border: "none",
+
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+
+  cursor: "pointer",
+
+  background: "rgba(40,40,40,.95)",
+
+  // boxShadow:
+  //   "0 4px 20px rgba(0,0,0,.35)",
+
+  zIndex: 10,
+
+  animation: `${showButton} .2s ease`,
 });

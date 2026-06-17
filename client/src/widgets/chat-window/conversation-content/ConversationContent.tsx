@@ -8,6 +8,8 @@ import { useChatSocket } from "../../../shared/socket/hooks/useChatSocket";
 import { useMessageEvents } from "../../../features/messages/lib/useMessageEvents";
 
 import * as s from '../conversation-view.css';
+import { useEffect, useState } from "react";
+import { useReadMessages } from "../../../entities/messages/hooks/useReadMessages";
 
 type Props = {
   conversation: ConversationPreview;
@@ -15,8 +17,11 @@ type Props = {
 
 export const ConversationContent = ({conversation,}: Props) => {
 
+    const [isAtBottom, setIsAtBottom] = useState(true);
+
   useChatSocket(conversation.id);
-  useMessageEvents(conversation.id);
+  useMessageEvents(conversation.id, isAtBottom);
+  const readMessage = useReadMessages();
 
   const sendMessage = useSendMessage(conversation.id);
 
@@ -46,6 +51,12 @@ export const ConversationContent = ({conversation,}: Props) => {
     });
   };
 
+  useEffect(() => {
+    if(!isAtBottom) return;
+
+    readMessage.mutate(conversation.id);
+  }, [isAtBottom]);
+
   return (
     <div className={s.conversationContent}>
       <ConversationHeader
@@ -56,6 +67,7 @@ export const ConversationContent = ({conversation,}: Props) => {
         messages={messages}
         mediaItems={mediaItems}
         conversationId={conversation.id}
+        onBottomChange={setIsAtBottom}
       />
 
       <MessageComposer

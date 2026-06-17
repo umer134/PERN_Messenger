@@ -7,11 +7,14 @@ import { MessageAdapter } from "../../../entities/messages/model/message.adapter
 import { MessageResponse } from "../../../entities/messages/model/message.model";
 import { useAppSelector } from "../../../app/hooks";
 import { selectCurrentUserId } from "../../../entities/current-user/model/currentUser.selectors";
+import { useReadMessages } from "../../../entities/messages/hooks/useReadMessages";
 
-export const useMessageEvents = (chatId: string) => {
+export const useMessageEvents = (chatId: string, isAtBottom: boolean) => {
   const queryClient = useQueryClient();
 
   const currentUserId = useAppSelector(selectCurrentUserId);
+
+  const readMessage = useReadMessages();
 
   useEffect(() => {
     const handler = (rawMessage) => {
@@ -33,11 +36,19 @@ export const useMessageEvents = (chatId: string) => {
         }
       );
 
-      if(message.senderId !== currentUserId) {
+      if(message.senderId !== currentUserId && isAtBottom) {
+        console.log("AUTO READ");
+        console.log({
+  sender: message.senderId,
+  me: currentUserId,
+  isAtBottom,
+});
         socket.emit("message:delivered", {
           messageId: message.id,
           chatId,
         });
+
+        readMessage.mutate(chatId)
       }
     };
 
@@ -107,7 +118,7 @@ export const useMessageEvents = (chatId: string) => {
       socket.off("message:read", readHandler);
       socket.off("message:delivered", deliveredHandler);
     };
-  }, [chatId]);
+  }, [chatId, isAtBottom, currentUserId]);
 
   
 };

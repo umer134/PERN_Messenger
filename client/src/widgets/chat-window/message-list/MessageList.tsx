@@ -10,14 +10,22 @@ import { MessageGroup } from './message-group/MessageGroup';
 import { MediaItem } from '../../../features/media-viewer/model/media-viewer.types';
 import { useAppSelector } from '../../../app/hooks';
 import { selectCurrentUserId } from '../../../entities/current-user/model/currentUser.selectors';
+import { ChevronDown } from 'lucide-react';
 
 type Props = {
   messages: MessageVM[];
   mediaItems: MediaItem[];
   conversationId: string;
+
+  onBottomChange: (value: boolean) => void;
 };
 
-export const MessagesList = ({ messages, mediaItems, conversationId }: Props) => {
+export const MessagesList = ({ messages, mediaItems, conversationId, onBottomChange }: Props) => {
+  const myId = useAppSelector(selectCurrentUserId);
+
+  const readMessages = useReadMessages();
+
+  const groups = groupMessages(messages);
 
   const [showScrollButton, setShowScrollButton] = useState(false);
 
@@ -28,28 +36,24 @@ export const MessagesList = ({ messages, mediaItems, conversationId }: Props) =>
     bottomRef.current?.scrollIntoView({
       behavior: "smooth"
     });
+    readMessages.mutate(conversationId);
+
+    setShowScrollButton(false);
   };
 
-  const readMessages = useReadMessages();
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({
+      behavior: "auto",
+    });
+  }, [conversationId]);
 
-  const timeout = useRef<NodeJS.Timeout | null>(null);
-
-  const handleVisible = () => {
-    if(timeout.current) {
-      clearTimeout(timeout.current);
+  useEffect(() => {
+    if (!showScrollButton) {
+      bottomRef.current?.scrollIntoView({
+        behavior: "smooth",
+      });
     }
-
-    timeout.current = setTimeout(() => {
-      if(!conversationId) return;
-
-      readMessages.mutate(conversationId);
-    }, 300);
-  };
-
-  const myId = useAppSelector(selectCurrentUserId);
-
-  const groups = groupMessages(messages);
-
+  }, [messages.length]);
 
   useEffect(() => {
     const container = listRef.current;
@@ -58,14 +62,29 @@ export const MessagesList = ({ messages, mediaItems, conversationId }: Props) =>
 
     const handleScroll = () => {
 
-      const distanceFromBottom = container.scrollHeight 
-        - container.scrollTop - container.clientHeight;
+      console.log("scroll")
+
+      const distanceFromBottom = 
+        container.scrollHeight -
+        container.scrollTop - 
+        container.clientHeight;
+
+          console.log({
+    scrollHeight: container.scrollHeight,
+    scrollTop: container.scrollTop,
+    clientHeight: container.clientHeight,
+    distanceFromBottom,
+  });
+
+      const nearBottom = distanceFromBottom < 80;
+
+      onBottomChange(nearBottom);
     
-      setShowScrollButton(
-        distanceFromBottom > 150
-      );
+      setShowScrollButton(!nearBottom);
 
     };
+
+    handleScroll();
 
     container.addEventListener("scroll", handleScroll);
 
@@ -73,29 +92,28 @@ export const MessagesList = ({ messages, mediaItems, conversationId }: Props) =>
       container.removeEventListener("scroll", handleScroll);
     };
 
-  }, []);
+  }, [messages]);
 
   return (
-    <div ref={listRef} className={s.root}>
-      <div className={s.content}>
-        {groups.map((group) => (
-          <MessageGroup
-            key={group.messages[0].id}
-            group={group}
-            isMine={group.senderId === myId}
-            mediaItems={mediaItems}
-            onVisible={handleVisible}
-          />
-        ))}
-        {
-          showScrollButton && (
-            <button onClick={scrollToBottom}>
-              ↓
-            </button>
-          )
-        }
-        <div ref={bottomRef} />
-      </div>
+    <div className={s.wrapper}>
+      <div ref={listRef} className={s.root}>
+        <div className={s.content}>
+          {groups.map((group) => (
+            <MessageGroup
+              key={group.messages[0].id}
+              group={group}
+              isMine={group.senderId === myId}
+              mediaItems={mediaItems}
+            />
+          ))}
+          <div ref={bottomRef} />
+        </div>
+      </div>        
+      {showScrollButton && (
+        <button className={s.scrollButton} onClick={scrollToBottom}>
+          <ChevronDown size={18} />
+        </button>
+      )}
     </div>
   );
 };
