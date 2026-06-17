@@ -1,13 +1,13 @@
-import { useEffect } from "react";
 import { ConversationHeader } from "../conversation-header/ConversationHeader";
 import { MessagesList } from "../message-list/MessageList";
 import { MessageComposer } from "../message-composer/MessageComposer";
 import { useMessages } from "../../../entities/messages/hooks/useMessages";
 import { useSendMessage } from "../../../entities/messages/hooks/useSendMessage";
 import { ConversationPreview } from "../../../entities/conversation/model/conversation.types";
-import { useReadMessages } from "../../../entities/messages/hooks/useReadMessages";
 import { useChatSocket } from "../../../shared/socket/hooks/useChatSocket";
 import { useMessageEvents } from "../../../features/messages/lib/useMessageEvents";
+
+import * as s from '../conversation-view.css';
 
 type Props = {
   conversation: ConversationPreview;
@@ -21,16 +21,6 @@ export const ConversationContent = ({conversation,}: Props) => {
   const sendMessage = useSendMessage(conversation.id);
 
   const { data, isLoading, error } = useMessages(conversation.id);
-
-  const readMessages = useReadMessages();
-
-  useEffect(() => {
-    if (!conversation.id) return;
-
-    readMessages.mutate(
-      conversation.id
-    );
-  }, [conversation.id]);
 
   const messages = data?.messages ?? [];
 
@@ -57,7 +47,7 @@ export const ConversationContent = ({conversation,}: Props) => {
   };
 
   return (
-    <>
+    <div className={s.conversationContent}>
       <ConversationHeader
         conversation={conversation}
       />
@@ -65,11 +55,12 @@ export const ConversationContent = ({conversation,}: Props) => {
       <MessagesList
         messages={messages}
         mediaItems={mediaItems}
+        conversationId={conversation.id}
       />
 
       <MessageComposer
         onSend={handleSend}
       />
-    </>
+    </div>
   );
 };

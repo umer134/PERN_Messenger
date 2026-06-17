@@ -38,7 +38,6 @@ export const DraftConversationContent = ({ user, onConversationCreated}: Props) 
       isOnline: result.conversation.isOnline,
     });
 
-    console.log(result);
   };
 
   return (

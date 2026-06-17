@@ -1,5 +1,5 @@
 const ApiError = require("../exceptions/api-error");
-const { MessageModel, ChatModel, sequelize, MessageFilesModel } = require("../models");
+const { MessageModel, ChatModel, sequelize, MessageFilesModel, UserModel } = require("../models");
 const MessageDto = require('../dtos/messageDto');
 const chatService = require("./chat-service");
 const { Op } = require("sequelize");
@@ -59,41 +59,84 @@ class MessageService {
           senderId
         );
       
-      const payload = {
-        id: message.id,
-        chat_id: message.chat_id,
-        sender_id: message.sender_id,
-        content: message.content,
-        sent_at: message.sent_at,
-        is_read: message.is_read,
-        attachedFiles: message.attachedFiles,
-      };
+      const fullMessage = await MessageModel.findByPk(
+        message.id,
+        {
+          include: [
+            {
+              model: MessageFilesModel,
+              as: "attachedFiles",
+              attributes: ["file_path"],
+            },
+            {
+              model: UserModel,
+              as: "sender", 
+              attributes: [
+                "id",
+                "username",
+                "avatar_url",
+              ],
+            },
+          ],
+        }
+      );
+
+      const messageDto = new MessageDto(fullMessage);
 
       const io = getID();
 
-      io.to(chat.id).emit("messages:new", payload);
+      io.to(chat.id).emit("messages:new", messageDto);
+      io.emit("chat:updated", { chatId: chat.id });
 
       return {
         conversation,
-        message
+        message: messageDto,
       };
       
 
     } catch (e) {
-      await transaction.rollback();
-      throw e;
-    }
+        if (!transaction.finished) {
+          await transaction.rollback();
+        }
+
+        throw e;
+      }
   }
 
   async markAsRead(chatId, userId) {
-    const [updatedCount] = await MessageModel.update({ is_read: true }, {
-      where: { chat_id: chatId, sender_id: {
-        [Op.ne]: userId }, is_read: false
-      }
+    
+    const unreadMessages = await MessageModel.findAll({
+      attributes: ["id"],
+      where: {
+        chat_id: chatId,
+        sender_id: {
+          [Op.ne]: userId,
+        },
+        is_read: false,
+      },
     });
 
-    return { 
-      updated: updatedCount
+    const messageIds = unreadMessages.map(message => message.id);
+    if (!messageIds.length) {
+      return { updated: 0 };
+    }
+
+    const [updatedCount] = await MessageModel.update(
+      { is_read: true },
+      {
+        where: {
+          id: messageIds,
+        },
+      }
+    );
+
+    const io = getID();
+
+    io.to(chatId).emit("message:read", { messageIds: messageIds });
+    io.emit("chat:updated", {chatId: chatId});
+
+    return {
+      updated: updatedCount,
     };
   }
 

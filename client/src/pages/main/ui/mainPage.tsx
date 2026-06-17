@@ -6,6 +6,7 @@ import * as s from './MainPage.css';
 import { ConversationList } from "../../../widgets/chat-list/ChatList";
 import { ConversationView } from "../../../widgets/chat-window/ConversationView";
 import { SelectedConversation } from "../../../entities/conversation/model/selected-conversation.types";
+import socket from "../../../shared/socket/socket";
 
 
 const MainPage = () => {
@@ -13,6 +14,7 @@ const MainPage = () => {
 
   const { id } = useAppSelector(state => state.currentUser);
 
+  socket.emit("user:join", id);
   // useMainPageBootstrap(id ? id : '');
 
   if (!id) return <div>Loading...</div>;

@@ -77,5 +77,3 @@ const outputPath = path.resolve(
 );
 
 fs.writeFileSync(outputPath, output);
-
-console.log('Types generated');

@@ -20,6 +20,7 @@ const messageRouter = require('./routes/messageRoutes');
 const errorMiddleware = require('./middlewares/error-middleware');
 
 const PORT = process.env.PORT || 5000;
+const CLIENT_URL = process.env.CLIENT_URL || 'http://localhost:5173';
 
 const app = express();
 
@@ -37,11 +38,11 @@ const io = initSocket(server);
 
 // middlewares
 app.use(cors({
-  origin: 'http://localhost:5173',
+  origin: CLIENT_URL,
   credentials: true
 }));
 app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', 'http://localhost:5173');
+  res.header('Access-Control-Allow-Origin', CLIENT_URL);
   res.header('Access-Control-Allow-Credentials', 'true');
   next();
 });

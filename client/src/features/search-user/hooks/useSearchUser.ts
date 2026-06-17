@@ -11,7 +11,6 @@ export const useSearchUser = (query: string) => {
     enabled: query.trim().length >= 2,
     queryFn: async () => {
       const response = await UserApi.searchUsers(query);
-      console.log(response)
       return response.data;
     }
   });

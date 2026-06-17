@@ -1,3 +1,5 @@
+import { resolveMediaUrl } from "../../../lib/media/resolveMediaUrl";
+
 type Props = {
   src: string;
   onClick: () => void;
@@ -18,7 +20,7 @@ export const VideoCard = ({
       }}
       onClick={onClick}
     >
-      <source src={src} />
+      <source src={resolveMediaUrl(src)} />
     </video>
   );
 };

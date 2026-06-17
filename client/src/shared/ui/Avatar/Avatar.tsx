@@ -3,6 +3,7 @@ import clsx from 'clsx';
 
 import * as s from './Avatar.css';
 import { User2 } from 'lucide-react';
+import { resolveMediaUrl } from '../../lib/media/resolveMediaUrl';
 
 type AvatarSize = 'sm' | 'md' | 'lg' | 'xl';
 type AvatarStatus = 'online' | 'offline' | 'away' | 'none';
@@ -29,7 +30,6 @@ export const Avatar = ({
   const [error, setError] = useState(false);
 
   const showImage = src && !error;
-  console.log('avatar:', src)
 
   return (
     <div className={clsx(s.avatar({ size }), className)}
@@ -37,7 +37,7 @@ export const Avatar = ({
     >
       {showImage ? (
         <img
-          src={`http://localhost:5002${src}`}
+          src={resolveMediaUrl(src)}
           alt={alt ?? 'avatar'}
           className={s.image}
           onError={() => setError(true)}

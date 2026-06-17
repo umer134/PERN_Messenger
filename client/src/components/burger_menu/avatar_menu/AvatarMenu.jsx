@@ -19,11 +19,9 @@ const AvatarMenu = ({ user, expanded, setExpanded }) => {
 
   const handleSetClick = () => {
     fileInputRef.current.click(); // программный клик
-    console.log('handleSetClick')
   };
 
   const handleFileChange = (e) => {
-    console.log('handleFileChange')
     const file = e.target.files[0];
     if (file) {
       setSelectedFile(file); // запускаем модалку
@@ -109,8 +107,7 @@ const AvatarMenu = ({ user, expanded, setExpanded }) => {
           onClose={() => setSelectedFile(null)}
           onSave={(croppedBlob) => {
             handleSaveAvatar(croppedBlob);
-            console.log("croppedBlob: ", croppedBlob);
-            setSelectedFile(null); // закрыть модалку
+            setSelectedFile(null); 
           }}
         />
       )}

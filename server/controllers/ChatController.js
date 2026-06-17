@@ -19,7 +19,6 @@ class ChatController {
         try {
             const userId = req.user.id;
             const usersData = await chatService.getUserChats(userId);
-            console.log(usersData);
             return res.json(usersData);
         } catch(e) {
             next(e);

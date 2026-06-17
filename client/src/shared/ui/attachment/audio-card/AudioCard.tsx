@@ -1,3 +1,5 @@
+import { resolveMediaUrl } from "../../../lib/media/resolveMediaUrl";
+
 type Props = {
   src: string;
 
@@ -19,7 +21,7 @@ export const AudioCard = ({
 
       <audio
         controls
-        src={src}
+        src={resolveMediaUrl(src)}
       />
     </div>
   );

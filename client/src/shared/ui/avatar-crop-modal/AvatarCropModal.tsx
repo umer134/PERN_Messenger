@@ -20,7 +20,6 @@ type Props = {
 };
 
 export const AvatarCropModal = ({ imageSrc, onClose, onSave }: Props) => {
-  console.log('MODAL RENDER');
   const [crop, setCrop] = useState({ x: 0, y: 0});
   const [zoom, setZoom] = useState(1);
   const [croppedArea, setCroppedArea] = useState<CropArea | null>(null);
@@ -34,13 +33,9 @@ export const AvatarCropModal = ({ imageSrc, onClose, onSave }: Props) => {
   const handleSave = async () => {
     if(!croppedArea) return;
 
-    console.log('SAVE CLICK');
-
     const blob = await getCroppedImg(imageSrc, croppedArea);
 
     const file = new File([blob], `avatar-${Date.now()}.jpg`, { type: 'image/jpeg', });
-
-    console.log(file);
 
     onSave(file);
     onClose();

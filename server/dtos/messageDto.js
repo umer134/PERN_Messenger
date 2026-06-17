@@ -1,15 +1,5 @@
 
 module.exports = class MessageDto {
-  id;
-  chat_id;
-  sender_id;
-  content;
-  reply_to_id;
-  sent_at;
-  edited_at;
-  deleted_at;
-  is_read;
-
   constructor(model) {
     this.id = model.id;
     this.chat_id = model.chat_id;
@@ -20,5 +10,18 @@ module.exports = class MessageDto {
     this.edited_at = model.edited_at;
     this.deleted_at = model.deleted_at;
     this.is_read = model.is_read;
-  };
+
+    this.sender = model.sender
+      ? {
+          id: model.sender.id,
+          username: model.sender.username,
+          avatar_url: model.sender.avatar_url,
+        }
+      : null;
+
+    this.attachedFiles =
+      model.attachedFiles?.map(file => ({
+        file_path: file.file_path,
+      })) ?? [];
+  }
 };

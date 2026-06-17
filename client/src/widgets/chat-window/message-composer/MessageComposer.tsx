@@ -71,7 +71,7 @@ export const MessageComposer = ({
   };
 
   const handleVoiceRecording = async() => {
-    console.log('recording')
+
     if(!recording) {
       await startRecording();
       return;
@@ -87,7 +87,7 @@ export const MessageComposer = ({
         type: 'audio/webm',
       }
     );
-    console.log('recording')
+
     onSend("", [file]);
   };
 

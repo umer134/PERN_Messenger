@@ -19,6 +19,8 @@ export const bubble = style({
   background: vars.color.surface,
 
   border: `1px solid ${vars.color.border}`,
+
+  margin: 5
 });
 
 export const myBubble = style({

@@ -1,7 +1,7 @@
 import { X } from "lucide-react";
 
 import * as s from "./image-card.css";
-import { useMediaViewer } from "../../../../features/media-viewer/lib/useMediaViewer";
+import { resolveMediaUrl } from "../../../lib/media/resolveMediaUrl";
 
 type Props = {
   src: string;
@@ -28,7 +28,7 @@ export const ImageCard = ({
       onClick={onClick}
     >
       <img
-        src={`http://localhost:5002${src}`}
+        src={resolveMediaUrl(src)}
         alt={alt}
         className={s.image}
       />

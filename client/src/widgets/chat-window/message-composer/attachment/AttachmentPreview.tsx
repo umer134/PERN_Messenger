@@ -1,8 +1,9 @@
 import { useEffect, useMemo, useState } from "react";
-import { FilePreview } from "./file-preview/FilePreview";
-import { ImagePreview } from "./image/ImagePreview";
 import { ImageCard } from "../../../../shared/ui/attachment/image-card/ImageCard";
 import { FileCard } from "../../../../shared/ui/attachment/file-card/FileCard";
+import { VideoCard } from "../../../../shared/ui/attachment/video-card/VideoCard";
+import { AudioCard } from "../../../../shared/ui/attachment/audio-card/AudioCard";
+import { getAttachmentType } from "../../../../entities/messages/lib/getAttachmentType";
 
 type Props = {
   file: File;
@@ -13,8 +14,12 @@ export const AttachmentPreview = ({
   file,
   onRemove,
 }: Props) => {
-  const [previewUrl, setPreviewUrl] =
-    useState("");
+  const [previewUrl, setPreviewUrl] = useState("");
+
+  const attachmentType = useMemo(
+    () => getAttachmentType(file),
+    [file]
+  );
 
   useEffect(() => {
     const url = URL.createObjectURL(file);
@@ -26,7 +31,7 @@ export const AttachmentPreview = ({
     };
   }, [file]);
 
-  if (file.type.startsWith("image/")) {
+  if (attachmentType === "image") {
     return (
       <ImageCard
         src={previewUrl}
@@ -34,6 +39,39 @@ export const AttachmentPreview = ({
         removable
         onRemove={onRemove}
       />
+    );
+  }
+
+  if (attachmentType === "video") {
+    return (
+      <div>
+        <VideoCard
+          src={previewUrl}
+          onClick={() => undefined}
+        />
+        <FileCard
+          name={file.name}
+          removable
+          onRemove={onRemove}
+        />
+      </div>
+    );
+  }
+
+  if (attachmentType === "audio" || attachmentType === "voice") {
+    return (
+      <div>
+        <AudioCard
+          src={previewUrl}
+          name={file.name}
+          onClick={() => undefined}
+        />
+        <FileCard
+          name={file.name}
+          removable
+          onRemove={onRemove}
+        />
+      </div>
     );
   }
 

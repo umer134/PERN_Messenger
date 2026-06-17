@@ -9,7 +9,7 @@ globalStyle('*', {
 
 globalStyle('html, body, #root', {
   width: '100%',
-  minHeight: '100vh',
+  height: '100vh',
 });
 
 globalStyle('body', {

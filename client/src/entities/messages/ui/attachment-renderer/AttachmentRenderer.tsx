@@ -68,6 +68,7 @@ export const AttachmentRenderer = ({ attachment, mediaItems }: Props) => {
       return (
         <FileCard
           name={attachment.name}
+          url={attachment.url}
         />
       );
   }

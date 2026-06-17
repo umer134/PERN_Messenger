@@ -16,6 +16,7 @@ import { SearchResults } from "../../features/search-user/ui/SearchResults";
 import { SelectedConversation } from "../../entities/conversation/model/selected-conversation.types";
 import { User } from '../../entities/user/model/user.types';
 import { useLoadChats } from "../../entities/conversation/hooks/useLoadChats";
+import { useConversationEvents } from "../../entities/conversation/hooks/useConverstionEvents";
 
 type Props = {
   selectedConversation: SelectedConversation | null;
@@ -27,8 +28,11 @@ export const ConversationList = ({selectedConversation, onSelectedConversation}:
 
   const { data: users = [] } = useSearchUser(query); 
 
+  useConversationEvents();
+
   const { data: conversations = [], isLoading} = useLoadChats();
-  console.log(users)
+
+  
   return (
     <aside className={s.root}>
       <CurrentUserPanel />

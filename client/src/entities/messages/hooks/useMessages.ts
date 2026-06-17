@@ -15,9 +15,6 @@ export const useMessages = (
       const mapped = response.data.messages.map(
           MessageAdapter.toVM
         )
-      console.log('response', response.data)
-
-      console.log('mapped', mapped )
       
       return {
         messages: response.data.messages.map(

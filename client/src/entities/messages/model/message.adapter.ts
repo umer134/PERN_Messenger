@@ -1,31 +1,15 @@
 import { MessageResponse } from "./message.model";
-import { MessageAttachmentVM, MessageVM } from "./message.types";
+import { MessageAttachmentVM, MessageStatus, MessageVM } from "./message.types";
+import { resolveMediaUrl } from "../../../shared/lib/media/resolveMediaUrl";
+import { resolveAttachmentTypeFromPath } from "../lib/resolveAttachmentType";
 
 export class MessageAdapter {
-  static getAttachmentType(path: string): MessageAttachmentVM["type"] {
-    const ext = path.split(".").pop()?.toLowerCase();
-
-    if (!ext) return "file";
-
-    if (
-      ["jpg", "jpeg", "png", "gif", "webp"].includes(ext)
-    ) {
-      return "image";
+  static resolveStatus(message: MessageResponse): MessageStatus {
+    if (message.is_read) {
+      return "read";
     }
 
-    if (
-      ["mp4", "webm", "mov"].includes(ext)
-    ) {
-      return "video";
-    }
-
-    if (
-      ["mp3", "wav", "ogg"].includes(ext)
-    ) {
-      return "audio";
-    }
-
-    return "file";
+    return "sent";
   }
 
   static toVM(message: MessageResponse): MessageVM {
@@ -42,16 +26,15 @@ export class MessageAdapter {
 
       isRead: message.is_read,
 
-      status: message.is_read ? "read" : "sent",
+      status: MessageAdapter.resolveStatus(message),
 
       attachments:
         message.attachedFiles?.map(file => ({
           id: file.file_path,
-          type: MessageAdapter.getAttachmentType(file?.file_path || ''),
-          url: file.file_path,
+          type: resolveAttachmentTypeFromPath(file?.file_path || ""),
+          url: resolveMediaUrl(file.file_path),
           name: file.file_path.split("/").pop() || "file",
         })) ?? [],
     };
   }
-
 }

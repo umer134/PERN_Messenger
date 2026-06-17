@@ -2,6 +2,7 @@
 const {Op} = require('sequelize');
 const { sequelize, ChatModel, ChatMemberModel, UserModel, MessageModel, MessageFilesModel } = require('../models');
 const ApiError = require("../exceptions/api-error");
+const { getID } = require('../socket/socket');
 
 class ChatService {
 
@@ -212,18 +213,53 @@ class ChatService {
     };
   }
   async readMessage (chatId, senderId) {
-    const [updatedCount] = await MessageModel.update(
-      {is_read: true},
+    // const [updatedCount] = await MessageModel.update(
+    //   {is_read: true},
+    //   {
+    //     where: {
+    //     chat_id: chatId,
+    //       sender_id: { [Op.ne]: senderId },
+    //       is_read: false
+    //     }
+    //   }
+    // );
+
+    const io = getID();
+
+    const unreadMessages =
+      await MessageModel.findAll({
+        attributes: ["id"],
+        where: {
+          chat_id: chatId,
+          sender_id: {
+            [Op.ne]: senderId,
+          },
+          is_read: false,
+        }
+      });
+
+    const ids =
+      unreadMessages.map(m => m.id);
+
+    await MessageModel.update(
+      { is_read: true },
       {
         where: {
-        chat_id: chatId,
-          sender_id: { [Op.ne]: senderId },
-          is_read: false
+          id: ids
         }
       }
     );
 
-    return {updated: updatedCount}
+    io.to(chatId).emit(
+      "message:read",
+      {
+        messageIds: ids
+      }
+    );
+
+    io.emit("chat:updated", { chatId });
+
+    return { updated: ids.length };
   }
 
   async buildConversationPreview(chatId, currentUserId, transaction = null) {
@@ -253,8 +289,6 @@ class ChatService {
       transaction
     });
 
-    console.log('CHAT MEMBERS RAW:', JSON.stringify(chat.members, null, 2));
-
     if (!chat) {
       throw ApiError.BadRequest("Chat not found");
     }
@@ -266,6 +300,17 @@ class ChatService {
     const otherMemberData = otherMember?.toJSON();
 
     const lastMessage = chat.messages[0];
+
+    const unreadCount = await MessageModel.count({
+      where: {
+        chat_id: chatId,
+        sender_id: {
+          [Op.ne]: currentUserId,
+        },
+        is_read: false,
+      },
+      transaction,
+    });
 
     return {
       id: chat.id,
@@ -280,7 +325,7 @@ class ChatService {
 
       isGroup: chat.is_group,
 
-      unreadCount: 0,
+      unreadCount,
 
       lastMessage:
         lastMessage?.content ?? "",
