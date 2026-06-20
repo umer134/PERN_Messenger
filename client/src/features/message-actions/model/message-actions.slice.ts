@@ -27,6 +27,11 @@ const messageActions = createSlice({
       state.message = action.payload;
     },
 
+    startDelete: (state, action: PayloadAction<MessageVM>) => {
+      state.actionType = "delete";
+      state.message = action.payload;
+    },
+
     clearAction: (state) => {
       state.actionType = null;
       state.message = null;
@@ -34,5 +39,5 @@ const messageActions = createSlice({
   },
 });
 
-export const {startReply, startEdit, clearAction} = messageActions.actions;
+export const {startReply, startEdit, startDelete, clearAction} = messageActions.actions;
 export default messageActions.reducer;

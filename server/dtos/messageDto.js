@@ -19,6 +19,18 @@ module.exports = class MessageDto {
         }
       : null;
 
+    this.replyTo = model.replyTo 
+      ? {
+          id: model.replyTo.id,
+          senderId: model.replyTo.sender_id,
+          senderName: model.replyTo.sender?.username,
+          content: model.replyTo.content,
+          attachedFiles: model.replyTo.attachedFiles?.map(file => ({
+            file_path: file.file_path,
+          })) ?? [],
+        }
+      : null;
+
     this.attachedFiles =
       model.attachedFiles?.map(file => ({
         file_path: file.file_path,

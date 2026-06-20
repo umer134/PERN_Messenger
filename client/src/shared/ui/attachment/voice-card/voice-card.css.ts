@@ -1,14 +1,13 @@
 
 import { style } from '@vanilla-extract/css';
+import { vars } from '../../../styles/theme/theme.css';
 
 export const root = style({
-  display: "flex",
+  display: "inline-flex",
 
   alignItems: "center",
 
   gap: 12,
-
-  minWidth: 220,
 
   maxWidth: 320,
 });
@@ -18,7 +17,9 @@ export const playButton = style({
 
   height: 40,
 
-  borderRadius: "50%",
+  borderRadius: vars.radius.full,
+
+  color: vars.color.primary,
 
   display: 'flex',
 
@@ -33,6 +34,7 @@ export const body = style({
 });
 
 export const waveform = style({
+  width: 'fit-content',
   position: "relative",
 
   display: "flex",
@@ -49,6 +51,7 @@ export const waveform = style({
 });
 
 export const progress = style({
+
   position: "absolute",
 
   left: 0,

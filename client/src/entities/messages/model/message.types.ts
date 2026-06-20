@@ -24,7 +24,11 @@ export type MessageReplyVM = {
 
   senderId: string | null;
 
+  senderName: string | null;
+
   content: string | null;
+
+  attachments: MessageAttachmentVM[];
 };
 
 export type MessageVM = {

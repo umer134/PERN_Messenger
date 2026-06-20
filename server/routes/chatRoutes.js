@@ -51,37 +51,6 @@ router.post('/chats', authMiddleware, ChatController.createChat);
  */
 router.get('/chats', authMiddleware, ChatController.getUserChats);
 
-/**
- * @swagger
- * /api/chats/{chatId}/messages:
- *   post:
- *     summary: Отправить сообщение в чат
- *     tags:
- *       - Messages
- *     security:
- *       - BearerAuth: []
- *     parameters:
- *       - name: chatId
- *         in: path
- *         required: true
- *         schema:
- *           type: string
- *           format: uuid
- *     requestBody:
- *       required: true
- *       content:
- *         multipart/form-data:
- *           schema:
- *             $ref: '#/components/schemas/SendMessageRequest'
- *     responses:
- *       200:
- *         description: Созданное сообщение
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Message'
- */
-router.post('/chats/:chatId/messages', uploadFiles.array('files'), authMiddleware, ChatController.sendMessage);
 
 /**
  * @swagger
@@ -149,31 +118,5 @@ router.get('/chats/:chatId/messages', authMiddleware, ChatController.getMessages
  *                 - type: 'null'
  */
 router.get('/chats/find/:userId',authMiddleware, ChatController.findUserChat);
-
-/**
- * @swagger
- * /api/chats/{chatId}/read:
- *   post:
- *     summary: Отметить сообщения чата как прочитанные
- *     tags:
- *       - Messages
- *     security:
- *       - BearerAuth: []
- *     parameters:
- *       - name: chatId
- *         in: path
- *         required: true
- *         schema:
- *           type: string
- *           format: uuid
- *     responses:
- *       200:
- *         description: Количество обновлённых сообщений
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/ReadMessageResponse'
- */
-router.post('/chats/:chatId/read', authMiddleware, ChatController.readMessage);
 
 module.exports = router;

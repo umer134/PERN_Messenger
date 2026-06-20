@@ -31,6 +31,42 @@ const options = {
         },
       },
       schemas: {
+        FullMessage: {
+          allOf: [
+            { $ref: '#/components/schemas/Message' },
+            {
+              type: 'object',
+              properties: {
+                sender: {
+                  $ref: '#/components/schemas/UserPreview'   // заглавная U
+                },
+                replyTo: {
+                  type: 'object',
+                  properties: {
+                    id: { type: 'string', format: 'uuid' },
+                    senderId: { type: 'string', format: 'uuid' },
+                    sender: { 
+                      type: 'object',
+                      properties: {
+                        id: { type: 'string', format: "uuid" },
+                        username: { type: 'string'}
+                      },
+                     },
+                    content: { type: 'string', nullable: true },
+                    attachedFiles: {
+                      type: 'array',
+                      items: { $ref: '#/components/schemas/ChatFile' }
+                    }
+                  }
+                },
+                attachedFiles: {
+                  type: 'array',
+                  items: { $ref: '#/components/schemas/ChatFile' }
+                }
+              }
+            }
+          ]
+        },
         Message: {
           type: 'object',
           properties: {
@@ -225,7 +261,7 @@ const options = {
           properties: {
             messages: {
               type: 'array',
-              items: { $ref: '#/components/schemas/ChatMessageWithRelations' },
+              items: { $ref: '#/components/schemas/FullMessage' },
             },
             nextCursor: { type: 'string', nullable: true },
           },

@@ -36,21 +36,7 @@ class ChatController {
             next(e);
         }
     }
-    async sendMessage (req, res, next) {
-        try {
-            const {chatId} = req.params;
-            const {content, replyToId} = req.body;
-            const files = req.files;
-            const senderId = req.user.id;
-            if(!content && !files) {
-                throw ApiError.BadRequest('Empty message');
-            }
-            const sendResult = await chatService.sendMessage(chatId, content, files, senderId, replyToId);
-            return res.json(sendResult);
-        } catch(e) {
-            next(e);
-        }
-    }
+
     async getMessages (req, res, next) {
         try {
             const { chatId: rawChatId } = req.params;
@@ -67,20 +53,7 @@ class ChatController {
         } catch(e) {
             next(e);
         }
-    }
-     async readMessage (req, res, next) {
-        try {
-            const chatId = req.params.chatId;
-            const senderId = req.user.id;
-            const messageData = await chatService.readMessage(chatId, senderId);
-
-            return res.json(messageData);
-        } catch (e) {
-            next(e)
-        }
-    }
-
-    
+    }    
 }
 
 module.exports = new ChatController();

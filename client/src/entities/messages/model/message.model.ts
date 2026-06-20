@@ -1,10 +1,8 @@
 import { paths } from "../../../shared/api/schema";
 
-export type MessageResponse = paths['/api/chats/{chatId}/messages']['get']['responses']['200']['content']['application/json']['messages'][number];
+export type MessageResponse = paths['/api/chats/{chatId}/messages']['get']['responses']['200']['content']['application/json'];
 
-export type MessageSendDto = paths['/api/chats/{chatId}/messages']['post']['requestBody']['content']['multipart/form-data'];
-
-export type MessageSendResponse = paths['/api/chats/{chatId}/messages']['post']['responses']['200']['content']['application/json'];
+export type MessageResponseModel = MessageResponse["messages"][number];
 
 export type MessageEditDto = paths['/api/messages']['put']['requestBody']['content']['application/json'];
 

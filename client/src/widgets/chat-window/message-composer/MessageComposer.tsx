@@ -22,16 +22,17 @@ import { AttachmentPreview } from "./attachment/AttachmentPreview";
 import { formatDuration } from "../../../shared/lib/format/formatDuration";
 import { ReplyPreview } from "./reply-preview/ReplyPreview";
 import { clearAction } from "../../../features/message-actions/model/message-actions.slice";
+import { EditPreview } from "./edit-preview/EditPreview";
 
 type Props = {
-  onSend: (
-    content: string,
-    files: File[]
-  ) => void;
+  onSend: (content: string,files: File[]) => void;
+
+  onEdit: (messageId: string, content: string) => void;
 };
 
 export const MessageComposer = ({
   onSend,
+  onEdit,
 }: Props) => {
 
   const dispatch = useAppDispatch();
@@ -62,6 +63,21 @@ export const MessageComposer = ({
 
     if (!trimmed && files.length === 0)
       return;
+
+    if (
+      actionType === "edit" &&
+      activeMessage
+    ) {
+      onEdit(
+        activeMessage.id,
+        trimmed
+      );
+
+      dispatch(clearAction());
+      setMessage("");
+
+      return;
+    }
 
     onSend(trimmed, files);
 
@@ -100,6 +116,14 @@ export const MessageComposer = ({
     el.style.height = `${el.scrollHeight}px`;
   }, [message]);
 
+  useEffect(() => {
+    if (actionType === "edit" && activeMessage) {
+      setMessage(activeMessage.content ?? "");
+
+      textareaRef.current?.focus();
+    }
+  }, [actionType, activeMessage]);
+
   return (
     <div className={s.root}>
       {actionType === "reply" && 
@@ -113,8 +137,15 @@ export const MessageComposer = ({
             }
             onClose={() => dispatch(clearAction())}
           />
-        )
-      }
+        )}
+
+      {actionType === "edit" && 
+        activeMessage && (
+          <EditPreview
+            content={activeMessage.content ?? ""}
+            onClose={() => dispatch(clearAction())}
+          />
+        )}
 
       {files.length > 0 && (
         <div className={s.attachments}>

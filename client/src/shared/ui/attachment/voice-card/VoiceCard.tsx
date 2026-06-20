@@ -27,22 +27,36 @@ export const VoiceCard = ({ id, src, waveform }: Props) => {
     }
   };
 
-  const bars = waveform ?? [
-    8,
-    12,
-    18,
-    22,
-    28,
-    20,
-    14,
-    10,
-    16,
-    22,
-    28,
-    24,
-    18,
-    12,
-  ];
+  const generatedBars = React.useMemo(() => {
+    if (duration <= 0) {
+      return Array.from(
+        { length: 5 },
+        () => Math.floor(Math.random() * 2) + 2
+      );
+    }
+
+  const barCount =
+    duration <= 0
+      ? 5
+      : Math.max(
+          5,
+          Math.min(
+            50,
+            Math.round(duration * 1.5)
+          )
+        );
+        
+    return Array.from(
+      { length: barCount },
+      (_, i) => {
+        const seed = Math.sin(i * 12.9898) * 43758.5453;
+
+        return 8 + Math.abs(seed % 20);
+      }
+    );
+  }, [duration]);
+
+  const bars = waveform ?? generatedBars;
 
   const activeBars = Math.floor(
     progress * bars.length
@@ -81,7 +95,7 @@ export const VoiceCard = ({ id, src, waveform }: Props) => {
                   : s.bar
               }
               style={{
-                height: Math.max(bar * 28, 6),
+                height: `${Math.max(bar, 4)}px`,
               }}
             />
           ),

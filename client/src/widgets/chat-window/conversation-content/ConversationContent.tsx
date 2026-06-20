@@ -10,6 +10,9 @@ import { useMessageEvents } from "../../../features/messages/lib/useMessageEvent
 import * as s from '../conversation-view.css';
 import { useEffect, useState } from "react";
 import { useReadMessages } from "../../../entities/messages/hooks/useReadMessages";
+import { useEditMessage } from "../../../features/message-actions/hooks/useMessageActions";
+import { useAppSelector } from "../../../app/hooks";
+import { selectActiveMessage } from "../../../features/message-actions/model/message-actions.selectors";
 
 type Props = {
   conversation: ConversationPreview;
@@ -17,13 +20,16 @@ type Props = {
 
 export const ConversationContent = ({conversation,}: Props) => {
 
-    const [isAtBottom, setIsAtBottom] = useState(true);
+  const [isAtBottom, setIsAtBottom] = useState(true);
 
   useChatSocket(conversation.id);
   useMessageEvents(conversation.id, isAtBottom);
-  const readMessage = useReadMessages();
 
+  const activeMessage = useAppSelector(selectActiveMessage);
+
+  const readMessage = useReadMessages();
   const sendMessage = useSendMessage(conversation.id);
+  const editMessage = useEditMessage(conversation.id);
 
   const { data, isLoading, error } = useMessages(conversation.id);
 
@@ -47,7 +53,15 @@ export const ConversationContent = ({conversation,}: Props) => {
     await sendMessage.mutateAsync({
       recipientId: conversation.participantId,
       content,
-      files
+      files,
+      replyToId: activeMessage?.id || undefined,
+    });
+  };
+
+  const handleEdit = async (messageId: string, content: string) => {
+    await editMessage.mutateAsync({
+      id: messageId,
+      dto: {messageId, newContent: content},
     });
   };
 
@@ -72,6 +86,7 @@ export const ConversationContent = ({conversation,}: Props) => {
 
       <MessageComposer
         onSend={handleSend}
+        onEdit={handleEdit}
       />
     </div>
   );

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { MessageContextMenu } from '../../../features/message-actions/ui/MessageCoontextMenu';
 
 import { useAppDispatch } from '../../../app/hooks';
-import { startReply } from '../../../features/message-actions/model/message-actions.slice';
+import { startReply, startEdit, startDelete } from '../../../features/message-actions/model/message-actions.slice';
 
 import clsx from "clsx";
 
@@ -13,6 +13,8 @@ import { MessageStatus } from "../../../entities/messages/ui/message-status/Mess
 import { AttachmentRenderer } from "../../../entities/messages/ui/attachment-renderer/AttachmentRenderer";
 import { MediaItem } from "../../../features/media-viewer/model/media-viewer.types";
 import { ReplySnippet } from '../../../entities/messages/ui/reply-snippet/ReplySnippet';
+import { formatDate } from '../../../shared/lib/format/formatDate';
+import { useDeleteMessage } from '../../../features/message-actions/hooks/useMessageActions';
 
 type Props = {
   message: MessageVM;
@@ -28,6 +30,10 @@ export const MessageBubble = ({
   mediaItems
 }: Props) => {
   const [menu, setMenu] = useState<{x: number, y: number} | null>(null);
+
+  console.log("message", message.replyTo?.senderName)
+
+  const deleteMessage = useDeleteMessage(message.chatId);
 
   const dispatch = useAppDispatch();
 
@@ -74,8 +80,10 @@ export const MessageBubble = ({
       >
         {message.replyTo && (
           <ReplySnippet
-            sender={message.replyTo.senderId ?? "Unknown"}
+            replyMessageId={message.replyTo?.id}
+            sender={message.replyTo?.senderName ?? "Unknown"}
             content={message.replyTo.content ?? ""}
+            attachments={message.replyTo.attachments}
           />
         )}
 
@@ -101,7 +109,7 @@ export const MessageBubble = ({
 
         <div className={s.footer}>
           <span>
-            {message.sentAt}
+            {formatDate(message.sentAt, { format: 'time' })}
           </span>
           {message.status && isMine && (
             <MessageStatus
@@ -128,9 +136,11 @@ export const MessageBubble = ({
                     break;
 
                   case "edit":
+                    dispatch(startEdit(message));
                     break;
 
                   case "delete":
+                    deleteMessage.mutateAsync(message.id);
                     break;
 
                   case "copy":

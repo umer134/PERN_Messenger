@@ -17,6 +17,9 @@ import { SelectedConversation } from "../../entities/conversation/model/selected
 import { User } from '../../entities/user/model/user.types';
 import { useLoadChats } from "../../entities/conversation/hooks/useLoadChats";
 import { useConversationEvents } from "../../entities/conversation/hooks/useConverstionEvents";
+import { LeftPanelView } from "./model/conversation-list.types";
+import { ProfilePanel } from "./profile-panel/ProfilePanel";
+import { SettingsPanel } from "./settings-panel/SettingsPanel";
 
 type Props = {
   selectedConversation: SelectedConversation | null;
@@ -24,6 +27,8 @@ type Props = {
 };
 
 export const ConversationList = ({selectedConversation, onSelectedConversation}: Props) => {
+  const [view, setView] = useState<LeftPanelView>("dialogs");  
+
   const [query, setQuery] = useState("");
 
   const { data: users = [] } = useSearchUser(query); 
@@ -35,37 +40,72 @@ export const ConversationList = ({selectedConversation, onSelectedConversation}:
   
   return (
     <aside className={s.root}>
-      <CurrentUserPanel />
 
-      <SearchBar
-        value={query}
-        onChange={setQuery}
-      />
+      <div className={s.pages}>
 
-      {query.length > 0 ? (
-        <SearchResults users={users} onSelectUser={(user) => onSelectedConversation({
-          type: "draft",
+        <div className={
+          view === "dialogs"
+            ? s.dialogsActive
+            : s.dialogsHidden
+        }>
 
-          draft: {
-            id: `draft-${user.id}`,
+          <CurrentUserPanel
+            onOpenProfile={() => setView("profile")}
+            onOpenSettings={() => setView("settings")}
+          />
 
-            participant: user,
+          <SearchBar
+            value={query}
+            onChange={setQuery}
+          />
 
-            isVirtual: true,
-          }
+          {query.length > 0 ? (
+            <SearchResults users={users} onSelectUser={(user) => onSelectedConversation({
+              type: "draft",
 
-        })}/>
-      ) : (
-        <ConversationItems
-          conversations={conversations}
-          selectedConversation={
-            selectedConversation?.type === "conversation"
-              ? selectedConversation.data
-              : null
-          }
-          onSelect={(conversation) => onSelectedConversation({ type: "conversation", data: conversation,})}
-        />
-      )}
+              draft: {
+                id: `draft-${user.id}`,
+
+                participant: user,
+
+                isVirtual: true,
+              }
+
+            })}/>
+          ) : (
+            <ConversationItems
+              conversations={conversations}
+              selectedConversation={
+                selectedConversation?.type === "conversation"
+                  ? selectedConversation.data
+                  : null
+              }
+              onSelect={(conversation) => onSelectedConversation({ type: "conversation", data: conversation,})}
+            />
+          )}
+        </div>
+
+        <div className={`${s.page} ${
+          view === "profile"
+          ? s.profileActive
+          : s.profileHidden
+        }`}>
+          <ProfilePanel
+            onBack={() => setView("dialogs")}
+          />
+        </div>
+
+        <div className={`${s.page} ${
+          view === "settings"
+          ? s.settingsActive
+          : s.settingsHidden
+        }`}>
+          <SettingsPanel
+            onBack={() => setView("dialogs")}
+          />
+        </div>
+        
+      </div>
     </aside>
   );
 };

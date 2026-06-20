@@ -1,4 +1,4 @@
-import { style } from '@vanilla-extract/css';
+import { globalKeyframes, style } from '@vanilla-extract/css';
 
 export const wrapper = style({
   position: "relative",
@@ -93,3 +93,24 @@ export const scrollButton = style({
 
   animation: `${showButton} .2s ease`,
 });
+
+export const highlightedMessage =
+  style({
+    animation:
+      "messageHighlight 1.5s ease",
+  });
+
+globalKeyframes(
+  "messageHighlight",
+  {
+    "0%": {
+      opacity: 0.5,
+      transform: "scale(1.02)",
+    },
+
+    "100%": {
+      opacity: 1,
+      transform: "scale(1)",
+    },
+  }
+);

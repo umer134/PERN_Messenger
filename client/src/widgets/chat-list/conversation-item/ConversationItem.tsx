@@ -5,6 +5,8 @@ import { ConversationPreview } from "../../../entities/conversation/model/conver
 import * as s from "./conversation-item.css";
 import { useMediaViewer } from "../../../features/media-viewer/lib/useMediaViewer";
 import { Avatar } from "../../../shared/ui/Avatar";
+import { resolveMediaUrl } from "../../../shared/lib/media/resolveMediaUrl";
+import { formatDate } from "../../../shared/lib/format/formatDate";
 
 type Props = {
   conversation: ConversationPreview;
@@ -42,7 +44,7 @@ export const ConversationItem = ({
                 {
                   id: conversation.id,
                   type: "image",
-                  url: conversation.avatar,
+                  url: resolveMediaUrl(conversation.avatar),
                   name: conversation.title,
                 }
               ], 0
@@ -66,7 +68,7 @@ export const ConversationItem = ({
           </span>
 
           <span className={s.time}>
-            {conversation.updatedAt}
+            {formatDate(conversation.updatedAt, { format: "smart"})}
           </span>
         </div>
 

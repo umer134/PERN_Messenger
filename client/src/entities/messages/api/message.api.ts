@@ -1,7 +1,7 @@
 import { AxiosResponse } from "axios";
 import { API_ENDPOINTS } from "../../../constants/endpoints";
 import { apiCLient } from "../../../shared/api/http-client";
-import { DirectMessageSendResponse } from "../model/message.model";
+import { DirectMessageSendResponse, MessageResponse } from "../model/message.model";
 import { SendMessageDto } from "../model/send-message.types";
 
 const { MESSAGES } = API_ENDPOINTS;
@@ -16,6 +16,9 @@ export class MessageApi {
     
     dto.files?.forEach(file => {
       formData.append("files", file);
+      if(file.name.includes('voice-')){
+        formData.append("type", "voice");
+      }
     });
 
     return apiCLient.post(MESSAGES.CREATE, formData, {
@@ -25,7 +28,7 @@ export class MessageApi {
     });
   }
 
-  static getMessages(chatId: string) {
+  static getMessages(chatId: string): Promise<AxiosResponse<MessageResponse>> {
     return apiCLient.get(MESSAGES.GET2(chatId));
   }
 

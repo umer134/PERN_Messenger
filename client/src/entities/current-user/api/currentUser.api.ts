@@ -11,10 +11,20 @@ export class currentUserApi {
     );
   }
 
-  static updateMe(dto: meRequest) {
+  static updateMe(dto: {name: string | undefined, avatar: File | undefined}) {
+    const formData = new FormData();
+
+    if(dto.name) {
+      formData.append("name", dto.name);
+    }
+
+    if(dto.avatar) {
+      formData.append("avatar", dto.avatar);
+    }
+
     return apiCLient.put<meResponse>(
       ME.UPDATE,
-      dto
+      formData,
     );
   }
   

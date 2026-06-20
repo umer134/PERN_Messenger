@@ -115,21 +115,21 @@ class UserController {
     }
 
     async updateMe(req, res, next) {
-    try {
-        const userId = req.user.id;
-        const { name } = req.body;
-        const avatarFile = req.file; // <-- вот он, файл
+        try {
+            const userId = req.user.id;
+            const { name } = req.body;
+            const avatarFile = req.file; // <-- вот он, файл
 
-        const updateFields = {};
-        if (name) updateFields.username = name;
-        if (avatarFile) updateFields.avatar_url = `/uploads/avatars/${avatarFile.filename}`;
+            const updateFields = {};
+            if (name) updateFields.username = name;
+            if (avatarFile) updateFields.avatar_url = `/uploads/avatars/${avatarFile.filename}`;
 
-        const updatedMe = await userService.updateMe(userId, updateFields);
-        return res.json(updatedMe);
-    } catch (e) {
-        next(e);
+            const updatedMe = await userService.updateMe(userId, updateFields);
+            return res.json(updatedMe);
+        } catch (e) {
+            next(e);
+        }
     }
-}
 }
 
 module.exports = new UserController();

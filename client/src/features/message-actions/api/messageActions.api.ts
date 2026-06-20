@@ -6,8 +6,8 @@ const { MESSAGES } = API_ENDPOINTS;
 
  export class MessageActionsApi {
   static editMessage(id: string, dto: MessageEditDto) {
-    return apiCLient.patch<MessageEditResponse>(
-      MESSAGES.UPDATE(id),
+    return apiCLient.put<MessageEditResponse>(
+      MESSAGES.UPDATE,
       dto
     );
   };

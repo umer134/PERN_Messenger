@@ -5,7 +5,7 @@ export function resolveAttachmentTypeFromPath(
 ): MessageAttachmentVM["type"] {
   const fileName = path.split("/").pop()?.toLowerCase() ?? "";
 
-  if (fileName.startsWith("voice-")) {
+  if (fileName.includes("voice-")) {
     return "voice";
   }
 

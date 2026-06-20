@@ -1,4 +1,5 @@
 const { Server } = require('socket.io');
+const socketAuth = require('../middlewares/socket-auth');
 
 let io;
 
@@ -12,12 +13,11 @@ function initSocket(server) {
     },
   });
 
-  io.on("connection", socket => {
-    socket.on("user:join", userId => {
-      if (!userId) return;
+  io.use(socketAuth);
 
-      socket.join(`user:${userId}`);
-    });
+  io.on("connection", socket => {
+
+    socket.join(`user:${socket.user.id}`);
 
     socket.on("chat:join", chatId => {
       socket.join(chatId);

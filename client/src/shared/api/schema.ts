@@ -336,7 +336,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["Message"];
+                        "application/json": components["schemas"]["FullMessage"];
                     };
                 };
             };
@@ -361,7 +361,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["SendDirectMessageResponse"];
+                        "application/json": components["schemas"]["FullMessage"];
                     };
                 };
             };
@@ -505,33 +505,7 @@ export interface paths {
             };
         };
         put?: never;
-        /** Отправить сообщение в чат */
-        post: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path: {
-                    chatId: string;
-                };
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "multipart/form-data": components["schemas"]["SendMessageRequest"];
-                };
-            };
-            responses: {
-                /** @description Созданное сообщение */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["Message"];
-                    };
-                };
-            };
-        };
+        post?: never;
         delete?: never;
         options?: never;
         head?: never;
@@ -576,48 +550,27 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/chats/{chatId}/read": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /** Отметить сообщения чата как прочитанные */
-        post: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path: {
-                    chatId: string;
-                };
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description Количество обновлённых сообщений */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ReadMessageResponse"];
-                    };
-                };
-            };
-        };
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
+        FullMessage: components["schemas"]["Message"] & {
+            sender?: components["schemas"]["UserPreview"];
+            replyTo?: {
+                /** Format: uuid */
+                id?: string;
+                /** Format: uuid */
+                senderId?: string;
+                sender?: {
+                    /** Format: uuid */
+                    id?: string;
+                    username?: string;
+                };
+                content?: string | null;
+                attachedFiles?: components["schemas"]["ChatFile"][];
+            };
+            attachedFiles?: components["schemas"]["ChatFile"][];
+        };
         Message: {
             /** Format: uuid */
             id: string;
@@ -731,7 +684,7 @@ export interface components {
             reply_to_id?: string | null;
         };
         MessagesPage: {
-            messages: components["schemas"]["ChatMessageWithRelations"][];
+            messages: components["schemas"]["FullMessage"][];
             nextCursor: string | null;
         };
         ReadMessageResponse: {

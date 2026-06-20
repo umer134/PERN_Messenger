@@ -17,8 +17,8 @@ export const useMessageEvents = (chatId: string, isAtBottom: boolean) => {
   const readMessage = useReadMessages();
 
   useEffect(() => {
+
     const handler = (rawMessage) => {
-    
       const message = MessageAdapter.toVM(rawMessage);
 
       queryClient.setQueryData(
@@ -39,10 +39,10 @@ export const useMessageEvents = (chatId: string, isAtBottom: boolean) => {
       if(message.senderId !== currentUserId && isAtBottom) {
         console.log("AUTO READ");
         console.log({
-  sender: message.senderId,
-  me: currentUserId,
-  isAtBottom,
-});
+          sender: message.senderId,
+          me: currentUserId,
+          isAtBottom,
+        });
         socket.emit("message:delivered", {
           messageId: message.id,
           chatId,
@@ -98,6 +98,45 @@ export const useMessageEvents = (chatId: string, isAtBottom: boolean) => {
       );
     };
 
+    const editHandler = (rawMessage: MessageResponse) => {
+      const updated = MessageAdapter.toVM(rawMessage);
+
+      queryClient.setQueryData(["messages", chatId], (old: any) => {
+        if(!old) return old;
+
+        return {
+          ...old, 
+          messages: old.messages.map(msg =>
+            msg.id === updated.id
+              ? updated
+              : msg
+          ),
+        };
+      });
+    };
+
+    const deleteHandler = ({ messageId, }) => {
+      queryClient.setQueryData(
+        ["messages", chatId],
+        (old: any) => {
+          if(!old) return old;
+
+          return {
+            ...old,
+
+            messages: old.messages.filter(msg => 
+              msg.id !== messageId
+            ),
+          };
+        }
+      );
+    };
+
+    socket.on(
+      "message:deleted",
+      deleteHandler
+    );
+
     socket.on(
       "message:delivered",
       deliveredHandler
@@ -113,11 +152,19 @@ export const useMessageEvents = (chatId: string, isAtBottom: boolean) => {
       handler
     );
 
+    socket.on(
+      "message:edited",
+      editHandler
+    );
+
     return () => {
       socket.off("messages:new", handler);
       socket.off("message:read", readHandler);
       socket.off("message:delivered", deliveredHandler);
+      socket.off("message:deleted", deleteHandler);
+      socket.off("message:edited", editHandler);
     };
+    
   }, [chatId, isAtBottom, currentUserId]);
 
   

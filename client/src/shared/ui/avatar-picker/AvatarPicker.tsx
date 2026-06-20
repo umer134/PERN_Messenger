@@ -4,13 +4,15 @@ import { useRef, useState, useEffect } from 'react';
 import * as styles from './avatar-picker.css';
 
 import { AvatarCropModal } from '../avatar-crop-modal/AvatarCropModal';
+import { resolveMediaUrl } from '../../lib/media/resolveMediaUrl';
 
 type Props = {
   value?: File;
+  initialAvatar?: string | null;
   onChange: (file: File) => void;
 }
 
-export const AvatarPicker = ({value, onChange}: Props) => {
+export const AvatarPicker = ({value, initialAvatar, onChange}: Props) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const previewRef = useRef<string | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
@@ -60,22 +62,28 @@ export const AvatarPicker = ({value, onChange}: Props) => {
     e.target.value = '';
   };
 
+  const avatarSrc =
+  preview ||
+  (initialAvatar
+    ? resolveMediaUrl(initialAvatar)
+    : null);
+
   return (
     <>
       <div
         className={styles.root}
         onClick={openPicker}
       >
-        {preview ? (
+        {avatarSrc ? (
           <img
-            src={preview}
+            src={avatarSrc}
             className={styles.image}
           />
         ) : (
           <div 
             className={styles.placeholder}
           >
-            <User />
+            <User size={28} />
           </div>
         )}
 

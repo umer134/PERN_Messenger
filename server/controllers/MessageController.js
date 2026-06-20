@@ -8,7 +8,7 @@ class MessageController {
     try {
       const senderId = req.user.id;
 
-      const { chatId, recipientId, content, replyToId } = req.body;
+      const { chatId, recipientId, content, replyToId, type } = req.body;
 
       const files = req.files;
 
@@ -17,7 +17,7 @@ class MessageController {
       }
 
       const result = await messageService.sendMessage({
-        senderId, chatId, recipientId, content, replyToId, files
+        senderId, chatId, recipientId, content, replyToId, files, type
       });
 
       return res.json(result);

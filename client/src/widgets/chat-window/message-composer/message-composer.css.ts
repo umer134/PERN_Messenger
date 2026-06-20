@@ -48,7 +48,7 @@ export const iconButton = style({
   width: 40,
   height: 40,
 
-  borderRadius: 10,
+  borderRadius: vars.radius.full,
 
   border: "none",
 
@@ -78,7 +78,13 @@ export const voiceButton = style({
 
     flexShrink: 0,
 
-    borderRadius: "50%",
+    borderRadius: vars.radius.full,
+
+    background: vars.color.primary,
+
+    color: vars.color.primaryText,
+
+    cursor: "pointer",
 
     display: "flex",
 
@@ -107,11 +113,15 @@ export const recording = style({
 });
 
 export const cancelButton = style({
-    width: 32,
+    width: 40,
 
-    height: 32,
+    height: 40,
 
     flexShrink: 0,
+
+    color: vars.color.primary,
+    
+    cursor: "pointer",
 
     display: "flex",
 

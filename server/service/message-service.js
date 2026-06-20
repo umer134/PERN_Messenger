@@ -4,10 +4,11 @@ const MessageDto = require('../dtos/messageDto');
 const chatService = require("./chat-service");
 const { Op } = require("sequelize");
 const { getID } = require('../socket/socket');
+const detectFileType = require('../utils/detectFileType');
 
 class MessageService {
 
-  async sendMessage({senderId, chatId, recipientId, content, replyToId, files}) {
+  async sendMessage({senderId, chatId, recipientId, content, replyToId, files, type}) {
     const transaction = await sequelize.transaction();
 
     try {
@@ -43,7 +44,8 @@ class MessageService {
       if (files?.length) {
         const fileRecords = files.map(file => ({
           message_id: message.id,
-          file_path: `/uploads/message_files/${file.filename}`
+          file_path: `/uploads/message_files/${file.filename}`,
+          type: type || detectFileType(file)
         }));
 
         await MessageFilesModel.bulkCreate(fileRecords, {
@@ -66,7 +68,7 @@ class MessageService {
             {
               model: MessageFilesModel,
               as: "attachedFiles",
-              attributes: ["file_path"],
+              attributes: ["file_path", "type"],
             },
             {
               model: UserModel,
@@ -77,6 +79,30 @@ class MessageService {
                 "avatar_url",
               ],
             },
+            {
+              model: MessageModel, 
+              as: "replyTo",
+              attributes: [
+                "id",
+                "content",
+                "sender_id",
+              ],
+              include: [
+                {
+                  model: UserModel,
+                  as: "sender",
+                  attributes: [
+                    "id", 
+                    "username",
+                  ]
+                },
+                {
+                  model: MessageFilesModel,
+                  as: "attachedFiles",
+                  attributes: ["file_path", "type"],
+                }
+              ]
+            }
           ],
         }
       );
@@ -153,12 +179,20 @@ class MessageService {
       throw ApiError.BadRequest('Message was deleted');
     }
 
+    const chatId = message.chat_id;
+
     const updated = await message.update({
       content: newContent,
       edited_at: new Date()
     });
 
-    return new MessageDto(updated);
+    const updatedMessage = new MessageDto(updated);
+
+    const io = getID();
+    io.to(chatId).emit("message:edited", updatedMessage);
+    io.emit("chat:updated", {chatId: chatId});
+    
+    return updatedMessage;
   }
 
   async deleteMessage(messageId, userId) {
@@ -170,12 +204,20 @@ class MessageService {
       throw ApiError.Forbidden('No permission to delete this message');
     }
 
-    await message.update({
-      deleted_at: new Date(),
-      content: null
-    });
+    const chatId = message.chat_id;
 
-    return { success: true, messageId };
+    await message.destroy();
+
+    // await message.update({
+    //   deleted_at: new Date(),
+    //   content: null
+    // });
+
+    const io = getID();
+    io.to(chatId).emit("message:deleted", { messageId, chatId });
+    io.emit("chat:updated", {chatId: chatId});
+    
+    return { success: true };
   }
 };
 

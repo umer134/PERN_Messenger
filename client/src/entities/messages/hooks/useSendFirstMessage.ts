@@ -21,11 +21,9 @@ export const useSendFirstMessage = () => {
     },
 
     onSuccess: (data) => {
-      const { conversation, message } = data;
-
       queryClient.setQueryData(
-        ["messages", conversation.id],
-        (old: any[] = []) => [...old, message]
+        ["messages", data.chat_id],
+        (old: any[] = []) => [...old, data]
       );
 
       queryClient.invalidateQueries({

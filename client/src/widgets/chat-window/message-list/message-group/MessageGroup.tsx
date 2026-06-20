@@ -17,13 +17,18 @@ export const MessageGroup = ({
   return (
     <div>
       {group.messages.map((msg) => (
-        <MessageBubble
-          key={msg.id}
-          message={msg}
-          isGrouped
-          isMine={isMine}
-          mediaItems={mediaItems}
-        />
+        <div key={msg.id}
+          id={`message-${msg.id}`}
+        >
+          <MessageBubble
+            key={msg.id}
+            message={msg}
+            isGrouped
+            isMine={isMine}
+            mediaItems={mediaItems}
+          />
+        </div>
+
       ))}
     </div>
   );

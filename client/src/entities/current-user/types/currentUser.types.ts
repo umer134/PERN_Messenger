@@ -19,7 +19,7 @@ export interface CurrentUserApiResponse {
 
 export interface UpdateProfileDto {
   username?: string;
-  avatar?: string;
+  avatar?: File;
 }
 
 export interface ProfileUiState {

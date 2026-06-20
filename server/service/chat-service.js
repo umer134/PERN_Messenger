@@ -3,6 +3,7 @@ const {Op} = require('sequelize');
 const { sequelize, ChatModel, ChatMemberModel, UserModel, MessageModel, MessageFilesModel } = require('../models');
 const ApiError = require("../exceptions/api-error");
 const { getID } = require('../socket/socket');
+const getPreviewText = require('../utils/getPreviewText');
 
 class ChatService {
 
@@ -123,45 +124,6 @@ class ChatService {
     return privateChat || null;
   }
 
-  async sendMessage (chatId, content, files, senderId, replyToId) {
-    const transaction = await sequelize.transaction();
-    
-    const chatExists = await ChatModel.findByPk(chatId, { transaction });
-    if (!chatExists) {
-        throw ApiError.BadRequest("Chat not found");
-    }
-
-    // Проверка участия в чате
-    const isMember = await ChatMemberModel.findOne({
-        where: { chat_id: chatId, user_id: senderId },
-        transaction
-    });
-    if (!isMember) {
-        throw ApiError.Forbidden();
-    }
-
-    // Создание сообщения
-    const message = await MessageModel.create({
-        chat_id: chatId,
-        sender_id: senderId,
-        content: content || null,
-        reply_to_id: replyToId || null,
-    }, { transaction });
-
-    if(files && files.length > 0) {
-      const fileRecords = files.map((file) => ({
-        message_id: message.id,
-        file_path: `/uploads/message_files/${file.filename}`,
-      }));
-
-      await MessageFilesModel.bulkCreate(fileRecords, {transaction});
-      
-    }
-
-    await transaction.commit(); // Фиксация транзакции
-    return message;
-  }
-  
   async getMessages (chatId, userId, cursor, limit) {
 
     const transaction = await sequelize.transaction();
@@ -190,6 +152,30 @@ class ChatService {
         attributes: ['id', 'username', 'avatar_url']
       },
       {
+        model: MessageModel,
+        as: "replyTo",
+        attributes: [
+          "id",
+          "content",
+          "sender_id",
+        ],
+        include: [
+          {
+            model: UserModel,
+            as: "sender",
+            attributes: [
+              "id", 
+              "username",
+            ]
+          },
+          {
+            model: MessageFilesModel,
+            as: "attachedFiles",
+            attributes: ["file_path", "type"],
+          }
+        ]
+      },
+      {
         model: MessageFilesModel,
         as: 'attachedFiles',
         attributes: ['file_path']
@@ -211,55 +197,6 @@ class ChatService {
       messages: messages.reverse(), // ASC порядок
       nextCursor 
     };
-  }
-  async readMessage (chatId, senderId) {
-    // const [updatedCount] = await MessageModel.update(
-    //   {is_read: true},
-    //   {
-    //     where: {
-    //     chat_id: chatId,
-    //       sender_id: { [Op.ne]: senderId },
-    //       is_read: false
-    //     }
-    //   }
-    // );
-
-    const io = getID();
-
-    const unreadMessages =
-      await MessageModel.findAll({
-        attributes: ["id"],
-        where: {
-          chat_id: chatId,
-          sender_id: {
-            [Op.ne]: senderId,
-          },
-          is_read: false,
-        }
-      });
-
-    const ids =
-      unreadMessages.map(m => m.id);
-
-    await MessageModel.update(
-      { is_read: true },
-      {
-        where: {
-          id: ids
-        }
-      }
-    );
-
-    io.to(chatId).emit(
-      "message:read",
-      {
-        messageIds: ids
-      }
-    );
-
-    io.emit("chat:updated", { chatId });
-
-    return { updated: ids.length };
   }
 
   async buildConversationPreview(chatId, currentUserId, transaction = null) {
@@ -283,6 +220,13 @@ class ChatService {
           attributes: [
             'content',
             'sent_at'
+          ],
+          include: [
+            {
+              model: MessageFilesModel,
+              as: "attachedFiles",
+              attributes: ['file_path', 'type'],
+            }
           ]
         }
       ],
@@ -328,7 +272,7 @@ class ChatService {
       unreadCount,
 
       lastMessage:
-        lastMessage?.content ?? "",
+        getPreviewText(lastMessage),
 
       updatedAt:
         lastMessage?.sent_at ??

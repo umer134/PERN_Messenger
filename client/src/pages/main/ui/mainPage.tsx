@@ -14,7 +14,6 @@ const MainPage = () => {
 
   const { id } = useAppSelector(state => state.currentUser);
 
-  socket.emit("user:join", id);
   // useMainPageBootstrap(id ? id : '');
 
   if (!id) return <div>Loading...</div>;

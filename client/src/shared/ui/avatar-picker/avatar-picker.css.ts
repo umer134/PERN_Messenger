@@ -3,8 +3,8 @@ import { vars } from '../../styles/theme/theme.css';
 
 export const root = style({
   position: 'relative',
-  width: 72,
-  height: 72,
+  width: 80,
+  height: 80,
   borderRadius: '50%',
   overflow: 'hidden',
   cursor: 'pointer',
@@ -12,7 +12,6 @@ export const root = style({
 
   border: `1px solid ${vars.color.border}`,
   background: vars.color.surface2,
-
 });
 
 export const image = style({

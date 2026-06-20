@@ -8,6 +8,7 @@ import searchUsersReducer from "../../features/search/usersSlice";
 import messageActionsReducer from '../../features/message-actions/model/message-actions.slice';
 // import darkmodeReducer from "../features/darkmode/darkmodeSlice";
 import { chatApi } from "../../features/chat/chatApi";
+import messageNavigationReducer from '../../features/navigation/message-navigation/model/message-navigation.slice';
 
 export const store = configureStore({
     reducer: {
@@ -19,6 +20,7 @@ export const store = configureStore({
         [chatApi.reducerPath]: chatApi.reducer,
         chat: chatReducer,
         messageActions: messageActionsReducer,
+        messageNavigation: messageNavigationReducer,
         // theme: darkmodeReducer,
     },
     middleware: (getDefaultMiddleware) => {

@@ -26,7 +26,7 @@ const router = Router();
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/SendDirectMessageResponse'
+ *               $ref: '#/components/schemas/FullMessage'
  */
 router.post('/messages', uploadFiles.array('files'), authMiddleware, MessageController.sendMessage);
 
@@ -53,7 +53,7 @@ router.patch('/messages/read/:chatId', authMiddleware, MessageController.markAsR
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Message'
+ *               $ref: '#/components/schemas/FullMessage'
  */
 router.put('/messages', authMiddleware, MessageController.editMessage);
 

@@ -32,7 +32,7 @@ export const API_ENDPOINTS = {
     GET_BY_ID: (id: string) => `${env.apiUrl}/messages/${id}`,
     CREATE: `${env.apiUrl}/api/messages`,
     READ: (chatId: string) => `${env.apiUrl}/api/messages/read/${chatId}`,
-    UPDATE: (id: string) => `${env.apiUrl}/messages/${id}`,
-    DELETE: (id: string) => `${env.apiUrl}/messages/${id}`,
+    UPDATE: `${env.apiUrl}/api/messages`,
+    DELETE: (id: string) => `${env.apiUrl}/api/messages/${id}`,
   }
 } as const; 

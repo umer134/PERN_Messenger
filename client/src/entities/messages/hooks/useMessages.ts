@@ -9,17 +9,10 @@ export const useMessages = (
     queryKey: ["messages", chatId],
 
     queryFn: async () => {
-      const response =
-        await MessageApi.getMessages(chatId);
+      const response = await MessageApi.getMessages(chatId);
 
-      const mapped = response.data.messages.map(
-          MessageAdapter.toVM
-        )
-      
       return {
-        messages: response.data.messages.map(
-          MessageAdapter.toVM
-        ),
+        messages: response.data.messages.map(message => MessageAdapter.toVM(message)),
 
         nextCursor: response.data.nextCursor,
       }
