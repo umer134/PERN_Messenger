@@ -704,7 +704,7 @@ export interface components {
         UserPreview: {
             /** Format: uuid */
             id?: string;
-            name?: string;
+            username?: string;
             avatar?: string | null;
         };
         LoginRequest: {

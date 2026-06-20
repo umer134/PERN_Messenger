@@ -38,6 +38,8 @@ export type MessageVM = {
 
   senderId: string | null;
 
+  senderName: string | null;
+
   content: string | null;
 
   attachments: MessageAttachmentVM[];

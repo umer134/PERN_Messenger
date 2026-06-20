@@ -112,6 +112,7 @@ class MessageService {
       const io = getID();
 
       io.to(chat.id).emit("messages:new", messageDto);
+      console.log('MESSAGESNEW', chat.id)
       io.emit("chat:updated", { chatId: chat.id });
 
       return {

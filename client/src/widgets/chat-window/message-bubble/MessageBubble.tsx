@@ -31,8 +31,6 @@ export const MessageBubble = ({
 }: Props) => {
   const [menu, setMenu] = useState<{x: number, y: number} | null>(null);
 
-  console.log("message", message.replyTo?.senderName)
-
   const deleteMessage = useDeleteMessage(message.chatId);
 
   const dispatch = useAppDispatch();

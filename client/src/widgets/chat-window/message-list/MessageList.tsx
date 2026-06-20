@@ -92,19 +92,10 @@ export const MessagesList = ({ messages, mediaItems, conversationId, onBottomCha
 
     const handleScroll = () => {
 
-      console.log("scroll")
-
       const distanceFromBottom = 
         container.scrollHeight -
         container.scrollTop - 
         container.clientHeight;
-
-          console.log({
-    scrollHeight: container.scrollHeight,
-    scrollTop: container.scrollTop,
-    clientHeight: container.clientHeight,
-    distanceFromBottom,
-  });
 
       const nearBottom = distanceFromBottom < 80;
 

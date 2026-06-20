@@ -20,6 +20,8 @@ export class MessageAdapter {
 
       senderId: message.sender_id || null,
 
+      senderName: message.sender?.username || null,
+
       content: message.content || null,
 
       sentAt: message.sent_at,

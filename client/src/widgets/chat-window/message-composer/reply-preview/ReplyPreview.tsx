@@ -1,3 +1,4 @@
+import { X } from "lucide-react";
 import * as s from "./reply-preview.css";
 
 type Props = {
@@ -28,7 +29,7 @@ export const ReplyPreview = ({
       <button
         onClick={onClose}
       >
-        ✕
+        <X size={20} color="#ffff" />
       </button>
     </div>
   );

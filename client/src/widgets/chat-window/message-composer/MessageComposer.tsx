@@ -130,7 +130,7 @@ export const MessageComposer = ({
         activeMessage && (
           <ReplyPreview
             author={
-              activeMessage.senderId ?? "Unknown"
+              activeMessage.senderName ?? "Unknown"
             }
             content={
               activeMessage.content ?? ""

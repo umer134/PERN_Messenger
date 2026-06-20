@@ -3,13 +3,11 @@ import { useEffect } from "react";
 import socket from "../../../shared/socket/socket";
 
 export const useConversationEvents = () => {
-  console.log('...')
   const queryClient = useQueryClient();
 
   useEffect(() => {
 
     const handler = ({ chatId }) => {
-      console.log('chat:updated', chatId);
       queryClient.invalidateQueries({
         queryKey: ['conversation', 'list'],
       });
