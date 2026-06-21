@@ -23,17 +23,17 @@ import { formatDuration } from "../../../shared/lib/format/formatDuration";
 import { ReplyPreview } from "./reply-preview/ReplyPreview";
 import { clearAction } from "../../../features/message-actions/model/message-actions.slice";
 import { EditPreview } from "./edit-preview/EditPreview";
+import { emitTypingStart, emitTypingStop } from "../../../shared/socket/emitters/typing.emitters";
 
 type Props = {
+  conversationId: string;
+
   onSend: (content: string,files: File[]) => void;
 
   onEdit: (messageId: string, content: string) => void;
 };
 
-export const MessageComposer = ({
-  onSend,
-  onEdit,
-}: Props) => {
+export const MessageComposer = ({ conversationId, onSend, onEdit, }: Props) => {
 
   const dispatch = useAppDispatch();
 
@@ -54,10 +54,20 @@ export const MessageComposer = ({
   const textareaRef =
   useRef<HTMLTextAreaElement>(null);
 
+  const typingRef = useRef(false);
+  const stopTimeRef = useRef<NodeJS.Timeout | null>(null);
+
   const fileInputRef =
     useRef<HTMLInputElement>(null);
 
   const handleSend = () => {
+
+    if(typingRef.current) {
+      emitTypingStop(conversationId);
+
+      typingRef.current = false;
+    }
+
     const trimmed =
       message.trim();
 
@@ -123,6 +133,12 @@ export const MessageComposer = ({
       textareaRef.current?.focus();
     }
   }, [actionType, activeMessage]);
+
+  useEffect(() => {
+    return () => {
+      emitTypingStop(conversationId);
+    };
+  }, [conversationId]);
 
   return (
     <div className={s.root}>
@@ -213,9 +229,27 @@ export const MessageComposer = ({
             className={s.textarea}
             value={message}
             placeholder="Type a message..."
-            onChange={(e) =>
-              setMessage(e.target.value)
-            }
+            onChange={(e) => {
+              const value = e.target.value;
+
+              setMessage(value);
+
+              if(!typingRef.current) {
+                emitTypingStart(conversationId)
+
+                typingRef.current = true;
+              }
+
+              if(stopTimeRef.current) {
+                clearTimeout(stopTimeRef.current);
+              }
+
+              stopTimeRef.current = setTimeout(() => {
+                emitTypingStop(conversationId);
+
+                typingRef.current = false;
+              }, 1500);
+            }}
             onKeyDown={(e) => {
               if (
                 e.key === "Enter" &&

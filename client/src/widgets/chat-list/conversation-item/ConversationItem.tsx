@@ -7,6 +7,9 @@ import { useMediaViewer } from "../../../features/media-viewer/lib/useMediaViewe
 import { Avatar } from "../../../shared/ui/Avatar";
 import { resolveMediaUrl } from "../../../shared/lib/media/resolveMediaUrl";
 import { formatDate } from "../../../shared/lib/format/formatDate";
+import { useAppSelector } from "../../../app/hooks";
+import { selectTypingUsers } from "../../../features/typing/model/typing.selectors";
+import { TypingIndicator } from "../../../shared/ui/typing-indicator/TypingIndicator";
 
 type Props = {
   conversation: ConversationPreview;
@@ -16,11 +19,11 @@ type Props = {
   onClick?: () => void;
 };
 
-export const ConversationItem = ({
-  conversation,
-  selected,
-  onClick,
-}: Props) => {
+export const ConversationItem = ({ conversation, selected, onClick, }: Props) => {
+  
+  const typingUsers = useAppSelector(selectTypingUsers(conversation.id));
+
+  const isTyping = typingUsers.length > 0;
 
   const { open } = useMediaViewer();
 
@@ -73,9 +76,15 @@ export const ConversationItem = ({
         </div>
 
         <div className={s.bottomRow}>
-          <span className={s.message}>
-            {conversation.lastMessage}
-          </span>
+          {isTyping ? (
+            <TypingIndicator
+              statusText={typingUsers[0].username}
+            />
+          ) : (
+            <span className={s.message}>
+              {conversation.lastMessage}
+            </span>
+          )}
 
           {conversation.unreadCount > 0 && (
             <span className={s.badge}>

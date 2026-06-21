@@ -4,14 +4,18 @@ import * as s from "./conversation-header.css";
 
 import { ConversationDetails } from "../../../entities/conversation/model/conversation-details.types";
 import { Avatar } from "../../../shared/ui/Avatar";
+import { useAppSelector } from "../../../app/hooks";
+import { selectTypingUsers } from "../../../features/typing/model/typing.selectors";
+import { TypingIndicator } from "../../../shared/ui/typing-indicator/TypingIndicator";
  
 type Props = {
   conversation: ConversationDetails;
 };
 
-export const ConversationHeader = ({
-  conversation,
-}: Props) => {
+export const ConversationHeader = ({ conversation, }: Props) => {
+
+  const typingUsers = useAppSelector(selectTypingUsers(conversation.id));
+
   return (
     <header className={s.root}>
       <div className={s.avatar}>
@@ -34,11 +38,16 @@ export const ConversationHeader = ({
         </span>
 
         <span className={s.meta}>
-          {conversation?.isGroup
+          {typingUsers.length > 0 ? (
+            <TypingIndicator size="xs" statusText={typingUsers[0].username} />
+          ) : (
+          conversation?.isGroup
             ? `${conversation?.membersCount} participants`
             : conversation?.isOnline
             ? "online"
-            : "offline"}
+            : "offline"
+            )
+          }
         </span>
       </div>
     </header>

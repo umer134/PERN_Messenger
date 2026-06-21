@@ -1,0 +1,39 @@
+import { useEffect } from "react";
+
+import { useAppDispatch } from "../../../app/hooks";
+
+import { addTypingUser, removeTypingUser, } from "../model/typing.slice";
+
+import { subscribeTypingStart, subscribeTypingStop, } from "../../../shared/socket/listeners/typing.listeners";
+
+export const useTypingEvents = (chatId: string) => {
+
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+
+    const startHandler = ({ chatId: incomingChatId, userId, username, }) => {
+
+      if (incomingChatId !== chatId) {
+        return;
+      }
+
+      dispatch(addTypingUser({chatId, userId, username}));
+    };
+
+    const stopHandler = ({ chatId, userId, }) => {
+
+      dispatch(removeTypingUser({chatId, userId}));
+    };
+
+    const unsubStart = subscribeTypingStart(startHandler);
+
+    const unsubStop = subscribeTypingStop(stopHandler);
+
+    return () => {
+      unsubStart();
+      unsubStop();
+    };
+
+  }, [chatId]);
+};

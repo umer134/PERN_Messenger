@@ -10,4 +10,10 @@ export const SOCKET_EVENTS = {
   CHAT_LEAVE: "chat:leave",
 
   CHAT_UPDATED: "chat:updated",
+
+  TYPING_START: "typing:start",
+  TYPING_STOP: "typing:stop",
+
+  USER_TYPING: "user:typing",
+  USER_STOPPED_TYPING: "user:stopped_typing",
 } as const;

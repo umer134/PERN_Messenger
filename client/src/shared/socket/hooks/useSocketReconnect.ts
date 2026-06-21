@@ -9,17 +9,16 @@ export const useSocketReconnect = (chatId: string) => {
       if(!chatId) return;
 
       socket.emit(SOCKET_EVENTS.CHAT_JOIN, chatId);
+    };
 
-      socket.on("connect", handleConnect);
+    socket.on("connect", handleConnect);
+
+    if(socket.connected) {
+      handleConnect();
     }
 
-      if(socket.connected) {
-        handleConnect();
-      }
-
-      return () => {
-        socket.off("connect", handleConnect);
-      };
-    
+    return () => {
+      socket.off("connect", handleConnect);
+    };
   }, [chatId]);
 };

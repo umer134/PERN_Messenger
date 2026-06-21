@@ -1,10 +1,11 @@
 const ApiError = require("../exceptions/api-error");
-const { MessageModel, ChatModel, sequelize, MessageFilesModel, UserModel } = require("../models");
+const { MessageModel, ChatModel, sequelize, MessageFilesModel, UserModel, ChatMemberModel } = require("../models");
 const MessageDto = require('../dtos/messageDto');
 const chatService = require("./chat-service");
 const { Op } = require("sequelize");
 const { getID } = require('../socket/socket');
 const detectFileType = require('../utils/detectFileType');
+const notifyChatUpdated = require("../helpers/notifyChatUpdated");
 
 class MessageService {
 
@@ -112,8 +113,8 @@ class MessageService {
       const io = getID();
 
       io.to(chat.id).emit("messages:new", messageDto);
-      console.log('MESSAGESNEW', chat.id)
-      io.emit("chat:updated", { chatId: chat.id });
+      //io.emit("chat:updated", { chatId: chat.id });
+      await notifyChatUpdated(io, chat.id);
 
       return {
         conversation,
@@ -158,9 +159,9 @@ class MessageService {
     );
 
     const io = getID();
-
     io.to(chatId).emit("message:read", { messageIds: messageIds });
-    io.emit("chat:updated", {chatId: chatId});
+  
+    await notifyChatUpdated(io, chatId);
 
     return {
       updated: updatedCount,
@@ -182,16 +183,63 @@ class MessageService {
 
     const chatId = message.chat_id;
 
-    const updated = await message.update({
+    await message.update({
       content: newContent,
       edited_at: new Date()
     });
 
-    const updatedMessage = new MessageDto(updated);
+    const fullMessage = await MessageModel.findByPk(
+      message.id,
+      {
+        include: [
+          {
+            model: MessageFilesModel,
+            as: "attachedFiles",
+            attributes: ["file_path", "type"],
+          },
+          {
+            model: UserModel,
+            as: "sender", 
+            attributes: [
+              "id",
+              "username",
+              "avatar_url",
+            ],
+          },
+          {
+            model: MessageModel, 
+            as: "replyTo",
+            attributes: [
+              "id",
+              "content",
+              "sender_id",
+            ],
+            include: [
+              {
+                model: UserModel,
+                as: "sender",
+                attributes: [
+                  "id", 
+                  "username",
+                ]
+              },
+              {
+                model: MessageFilesModel,
+                as: "attachedFiles",
+                attributes: ["file_path", "type"],
+              }
+            ]
+          }
+        ],
+      }
+    );
+
+    const updatedMessage = new MessageDto(fullMessage);
 
     const io = getID();
     io.to(chatId).emit("message:edited", updatedMessage);
-    io.emit("chat:updated", {chatId: chatId});
+    
+    await notifyChatUpdated(io, chatId);
     
     return updatedMessage;
   }
@@ -216,8 +264,9 @@ class MessageService {
 
     const io = getID();
     io.to(chatId).emit("message:deleted", { messageId, chatId });
-    io.emit("chat:updated", {chatId: chatId});
-    
+
+    await notifyChatUpdated(io, chatId);
+
     return { success: true };
   }
 };

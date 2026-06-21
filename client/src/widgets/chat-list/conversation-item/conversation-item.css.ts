@@ -77,7 +77,7 @@ export const message = style({
 
   color: vars.color.textSecondary,
 
-  fontSize: "13px",
+  fontSize: vars.fontSize.md,
 });
 
 export const badge = style({
@@ -97,4 +97,8 @@ export const badge = style({
 
   background: vars.color.primary,
   color: vars.color.primaryText,
+});
+
+export const typing = style({
+
 });

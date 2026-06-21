@@ -1,11 +1,9 @@
 import { useEffect } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 
-import socket from "../../../shared/socket/socket";
-
 import { removeMessage } from "../../lib/message-cache";
 
-import { SOCKET_EVENTS } from "../../../shared/socket/events/socket-events";
+import { subscribeMessageDeleted } from "../../../shared/socket/listeners/message.listeners";
 
 export const useDeletedMessages = (chatId: string) => {
 
@@ -22,17 +20,7 @@ export const useDeletedMessages = (chatId: string) => {
       );
     };
 
-    socket.on(
-      SOCKET_EVENTS.MESSAGE_DELETED,
-      handler
-    );
-
-    return () => {
-      socket.off(
-        SOCKET_EVENTS.MESSAGE_DELETED,
-        handler
-      );
-    };
+    return subscribeMessageDeleted(handler);
 
   }, [chatId]);
 };

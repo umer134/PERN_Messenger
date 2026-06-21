@@ -25,13 +25,28 @@ function initSocket(server) {
 
     socket.on("message:delivered", ({ messageId, chatId }) => {
       if (!messageId || !chatId) return;
-
       io.to(chatId).emit("message:delivered", { messageId: messageId });
     });
 
     socket.on("chat:leave", chatId => {
       socket.leave(chatId);
     });
+
+    socket.on("typing:start", ({ chatId }) => {
+      socket.to(chatId).emit("typing:start", {
+        chatId,
+        userId: socket.user.id,
+        username: socket.user.name,
+      });
+    });
+
+    socket.on("typing:stop", ({ chatId }) => {
+      socket.to(chatId).emit("typing:stop", {
+        chatId, 
+        userId: socket.user.id,
+      });
+    });
+    
   });
 
   return io;

@@ -13,6 +13,7 @@ import { useReadMessages } from "../../../entities/messages/hooks/useReadMessage
 import { useEditMessage } from "../../../features/message-actions/hooks/useMessageActions";
 import { useAppSelector } from "../../../app/hooks";
 import { selectActiveMessage } from "../../../features/message-actions/model/message-actions.selectors";
+import { useTypingEvents } from "../../../features/typing/hooks/useTypingEvents";
 
 type Props = {
   conversation: ConversationPreview;
@@ -24,6 +25,7 @@ export const ConversationContent = ({conversation,}: Props) => {
 
   useChatSocket(conversation.id);
   useMessageEvents(conversation.id, isAtBottom);
+  useTypingEvents(conversation.id);
 
   const activeMessage = useAppSelector(selectActiveMessage);
 
@@ -85,6 +87,7 @@ export const ConversationContent = ({conversation,}: Props) => {
       />
 
       <MessageComposer
+        conversationId={conversation.id}
         onSend={handleSend}
         onEdit={handleEdit}
       />

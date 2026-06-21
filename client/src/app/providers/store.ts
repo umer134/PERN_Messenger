@@ -9,6 +9,7 @@ import messageActionsReducer from '../../features/message-actions/model/message-
 // import darkmodeReducer from "../features/darkmode/darkmodeSlice";
 import { chatApi } from "../../features/chat/chatApi";
 import messageNavigationReducer from '../../features/navigation/message-navigation/model/message-navigation.slice';
+import typingReducer  from '../../features/typing/model/typing.slice';
 
 export const store = configureStore({
     reducer: {
@@ -21,6 +22,7 @@ export const store = configureStore({
         chat: chatReducer,
         messageActions: messageActionsReducer,
         messageNavigation: messageNavigationReducer,
+        typing: typingReducer,
         // theme: darkmodeReducer,
     },
     middleware: (getDefaultMiddleware) => {

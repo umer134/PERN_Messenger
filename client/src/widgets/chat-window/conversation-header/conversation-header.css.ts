@@ -36,6 +36,7 @@ export const title = style({
 });
 
 export const meta = style({
-  fontSize: "12px",
-  color: vars.color.textSecondary,
+  fontSize: vars.fontSize.xs,
+  //fontStyle: "italic",
+  color: '#60A5FA',
 });

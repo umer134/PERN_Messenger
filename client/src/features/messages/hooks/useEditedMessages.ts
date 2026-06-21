@@ -1,13 +1,11 @@
 import { useEffect } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 
-import socket from "../../../shared/socket/socket";
-
 import { MessageAdapter } from "../../../entities/messages/model/message.adapter";
 
 import { updateMessage } from "../../lib/message-cache";
 
-import { SOCKET_EVENTS } from "../../../shared/socket/events/socket-events";
+import { subscribeMessageEdited } from "../../../shared/socket/listeners/message.listeners";
 
 export const useEditedMessages = (chatId: string) => {
 
@@ -26,17 +24,7 @@ export const useEditedMessages = (chatId: string) => {
       );
     };
 
-    socket.on(
-      SOCKET_EVENTS.MESSAGE_EDITED,
-      handler
-    );
-
-    return () => {
-      socket.off(
-        SOCKET_EVENTS.MESSAGE_EDITED,
-        handler
-      );
-    };
+    return subscribeMessageEdited(handler);
 
   }, [chatId]);
 };

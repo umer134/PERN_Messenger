@@ -2,8 +2,6 @@
 import { useEffect } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 
-import socket from "../../../shared/socket/socket";
-
 import { MessageAdapter } from "../../../entities/messages/model/message.adapter";
 
 import { appendMessage } from "../../lib/message-cache";
@@ -15,7 +13,7 @@ import { useReadMessages } from "../../../entities/messages/hooks/useReadMessage
 import { useAppSelector } from "../../../app/hooks";
 import { selectCurrentUserId } from "../../../entities/current-user/model/currentUser.selectors";
 
-import { SOCKET_EVENTS } from "../../../shared/socket/events/socket-events";
+import { subscribeMessageNew } from "../../../shared/socket/listeners/message.listeners";
 
 export const useIncomingMessages = (chatId: string, isAtBottom: boolean) => {
   
@@ -50,17 +48,7 @@ export const useIncomingMessages = (chatId: string, isAtBottom: boolean) => {
       }
     };
 
-    socket.on(
-      SOCKET_EVENTS.MESSAGE_NEW,
-      handler
-    );
-
-    return () => {
-      socket.off(
-        SOCKET_EVENTS.MESSAGE_NEW,
-        handler
-      );
-    };
+    return subscribeMessageNew(handler);
 
   }, [
     chatId,
