@@ -6,17 +6,13 @@ import { addTypingUser, removeTypingUser, } from "../model/typing.slice";
 
 import { subscribeTypingStart, subscribeTypingStop, } from "../../../shared/socket/listeners/typing.listeners";
 
-export const useTypingEvents = (chatId: string) => {
+export const useTypingEvents = () => {
 
   const dispatch = useAppDispatch();
 
   useEffect(() => {
 
-    const startHandler = ({ chatId: incomingChatId, userId, username, }) => {
-
-      if (incomingChatId !== chatId) {
-        return;
-      }
+    const startHandler = ({ chatId, userId, username, }) => {
 
       dispatch(addTypingUser({chatId, userId, username}));
     };
@@ -35,5 +31,5 @@ export const useTypingEvents = (chatId: string) => {
       unsubStop();
     };
 
-  }, [chatId]);
+  }, []);
 };

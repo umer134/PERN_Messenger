@@ -2,7 +2,7 @@ import socket from "../socket";
 import { SOCKET_EVENTS } from "../events/socket-events";
 
 export const subscribeTypingStart = (handler) => {
-
+  console.log("SUBSCRIBE_TYPING_START" )
   socket.on(SOCKET_EVENTS.TYPING_START, handler);
 
   return () => {

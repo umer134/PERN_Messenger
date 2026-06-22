@@ -2,6 +2,12 @@ const ApiError = require("../exceptions/api-error");
 const tokenService = require("../service/token-service");
 
 module.exports = function(socket, next) {
+
+    console.log(
+    "SOCKET AUTH TOKEN",
+    socket.handshake.auth.token
+  );
+
   
   try {   
     

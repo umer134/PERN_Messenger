@@ -10,11 +10,9 @@ from "./search-bar/SearchBar";
 
 import { ConversationItems } from "./conversation-items/ConversationItems";
 
-import { mockConversations } from "../../entities/conversation/data/mock-conversations";
 import { useSearchUser } from "../../features/search-user/hooks/useSearchUser";
 import { SearchResults } from "../../features/search-user/ui/SearchResults";
 import { SelectedConversation } from "../../entities/conversation/model/selected-conversation.types";
-import { User } from '../../entities/user/model/user.types';
 import { useLoadChats } from "../../entities/conversation/hooks/useLoadChats";
 import { useConversationEvents } from "../../entities/conversation/hooks/useConverstionEvents";
 import { LeftPanelView } from "./model/conversation-list.types";
@@ -30,13 +28,11 @@ export const ConversationList = ({selectedConversation, onSelectedConversation}:
   const [view, setView] = useState<LeftPanelView>("dialogs");  
 
   const [query, setQuery] = useState("");
-
+  
+  const { data: conversations = [], isLoading} = useLoadChats();
   const { data: users = [] } = useSearchUser(query); 
 
   useConversationEvents();
-
-  const { data: conversations = [], isLoading} = useLoadChats();
-
   
   return (
     <aside className={s.root}>

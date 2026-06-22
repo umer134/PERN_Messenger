@@ -1,5 +1,6 @@
 const { Server } = require('socket.io');
 const socketAuth = require('../middlewares/socket-auth');
+const typingEventHelper = require('./helpers/typingEventHelper');
 
 let io;
 
@@ -17,9 +18,16 @@ function initSocket(server) {
 
   io.on("connection", socket => {
 
+    console.log(
+      "CONNECTED USER",
+      socket.user.id,
+      socket.id
+    );
+
     socket.join(`user:${socket.user.id}`);
 
     socket.on("chat:join", chatId => {
+      console.log("JOINEDCHAT:", chatId)
       socket.join(chatId);
     });
 
@@ -32,20 +40,7 @@ function initSocket(server) {
       socket.leave(chatId);
     });
 
-    socket.on("typing:start", ({ chatId }) => {
-      socket.to(chatId).emit("typing:start", {
-        chatId,
-        userId: socket.user.id,
-        username: socket.user.name,
-      });
-    });
-
-    socket.on("typing:stop", ({ chatId }) => {
-      socket.to(chatId).emit("typing:stop", {
-        chatId, 
-        userId: socket.user.id,
-      });
-    });
+    typingEventHelper(socket, io);
     
   });
 

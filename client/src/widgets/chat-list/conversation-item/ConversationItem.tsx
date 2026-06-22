@@ -20,7 +20,7 @@ type Props = {
 };
 
 export const ConversationItem = ({ conversation, selected, onClick, }: Props) => {
-  
+
   const typingUsers = useAppSelector(selectTypingUsers(conversation.id));
 
   const isTyping = typingUsers.length > 0;
