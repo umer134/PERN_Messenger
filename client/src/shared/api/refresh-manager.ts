@@ -4,14 +4,12 @@ import { refreshClient } from './refreshClient';
 
 const { AUTH } = API_ENDPOINTS;
 
-let refreshPromise:
-  Promise<AuthResponse> | null = null;
+let refreshPromise: Promise<AuthResponse> | null = null;
 
 export async function refreshSession() {
   if (!refreshPromise) {
     refreshPromise = (async () => {
-      const { data } =
-        await refreshClient.get<AuthResponse>(AUTH.REFRESH);
+      const { data } = await refreshClient.get<AuthResponse>(AUTH.REFRESH);
 
       return data;
     })();

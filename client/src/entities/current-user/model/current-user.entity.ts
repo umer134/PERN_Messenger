@@ -1,4 +1,4 @@
-import { ProfileApiResponse } from "../types/currentUser.types";
+import { ProfileApiResponse } from '../types/currentUser.types';
 
 export class ProfileEntity {
   private readonly _id: string;
@@ -8,7 +8,7 @@ export class ProfileEntity {
   private _createdAt: Date;
   private _isActive: boolean;
 
-  constructor (data: ProfileApiResponse) {
+  constructor(data: ProfileApiResponse) {
     this._id = data.id;
     this._username = data.username;
     this._email = data.email;
@@ -18,15 +18,29 @@ export class ProfileEntity {
   }
 
   // Getters
-  get id(): string { return this._id; }
-  get username(): string { return this._username; }
-  get email(): string { return this._email; }
-  get avatar(): string | null { return this._avatar; }
-  get createdAt(): Date { return this._createdAt; }
-  get isActive(): boolean { return this._isActive; }
+  get id(): string {
+    return this._id;
+  }
+  get username(): string {
+    return this._username;
+  }
+  get email(): string {
+    return this._email;
+  }
+  get avatar(): string | null {
+    return this._avatar;
+  }
+  get createdAt(): Date {
+    return this._createdAt;
+  }
+  get isActive(): boolean {
+    return this._isActive;
+  }
 
   //setState methods
-  updateProfile(data: Partial<Pick<ProfileEntity, 'username' | 'email' | 'avatar'>>): void {
+  updateProfile(
+    data: Partial<Pick<ProfileEntity, 'username' | 'email' | 'avatar'>>,
+  ): void {
     if (data.username) this._username = data.username;
     if (data.email) this._email = data.email;
     if (data.avatar) this._avatar = data.avatar;
@@ -53,7 +67,7 @@ export class ProfileEntity {
     return this._createdAt.toLocaleDateString('ru-RU', {
       year: 'numeric',
       month: 'long',
-      day: 'numeric'
+      day: 'numeric',
     });
   }
 
@@ -69,7 +83,7 @@ export class ProfileEntity {
       avatar: this._avatar,
       createdAt: this._createdAt,
       isActive: this._isActive,
-    }
+    };
   }
 
   static fromApiResponse(data: ProfileApiResponse): ProfileEntity {
@@ -77,7 +91,6 @@ export class ProfileEntity {
   }
 
   static fromApiArray(data: ProfileApiResponse[]): ProfileEntity[] {
-    return data.map(item => new ProfileEntity(item));
+    return data.map((item) => new ProfileEntity(item));
   }
-
 }

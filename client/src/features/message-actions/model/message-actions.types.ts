@@ -1,5 +1,1 @@
-export type MessageAction =
-  | "reply"
-  | "edit"
-  | "copy"
-  | "delete";
+export type MessageAction = 'reply' | 'edit' | 'copy' | 'delete';

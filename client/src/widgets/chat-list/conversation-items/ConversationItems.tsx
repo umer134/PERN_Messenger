@@ -1,6 +1,6 @@
-import * as s from "./conversation-items.css";
-import { ConversationPreview } from "../../../entities/conversation/model/conversation.types";
-import { ConversationItem } from "../conversation-item/ConversationItem";
+import * as s from './conversation-items.css';
+import { ConversationPreview } from '../../../entities/conversation/model/conversation.types';
+import { ConversationItem } from '../conversation-item/ConversationItem';
 
 type Props = {
   conversations: ConversationPreview[];
@@ -21,9 +21,7 @@ export const ConversationItems = ({
         <ConversationItem
           key={conversation.id}
           conversation={conversation}
-          selected={
-            selectedConversation === conversation
-          }
+          selected={selectedConversation === conversation}
           onClick={() => onSelect(conversation)}
         />
       ))}

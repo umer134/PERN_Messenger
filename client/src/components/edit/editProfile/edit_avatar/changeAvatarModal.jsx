@@ -1,4 +1,4 @@
-import{ useState, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 import Cropper from 'react-easy-crop';
 import './changeAvatarModal.css';
 import { getCroppedImg } from '../../../../features/avatar-upload/lib/cropImage'; // утилита ниже
@@ -13,7 +13,10 @@ const ChangeAvatarModal = ({ file, onClose, onSave }) => {
   }, []);
 
   const handleSave = async () => {
-    const croppedBlob = await getCroppedImg(URL.createObjectURL(file), croppedAreaPixels);
+    const croppedBlob = await getCroppedImg(
+      URL.createObjectURL(file),
+      croppedAreaPixels,
+    );
     onSave(croppedBlob);
   };
 

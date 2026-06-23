@@ -2,12 +2,12 @@ import * as s from './typing-indicator.css';
 
 interface TypingIndicatorProps {
   statusText: string;
-  size?: 'xs' | 'sm' | 'md' | 'lg'; 
+  size?: 'xs' | 'sm' | 'md' | 'lg';
 }
 
-export const TypingIndicator = ({ 
-  statusText, 
-  size = 'md' 
+export const TypingIndicator = ({
+  statusText,
+  size = 'md',
 }: TypingIndicatorProps) => {
   return (
     <span className={s.typingContainer({ size })}>

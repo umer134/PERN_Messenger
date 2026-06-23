@@ -1,4 +1,4 @@
-import { resolveMediaUrl } from "../../../lib/media/resolveMediaUrl";
+import { resolveMediaUrl } from '../../../lib/media/resolveMediaUrl';
 
 type Props = {
   src: string;
@@ -8,21 +8,12 @@ type Props = {
   onClick: () => void;
 };
 
-export const AudioCard = ({
-  src,
-  name,
-  onClick,
-}: Props) => {
+export const AudioCard = ({ src, name, onClick }: Props) => {
   return (
     <div>
-      <div onClick={onClick}>
-        {name}
-      </div>
+      <div onClick={onClick}>{name}</div>
 
-      <audio
-        controls
-        src={resolveMediaUrl(src)}
-      />
+      <audio controls src={resolveMediaUrl(src)} />
     </div>
   );
 };

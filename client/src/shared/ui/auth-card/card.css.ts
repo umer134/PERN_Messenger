@@ -1,4 +1,4 @@
-import { style } from "@vanilla-extract/css";
+import { style } from '@vanilla-extract/css';
 import { vars } from '../../styles/theme/theme.css';
 
 export const card = style({
@@ -8,4 +8,4 @@ export const card = style({
   background: vars.color.surface,
   border: `1px solid ${vars.color.border}`,
   boxShadow: vars.shadow.card,
-})
+});

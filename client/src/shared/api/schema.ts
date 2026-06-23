@@ -4,733 +4,733 @@
  */
 
 export interface paths {
-    "/api/registration": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /** Регистрация нового пользователя */
-        post: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "multipart/form-data": {
-                        name: string;
-                        /** Format: email */
-                        email: string;
-                        password: string;
-                        /** Format: binary */
-                        avatar?: string;
-                    };
-                };
-            };
-            responses: {
-                /** @description Успешная регистрация */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["LoginResponse"];
-                    };
-                };
-                /** @description Пользователь уже существует */
-                400: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-            };
-        };
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+  '/api/registration': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/login": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Вход пользователя
-         * @description Авторизирует пользователя и возвращает токены
-         */
-        post: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "application/json": components["schemas"]["LoginRequest"];
-                };
-            };
-            responses: {
-                /** @description Успешный вход */
-                200: {
-                    headers: {
-                        /** @description refreshToken в HttpOnly cookie */
-                        "Set-Cookie"?: string;
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["LoginResponse"];
-                    };
-                };
-                /** @description Ошибка валидации */
-                400: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ErrorResponse"];
-                    };
-                };
-                /** @description Неверный пароль */
-                401: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-            };
-        };
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/refresh": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Обновить accessToken */
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description Новые токены */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["LoginResponse"];
-                    };
-                };
-                /** @description Refresh token недействителен */
-                401: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/users": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Получить список всех пользователей */
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description Список пользователей */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["UserPreview"][];
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/me": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Получить информацию о пользователе */
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description Данные пользователя */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["Me"];
-                    };
-                };
-                /** @description Пользователь не найден */
-                404: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-            };
-        };
-        /** Обновить профиль пользователя */
-        put: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "multipart/form-data": {
-                        name?: string;
-                        /** Format: binary */
-                        avatar?: string;
-                    };
-                };
-            };
-            responses: {
-                /** @description Обновленные данные пользователя */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["Me"];
-                    };
-                };
-            };
-        };
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/users/search": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Поиск пользователей */
-        get: {
-            parameters: {
-                query: {
-                    /** @description Поисковый запрос (по username) */
-                    query: string;
-                };
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description Результаты поиска */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["UserPreview"][];
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/messages": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        /** Редактировать сообщение */
-        put: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "application/json": components["schemas"]["EditMessageRequest"];
-                };
-            };
-            responses: {
-                /** @description Обновлённое сообщение */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["FullMessage"];
-                    };
-                };
-            };
-        };
-        /** Отправить сообщение в чат или пользователю */
-        post: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "multipart/form-data": components["schemas"]["SendDirectMessageRequest"];
-                };
-            };
-            responses: {
-                /** @description Созданное сообщение и идентификатор чата */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["FullMessage"];
-                    };
-                };
-            };
-        };
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/messages/{messageId}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        /** Удалить сообщение */
-        delete: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path: {
-                    messageId: string;
-                };
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description Результат удаления */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["DeleteMessageResponse"];
-                    };
-                };
-            };
-        };
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/chats": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Получить список чатов пользователя */
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description Список чатов */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["Chat"][];
-                    };
-                };
-            };
-        };
-        put?: never;
-        /** Создать приватный чат */
-        post: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "application/json": components["schemas"]["CreateChatRequest"];
-                };
-            };
-            responses: {
-                /** @description Найденный или созданный чат */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["Chat"];
-                    };
-                };
-            };
-        };
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/chats/{chatId}/messages": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Получить сообщения чата */
-        get: {
-            parameters: {
-                query?: {
-                    /** @description Курсор по sent_at */
-                    cursor?: string;
-                    limit?: number;
-                };
-                header?: never;
-                path: {
-                    chatId: string;
-                };
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description Сообщения и курсор на следующую страницу */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["MessagesPage"];
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/chats/find/{userId}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Найти приватный чат с пользователем */
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path: {
-                    userId: string;
-                };
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description Чат или null, если чат не найден */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["Chat"] | null;
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-}
-export type webhooks = Record<string, never>;
-export interface components {
-    schemas: {
-        FullMessage: components["schemas"]["Message"] & {
-            sender?: components["schemas"]["UserPreview"];
-            replyTo?: {
-                /** Format: uuid */
-                id?: string;
-                /** Format: uuid */
-                senderId?: string;
-                sender?: {
-                    /** Format: uuid */
-                    id?: string;
-                    username?: string;
-                };
-                content?: string | null;
-                attachedFiles?: components["schemas"]["ChatFile"][];
-            };
-            attachedFiles?: components["schemas"]["ChatFile"][];
-        };
-        Message: {
-            /** Format: uuid */
-            id: string;
-            /** Format: uuid */
-            chat_id: string;
-            /** Format: uuid */
-            sender_id?: string | null;
-            content?: string | null;
-            /** Format: uuid */
-            reply_to_id?: string | null;
-            /** Format: date-time */
-            sent_at: string;
-            /** Format: date-time */
-            edited_at?: string | null;
-            /** Format: date-time */
-            deleted_at?: string | null;
-            is_read: boolean;
-        };
-        EditMessageRequest: {
-            /** Format: uuid */
-            messageId: string;
-            newContent: string;
-        };
-        SendDirectMessageRequest: {
-            /** Format: uuid */
-            chatId?: string | null;
-            /** Format: uuid */
-            recipientId?: string | null;
-            content?: string | null;
-            /** Format: uuid */
-            replyToId?: string | null;
-            files?: string[];
-        };
-        SendDirectMessageResponse: {
-            conversation: components["schemas"]["ConversationPreview"];
-            message: components["schemas"]["Message"];
-        };
-        DeleteMessageResponse: {
-            success: boolean;
-            /** Format: uuid */
-            messageId: string;
-        };
-        ChatMemberPreview: {
-            /** Format: uuid */
-            id: string;
+    get?: never;
+    put?: never;
+    /** Регистрация нового пользователя */
+    post: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path?: never;
+        cookie?: never;
+      };
+      requestBody: {
+        content: {
+          'multipart/form-data': {
             name: string;
-            avatar?: string | null;
-        };
-        ChatFile: {
-            file_path: string;
-        };
-        ChatMessage: {
-            /** Format: uuid */
-            id: string;
-            /** Format: uuid */
-            chat_id: string;
-            /** Format: uuid */
-            sender_id?: string | null;
-            content?: string | null;
-            /** Format: date-time */
-            sent_at: string;
-            is_read: boolean;
-        };
-        ChatMessageWithRelations: {
-            /** Format: uuid */
-            id: string;
-            /** Format: uuid */
-            chat_id: string;
-            /** Format: uuid */
-            sender_id?: string | null;
-            content?: string | null;
-            /** Format: date-time */
-            sent_at: string;
-            is_read: boolean;
-            sender: components["schemas"]["UserPreview"];
-            attachedFiles: components["schemas"]["ChatFile"][];
-        };
-        Chat: {
-            /** Format: uuid */
-            id: string;
-            is_group: boolean;
-            group_name?: string | null;
-            group_avatar?: string | null;
-            /** Format: date-time */
-            created_at: string;
-            members?: components["schemas"]["ChatMemberPreview"][];
-            messages?: components["schemas"]["Message"][];
-        };
-        CreateChatRequest: {
-            /** Format: uuid */
-            userId: string;
-        };
-        ConversationPreview: {
-            /** Format: uuid */
-            id: string;
-            title: string;
-            avatar?: string | null;
-            isGroup: boolean;
-            unreadCount: number;
-            lastMessage?: string | null;
-            /** Format: date-time */
-            updatedAt: string;
-            /** Format: uuid */
-            participantId?: string | null;
-            isOnline: boolean;
-        };
-        SendMessageRequest: {
-            content?: string | null;
-            files?: string[];
-            /** Format: uuid */
-            reply_to_id?: string | null;
-        };
-        MessagesPage: {
-            messages: components["schemas"]["FullMessage"][];
-            nextCursor: string | null;
-        };
-        ReadMessageResponse: {
-            updated: number;
-        };
-        Me: {
-            /** Format: uuid */
-            id: string;
-            name: string;
-            /** Format: email */
-            email: string;
-            avatar?: string | null;
-            isActivated: boolean;
-            /** Format: date-time */
-            createdAt?: string;
-        };
-        UserPreview: {
-            /** Format: uuid */
-            id?: string;
-            username?: string;
-            avatar?: string | null;
-        };
-        LoginRequest: {
             /** Format: email */
             email: string;
             password: string;
+            /** Format: binary */
+            avatar?: string;
+          };
         };
-        LoginResponse: {
-            user: components["schemas"]["Me"];
-            accessToken: string;
-            refreshToken?: string;
+      };
+      responses: {
+        /** @description Успешная регистрация */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': components['schemas']['LoginResponse'];
+          };
         };
-        ErrorResponse: {
-            message?: string;
-            statusCode?: number;
-            errors?: {
-                field?: string;
-                msg?: string;
-            }[];
+        /** @description Пользователь уже существует */
+        400: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content?: never;
         };
+      };
     };
-    responses: never;
-    parameters: never;
-    requestBodies: never;
-    headers: never;
-    pathItems: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/login': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /**
+     * Вход пользователя
+     * @description Авторизирует пользователя и возвращает токены
+     */
+    post: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path?: never;
+        cookie?: never;
+      };
+      requestBody: {
+        content: {
+          'application/json': components['schemas']['LoginRequest'];
+        };
+      };
+      responses: {
+        /** @description Успешный вход */
+        200: {
+          headers: {
+            /** @description refreshToken в HttpOnly cookie */
+            'Set-Cookie'?: string;
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': components['schemas']['LoginResponse'];
+          };
+        };
+        /** @description Ошибка валидации */
+        400: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': components['schemas']['ErrorResponse'];
+          };
+        };
+        /** @description Неверный пароль */
+        401: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content?: never;
+        };
+      };
+    };
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/refresh': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Обновить accessToken */
+    get: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path?: never;
+        cookie?: never;
+      };
+      requestBody?: never;
+      responses: {
+        /** @description Новые токены */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': components['schemas']['LoginResponse'];
+          };
+        };
+        /** @description Refresh token недействителен */
+        401: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content?: never;
+        };
+      };
+    };
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/users': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Получить список всех пользователей */
+    get: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path?: never;
+        cookie?: never;
+      };
+      requestBody?: never;
+      responses: {
+        /** @description Список пользователей */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': components['schemas']['UserPreview'][];
+          };
+        };
+      };
+    };
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/me': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Получить информацию о пользователе */
+    get: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path?: never;
+        cookie?: never;
+      };
+      requestBody?: never;
+      responses: {
+        /** @description Данные пользователя */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': components['schemas']['Me'];
+          };
+        };
+        /** @description Пользователь не найден */
+        404: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content?: never;
+        };
+      };
+    };
+    /** Обновить профиль пользователя */
+    put: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path?: never;
+        cookie?: never;
+      };
+      requestBody: {
+        content: {
+          'multipart/form-data': {
+            name?: string;
+            /** Format: binary */
+            avatar?: string;
+          };
+        };
+      };
+      responses: {
+        /** @description Обновленные данные пользователя */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': components['schemas']['Me'];
+          };
+        };
+      };
+    };
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/users/search': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Поиск пользователей */
+    get: {
+      parameters: {
+        query: {
+          /** @description Поисковый запрос (по username) */
+          query: string;
+        };
+        header?: never;
+        path?: never;
+        cookie?: never;
+      };
+      requestBody?: never;
+      responses: {
+        /** @description Результаты поиска */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': components['schemas']['UserPreview'][];
+          };
+        };
+      };
+    };
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/messages': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    /** Редактировать сообщение */
+    put: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path?: never;
+        cookie?: never;
+      };
+      requestBody: {
+        content: {
+          'application/json': components['schemas']['EditMessageRequest'];
+        };
+      };
+      responses: {
+        /** @description Обновлённое сообщение */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': components['schemas']['FullMessage'];
+          };
+        };
+      };
+    };
+    /** Отправить сообщение в чат или пользователю */
+    post: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path?: never;
+        cookie?: never;
+      };
+      requestBody: {
+        content: {
+          'multipart/form-data': components['schemas']['SendDirectMessageRequest'];
+        };
+      };
+      responses: {
+        /** @description Созданное сообщение и идентификатор чата */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': components['schemas']['FullMessage'];
+          };
+        };
+      };
+    };
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/messages/{messageId}': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post?: never;
+    /** Удалить сообщение */
+    delete: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path: {
+          messageId: string;
+        };
+        cookie?: never;
+      };
+      requestBody?: never;
+      responses: {
+        /** @description Результат удаления */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': components['schemas']['DeleteMessageResponse'];
+          };
+        };
+      };
+    };
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/chats': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Получить список чатов пользователя */
+    get: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path?: never;
+        cookie?: never;
+      };
+      requestBody?: never;
+      responses: {
+        /** @description Список чатов */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': components['schemas']['Chat'][];
+          };
+        };
+      };
+    };
+    put?: never;
+    /** Создать приватный чат */
+    post: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path?: never;
+        cookie?: never;
+      };
+      requestBody: {
+        content: {
+          'application/json': components['schemas']['CreateChatRequest'];
+        };
+      };
+      responses: {
+        /** @description Найденный или созданный чат */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': components['schemas']['Chat'];
+          };
+        };
+      };
+    };
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/chats/{chatId}/messages': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Получить сообщения чата */
+    get: {
+      parameters: {
+        query?: {
+          /** @description Курсор по sent_at */
+          cursor?: string;
+          limit?: number;
+        };
+        header?: never;
+        path: {
+          chatId: string;
+        };
+        cookie?: never;
+      };
+      requestBody?: never;
+      responses: {
+        /** @description Сообщения и курсор на следующую страницу */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': components['schemas']['MessagesPage'];
+          };
+        };
+      };
+    };
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/chats/find/{userId}': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Найти приватный чат с пользователем */
+    get: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path: {
+          userId: string;
+        };
+        cookie?: never;
+      };
+      requestBody?: never;
+      responses: {
+        /** @description Чат или null, если чат не найден */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': components['schemas']['Chat'] | null;
+          };
+        };
+      };
+    };
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+}
+export type webhooks = Record<string, never>;
+export interface components {
+  schemas: {
+    FullMessage: components['schemas']['Message'] & {
+      sender?: components['schemas']['UserPreview'];
+      replyTo?: {
+        /** Format: uuid */
+        id?: string;
+        /** Format: uuid */
+        senderId?: string;
+        sender?: {
+          /** Format: uuid */
+          id?: string;
+          username?: string;
+        };
+        content?: string | null;
+        attachedFiles?: components['schemas']['ChatFile'][];
+      };
+      attachedFiles?: components['schemas']['ChatFile'][];
+    };
+    Message: {
+      /** Format: uuid */
+      id: string;
+      /** Format: uuid */
+      chat_id: string;
+      /** Format: uuid */
+      sender_id?: string | null;
+      content?: string | null;
+      /** Format: uuid */
+      reply_to_id?: string | null;
+      /** Format: date-time */
+      sent_at: string;
+      /** Format: date-time */
+      edited_at?: string | null;
+      /** Format: date-time */
+      deleted_at?: string | null;
+      is_read: boolean;
+    };
+    EditMessageRequest: {
+      /** Format: uuid */
+      messageId: string;
+      newContent: string;
+    };
+    SendDirectMessageRequest: {
+      /** Format: uuid */
+      chatId?: string | null;
+      /** Format: uuid */
+      recipientId?: string | null;
+      content?: string | null;
+      /** Format: uuid */
+      replyToId?: string | null;
+      files?: string[];
+    };
+    SendDirectMessageResponse: {
+      conversation: components['schemas']['ConversationPreview'];
+      message: components['schemas']['Message'];
+    };
+    DeleteMessageResponse: {
+      success: boolean;
+      /** Format: uuid */
+      messageId: string;
+    };
+    ChatMemberPreview: {
+      /** Format: uuid */
+      id: string;
+      name: string;
+      avatar?: string | null;
+    };
+    ChatFile: {
+      file_path: string;
+    };
+    ChatMessage: {
+      /** Format: uuid */
+      id: string;
+      /** Format: uuid */
+      chat_id: string;
+      /** Format: uuid */
+      sender_id?: string | null;
+      content?: string | null;
+      /** Format: date-time */
+      sent_at: string;
+      is_read: boolean;
+    };
+    ChatMessageWithRelations: {
+      /** Format: uuid */
+      id: string;
+      /** Format: uuid */
+      chat_id: string;
+      /** Format: uuid */
+      sender_id?: string | null;
+      content?: string | null;
+      /** Format: date-time */
+      sent_at: string;
+      is_read: boolean;
+      sender: components['schemas']['UserPreview'];
+      attachedFiles: components['schemas']['ChatFile'][];
+    };
+    Chat: {
+      /** Format: uuid */
+      id: string;
+      is_group: boolean;
+      group_name?: string | null;
+      group_avatar?: string | null;
+      /** Format: date-time */
+      created_at: string;
+      members?: components['schemas']['ChatMemberPreview'][];
+      messages?: components['schemas']['Message'][];
+    };
+    CreateChatRequest: {
+      /** Format: uuid */
+      userId: string;
+    };
+    ConversationPreview: {
+      /** Format: uuid */
+      id: string;
+      title: string;
+      avatar?: string | null;
+      isGroup: boolean;
+      unreadCount: number;
+      lastMessage?: string | null;
+      /** Format: date-time */
+      updatedAt: string;
+      /** Format: uuid */
+      participantId?: string | null;
+      isOnline: boolean;
+    };
+    SendMessageRequest: {
+      content?: string | null;
+      files?: string[];
+      /** Format: uuid */
+      reply_to_id?: string | null;
+    };
+    MessagesPage: {
+      messages: components['schemas']['FullMessage'][];
+      nextCursor: string | null;
+    };
+    ReadMessageResponse: {
+      updated: number;
+    };
+    Me: {
+      /** Format: uuid */
+      id: string;
+      name: string;
+      /** Format: email */
+      email: string;
+      avatar?: string | null;
+      isActivated: boolean;
+      /** Format: date-time */
+      createdAt?: string;
+    };
+    UserPreview: {
+      /** Format: uuid */
+      id?: string;
+      username?: string;
+      avatar?: string | null;
+    };
+    LoginRequest: {
+      /** Format: email */
+      email: string;
+      password: string;
+    };
+    LoginResponse: {
+      user: components['schemas']['Me'];
+      accessToken: string;
+      refreshToken?: string;
+    };
+    ErrorResponse: {
+      message?: string;
+      statusCode?: number;
+      errors?: {
+        field?: string;
+        msg?: string;
+      }[];
+    };
+  };
+  responses: never;
+  parameters: never;
+  requestBodies: never;
+  headers: never;
+  pathItems: never;
 }
 export type $defs = Record<string, never>;
 export type operations = Record<string, never>;

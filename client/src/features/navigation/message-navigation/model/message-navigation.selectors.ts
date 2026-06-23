@@ -1,4 +1,4 @@
-import { RootState } from "../../../../app/providers/store";
+import { RootState } from '../../../../app/providers/store';
 
-
-export const selectTargetMessageId = (state: RootState) => state.messageNavigation.targetMessageId;
+export const selectTargetMessageId = (state: RootState) =>
+  state.messageNavigation.targetMessageId;

@@ -1,12 +1,10 @@
-
-
 .reg-form {
   max-width: 400px;
   margin: 0px auto;
   padding: 30px;
   border-radius: 12px;
   background: #fff;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -51,16 +49,16 @@
 }
 
 .error button.error-btn {
-    width: 20%;
-    height: 10%;
-    padding: 0;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    /* font-size: 20px; */
-    transition: background-color 0.2s;
+  width: 20%;
+  height: 10%;
+  padding: 0;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  /* font-size: 20px; */
+  transition: background-color 0.2s;
 }
 
 .error button.error-btn:hover {
@@ -74,11 +72,11 @@
 }
 
 .reg-form .avatar-icon {
-    position: relative;
-    border: 1px solid gray;
-    border-radius: 50%;
-    width: 130px;
-    height: 80%;
+  position: relative;
+  border: 1px solid gray;
+  border-radius: 50%;
+  width: 130px;
+  height: 80%;
 }
 
 .reg-form .avatar-container .add-avatar {

@@ -1,3 +1,1 @@
-export {
-  resolveAttachmentTypeFromFile as getAttachmentType,
-} from "./resolveAttachmentType";
+export { resolveAttachmentTypeFromFile as getAttachmentType } from './resolveAttachmentType';

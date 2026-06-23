@@ -1,78 +1,56 @@
-import { useEffect } from "react";
+import { useEffect } from 'react';
 
-import { useAppDispatch } from "../../../app/hooks";
+import { useAppDispatch } from '../../../app/hooks';
 
 import {
   subscribePresenceOnline,
   subscribePresenceOffline,
   subscribePresenceInit,
-} from "../../../shared/socket/listeners/presence.listeners";
+} from '../../../shared/socket/listeners/presence.listeners';
 
 import {
   userOnline,
   userOffline,
   setOnlineUsers,
-} from "../model/presence.slice";
+} from '../model/presence.slice';
 
 export const usePresenceEvents = () => {
-
-  const dispatch =
-    useAppDispatch();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
-
     const initHandler = ({ users }) => {
-
-      dispatch(
-        setOnlineUsers(users)
-      );
-
+      dispatch(setOnlineUsers(users));
     };
 
-    const onlineHandler =
-      ({ userId }) => {
-        console.log("ONLINE EVENT", userId);
-        dispatch(
-          userOnline({
-            userId,
-          })
-        );
-      };
-
-    const offlineHandler =
-      ({
-        userId,
-        lastSeen,
-      }) => {
-        console.log("OFFLINE EVENT", userId, lastSeen);
-        dispatch(
-          userOffline({
-            userId,
-            lastSeen,
-          })
-        );
-      };
-
-    const unsubOnline =
-      subscribePresenceOnline(
-        onlineHandler
+    const onlineHandler = ({ userId }) => {
+      console.log('ONLINE EVENT', userId);
+      dispatch(
+        userOnline({
+          userId,
+        }),
       );
+    };
 
-    const unsubOffline =
-      subscribePresenceOffline(
-        offlineHandler
+    const offlineHandler = ({ userId, lastSeen }) => {
+      console.log('OFFLINE EVENT', userId, lastSeen);
+      dispatch(
+        userOffline({
+          userId,
+          lastSeen,
+        }),
       );
-    
-    const unsubInit = 
-      subscribePresenceInit(
-        initHandler
-      );
+    };
+
+    const unsubOnline = subscribePresenceOnline(onlineHandler);
+
+    const unsubOffline = subscribePresenceOffline(offlineHandler);
+
+    const unsubInit = subscribePresenceInit(initHandler);
 
     return () => {
-      unsubInit()
+      unsubInit();
       unsubOnline();
       unsubOffline();
     };
-
   }, []);
 };

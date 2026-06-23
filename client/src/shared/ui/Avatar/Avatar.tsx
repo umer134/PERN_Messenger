@@ -32,9 +32,7 @@ export const Avatar = ({
   const showImage = src && !error;
 
   return (
-    <div className={clsx(s.avatar({ size }), className)}
-      onClick={onClick}
-    >
+    <div className={clsx(s.avatar({ size }), className)} onClick={onClick}>
       {showImage ? (
         <img
           src={resolveMediaUrl(src)}
@@ -43,14 +41,11 @@ export const Avatar = ({
           onError={() => setError(true)}
         />
       ) : (
-        <User2  />
+        <User2 />
       )}
 
       {status !== 'none' && (
-        <span
-          className={s.status}
-          style={s.statusColor[status]}
-        />
+        <span className={s.status} style={s.statusColor[status]} />
       )}
     </div>
   );

@@ -1,13 +1,13 @@
-import { style } from "@vanilla-extract/css";
-import { vars } from "../../../../../shared/styles/theme/theme.css";
+import { style } from '@vanilla-extract/css';
+import { vars } from '../../../../../shared/styles/theme/theme.css';
 
 export const root = style({
-  position: "relative",
+  position: 'relative',
 
   width: 120,
   height: 120,
 
-  overflow: "hidden",
+  overflow: 'hidden',
 
   borderRadius: vars.radius.lg,
 
@@ -15,14 +15,14 @@ export const root = style({
 });
 
 export const image = style({
-  width: "100%",
-  height: "100%",
+  width: '100%',
+  height: '100%',
 
-  objectFit: "cover",
+  objectFit: 'cover',
 });
 
 export const removeButton = style({
-  position: "absolute",
+  position: 'absolute',
 
   top: 8,
   right: 8,
@@ -30,9 +30,9 @@ export const removeButton = style({
   width: 28,
   height: 28,
 
-  borderRadius: "50%",
+  borderRadius: '50%',
 
-  border: "none",
+  border: 'none',
 
-  cursor: "pointer",
+  cursor: 'pointer',
 });

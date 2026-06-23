@@ -1,5 +1,5 @@
-import { User } from "../../user/model/user.types";
-import { ConversationPreview } from "./conversation.types";
+import { User } from '../../user/model/user.types';
+import { ConversationPreview } from './conversation.types';
 
 export type DraftConversation = {
   id: string;
@@ -9,12 +9,12 @@ export type DraftConversation = {
   isVirtual: true;
 };
 
-export type SelectedConversation = 
+export type SelectedConversation =
   | {
-      type: "conversation";
+      type: 'conversation';
       data: ConversationPreview;
     }
   | {
-      type: "draft";
+      type: 'draft';
       draft: DraftConversation;
     };

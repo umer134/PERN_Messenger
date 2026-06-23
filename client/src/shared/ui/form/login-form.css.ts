@@ -17,4 +17,4 @@ export const button = style({
   background: 'black',
   color: 'white',
   borderRadius: 8,
-})
+});

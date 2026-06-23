@@ -51,8 +51,8 @@ export const variants = styleVariants({
   },
 });
 
-export const sizes = ({
+export const sizes = {
   sm: { padding: '6px 10px', fontSize: vars.fontSize.xs },
   md: { padding: '10px 14px', fontSize: vars.fontSize.sm },
   lg: { padding: '12px 18px', fontSize: vars.fontSize.md },
-});
+};

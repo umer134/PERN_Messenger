@@ -63,4 +63,3 @@ export interface SendMessageRequest {
 export interface ReadMessageResponse {
   updated: number;
 }
-

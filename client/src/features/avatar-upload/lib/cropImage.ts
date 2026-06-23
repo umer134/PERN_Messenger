@@ -22,7 +22,7 @@ export interface CroppedImageOptions {
 export const createImage = (url: string): Promise<HTMLImageElement> => {
   return new Promise<HTMLImageElement>((resolve, reject) => {
     const image = new Image();
-    
+
     const cleanup = () => {
       image.removeEventListener('load', handleLoad);
       image.removeEventListener('error', handleError);
@@ -35,17 +35,21 @@ export const createImage = (url: string): Promise<HTMLImageElement> => {
 
     const handleError = (error: Event | string) => {
       cleanup();
-      reject(new Error(`Failed to load image: ${typeof error === 'string' ? error : 'Unknown error'}`));
+      reject(
+        new Error(
+          `Failed to load image: ${typeof error === 'string' ? error : 'Unknown error'}`,
+        ),
+      );
     };
 
     image.addEventListener('load', handleLoad);
     image.addEventListener('error', handleError);
-    
+
     // Для CORS (если изображение с другого домена)
     if (url.startsWith('http')) {
       image.setAttribute('crossOrigin', 'anonymous');
     }
-    
+
     image.src = url;
 
     // Если URL пустой или некорректный
@@ -62,7 +66,7 @@ export const createImage = (url: string): Promise<HTMLImageElement> => {
  */
 export async function getCroppedImg(
   imageSrc: string,
-  crop: CropArea
+  crop: CropArea,
 ): Promise<Blob> {
   // Валидация входных параметров
   if (!imageSrc) {
@@ -75,7 +79,7 @@ export async function getCroppedImg(
 
   try {
     const image = await createImage(imageSrc);
-    
+
     // Создаем canvas с размерами обрезанной области
     const canvas = document.createElement('canvas');
     canvas.width = crop.width;
@@ -96,7 +100,7 @@ export async function getCroppedImg(
       0,
       0,
       crop.width,
-      crop.height
+      crop.height,
     );
 
     // Конвертируем canvas в Blob
@@ -110,11 +114,13 @@ export async function getCroppedImg(
           }
         },
         'image/jpeg',
-        0.95 // Качество по умолчанию
+        0.95, // Качество по умолчанию
       );
     });
   } catch (error) {
-    throw new Error(`Failed to crop image: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    throw new Error(
+      `Failed to crop image: ${error instanceof Error ? error.message : 'Unknown error'}`,
+    );
   }
 }
 
@@ -141,7 +147,7 @@ export async function getCroppedImgWithOptions({
 
   try {
     const image = await createImage(imageSrc);
-    
+
     const canvas = document.createElement('canvas');
     canvas.width = crop.width;
     canvas.height = crop.height;
@@ -166,7 +172,7 @@ export async function getCroppedImgWithOptions({
       0,
       0,
       crop.width,
-      crop.height
+      crop.height,
     );
 
     return new Promise<Blob>((resolve, reject) => {
@@ -175,15 +181,19 @@ export async function getCroppedImgWithOptions({
           if (blob) {
             resolve(blob);
           } else {
-            reject(new Error(`Failed to create ${outputFormat} blob from canvas`));
+            reject(
+              new Error(`Failed to create ${outputFormat} blob from canvas`),
+            );
           }
         },
         outputFormat,
-        quality
+        quality,
       );
     });
   } catch (error) {
-    throw new Error(`Failed to crop image with options: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    throw new Error(
+      `Failed to crop image with options: ${error instanceof Error ? error.message : 'Unknown error'}`,
+    );
   }
 }
 
@@ -204,7 +214,9 @@ export const blobToBase64 = (blob: Blob): Promise<string> => {
 };
 
 // Хелпер для получения размеров изображения
-export const getImageDimensions = (url: string): Promise<{ width: number; height: number }> => {
+export const getImageDimensions = (
+  url: string,
+): Promise<{ width: number; height: number }> => {
   return createImage(url).then((image) => ({
     width: image.width,
     height: image.height,

@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 type State = {
   targetMessageId: string | null;
@@ -9,14 +9,13 @@ const initialState: State = {
 };
 
 const slice = createSlice({
-  name: "messageNavigation",
+  name: 'messageNavigation',
 
   initialState,
 
   reducers: {
     scrollToMessage: (state, action: PayloadAction<string>) => {
-      state.targetMessageId =
-        action.payload;
+      state.targetMessageId = action.payload;
     },
 
     clearScrollTarget: (state) => {
@@ -25,6 +24,6 @@ const slice = createSlice({
   },
 });
 
-export const { scrollToMessage, clearScrollTarget, } = slice.actions;
+export const { scrollToMessage, clearScrollTarget } = slice.actions;
 
 export default slice.reducer;

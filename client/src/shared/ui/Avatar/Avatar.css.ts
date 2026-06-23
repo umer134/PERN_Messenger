@@ -21,25 +21,25 @@ export const avatar = recipe({
         width: 32,
         height: 32,
         fontSize: vars.fontSize.sm,
-        borderRadius: vars.radius.full
+        borderRadius: vars.radius.full,
       },
       md: {
         width: 40,
         height: 40,
         fontSize: vars.fontSize.md,
-        borderRadius: vars.radius.full
+        borderRadius: vars.radius.full,
       },
       lg: {
         width: 56,
         height: 56,
         fontSize: vars.fontSize.lg,
-        borderRadius: vars.radius.full
+        borderRadius: vars.radius.full,
       },
       xl: {
         width: 80,
         height: 80,
         fontSize: vars.fontSize.xl,
-        borderRadius: vars.radius.full
+        borderRadius: vars.radius.full,
       },
     },
   },

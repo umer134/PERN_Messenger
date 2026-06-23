@@ -38,4 +38,4 @@ export const footer = style({
 
 export const slider = style({
   width: '100%',
-})
+});

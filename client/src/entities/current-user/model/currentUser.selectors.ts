@@ -1,10 +1,8 @@
-import { RootState } from "../../../app/providers/store";
+import { RootState } from '../../../app/providers/store';
 
-export const selectCurrentUser = (state: RootState) =>
-  state.currentUser;
+export const selectCurrentUser = (state: RootState) => state.currentUser;
 
-export const selectCurrentUserId = (state: RootState) =>
-  state.currentUser.id;
+export const selectCurrentUserId = (state: RootState) => state.currentUser.id;
 
 export const selectCurrentUserName = (state: RootState) =>
   state.currentUser.username;

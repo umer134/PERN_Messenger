@@ -8,4 +8,4 @@ export const [themeClass, vars] = createTheme({
   fontSize: tokens.fontSize,
   shadow: tokens.shadow,
   motion: tokens.motion,
-})
+});

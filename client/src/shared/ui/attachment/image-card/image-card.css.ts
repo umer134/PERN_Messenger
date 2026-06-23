@@ -1,27 +1,27 @@
-import { style } from "@vanilla-extract/css";
+import { style } from '@vanilla-extract/css';
 
 export const root = style({
-  position: "relative",
+  position: 'relative',
 
   width: 120,
   height: 120,
 
-  overflow: "hidden",
+  overflow: 'hidden',
 
   borderRadius: 16,
 });
 
 export const image = style({
-  width: "100%",
-  height: "100%",
+  width: '100%',
+  height: '100%',
 
-  objectFit: "cover",
+  objectFit: 'cover',
 
-  display: "block",
+  display: 'block',
 });
 
 export const removeButton = style({
-  position: "absolute",
+  position: 'absolute',
 
   top: 8,
   right: 8,
@@ -29,9 +29,9 @@ export const removeButton = style({
   width: 28,
   height: 28,
 
-  borderRadius: "50%",
+  borderRadius: '50%',
 
-  border: "none",
+  border: 'none',
 
-  cursor: "pointer",
+  cursor: 'pointer',
 });

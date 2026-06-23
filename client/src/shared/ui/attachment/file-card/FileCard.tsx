@@ -1,11 +1,7 @@
-import {
-  FileText,
-  Download,
-  X,
-} from "lucide-react";
+import { FileText, Download, X } from 'lucide-react';
 
-import * as s from "./file-card.css";
-import { resolveMediaUrl } from "../../../lib/media/resolveMediaUrl";
+import * as s from './file-card.css';
+import { resolveMediaUrl } from '../../../lib/media/resolveMediaUrl';
 
 type Props = {
   name: string;
@@ -17,12 +13,7 @@ type Props = {
   onRemove?: () => void;
 };
 
-export const FileCard = ({
-  name,
-  url,
-  removable,
-  onRemove,
-}: Props) => {
+export const FileCard = ({ name, url, removable, onRemove }: Props) => {
   const resolvedUrl = url ? resolveMediaUrl(url) : undefined;
 
   return (
@@ -41,9 +32,7 @@ export const FileCard = ({
             {name}
           </a>
         ) : (
-          <span className={s.filename}>
-            {name}
-          </span>
+          <span className={s.filename}>{name}</span>
         )}
       </div>
 
@@ -60,10 +49,7 @@ export const FileCard = ({
       )}
 
       {removable && (
-        <button
-          type="button"
-          onClick={onRemove}
-        >
+        <button type="button" onClick={onRemove}>
           <X size={14} />
         </button>
       )}

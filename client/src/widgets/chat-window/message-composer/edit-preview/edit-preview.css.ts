@@ -1,18 +1,16 @@
-import { style } from "@vanilla-extract/css";
-import { vars } from "../../../../shared/styles/theme/theme.css";
+import { style } from '@vanilla-extract/css';
+import { vars } from '../../../../shared/styles/theme/theme.css';
 
 export const root = style({
-  display: "flex",
+  display: 'flex',
 
-  alignItems: "center",
+  alignItems: 'center',
 
-  justifyContent:
-    "space-between",
+  justifyContent: 'space-between',
 
   padding: 12,
 
-  borderBottom:
-    "1px solid rgba(255,255,255,.08)",
+  borderBottom: '1px solid rgba(255,255,255,.08)',
 });
 
 export const content = style({
@@ -28,14 +26,13 @@ export const author = style({
 export const text = style({
   fontSize: 12,
 
-  opacity: .7,
+  opacity: 0.7,
 
-  overflow: "hidden",
+  overflow: 'hidden',
 
-  whiteSpace: "nowrap",
+  whiteSpace: 'nowrap',
 
-  textOverflow:
-    "ellipsis",
+  textOverflow: 'ellipsis',
 });
 
 export const title = style({

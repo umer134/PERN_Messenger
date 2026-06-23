@@ -13,5 +13,5 @@ export type ConversationDetails = {
 
   isOnline?: boolean;
 
-  lastSeen?: number
+  lastSeen?: number;
 };

@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 
 type TypingUser = {
   userId: string;
@@ -15,38 +15,35 @@ const initialState: State = {
 };
 
 const slice = createSlice({
-  name: "typing",
+  name: 'typing',
 
   initialState,
 
   reducers: {
     addTypingUser: (state, action) => {
-
       const { chatId, userId, username } = action.payload;
 
       if (!state.chats[chatId]) {
         state.chats[chatId] = [];
       }
 
-      const exists = state.chats[chatId].find(u => 
-        u.userId === userId
-      );
+      const exists = state.chats[chatId].find((u) => u.userId === userId);
 
-      if(exists) {
+      if (exists) {
         exists.lastActivity = Date.now();
         return;
       }
 
       state.chats[chatId].push({ userId, username, lastActivity: Date.now() });
     },
-    
+
     removeTypingUser: (state, action) => {
       const { chatId, userId } = action.payload;
 
       if (!state.chats[chatId]) return;
 
-      state.chats[chatId] = state.chats[chatId].filter(u =>
-        u.userId !== userId
+      state.chats[chatId] = state.chats[chatId].filter(
+        (u) => u.userId !== userId,
       );
     },
 
@@ -56,10 +53,7 @@ const slice = createSlice({
   },
 });
 
-export const {
-  addTypingUser,
-  removeTypingUser,
-  clearTypingUsers,
-} = slice.actions;
+export const { addTypingUser, removeTypingUser, clearTypingUsers } =
+  slice.actions;
 
 export default slice.reducer;

@@ -1,17 +1,21 @@
 import { useEffect, useState } from 'react';
-import { MessageContextMenu } from '../../../features/message-actions/ui/MessageCoontextMenu';
+import { MessageContextMenu } from '../../../features/message-actions/ui/MessageContextMenu';
 
 import { useAppDispatch } from '../../../app/hooks';
-import { startReply, startEdit, startDelete } from '../../../features/message-actions/model/message-actions.slice';
+import {
+  startReply,
+  startEdit,
+  startDelete,
+} from '../../../features/message-actions/model/message-actions.slice';
 
-import clsx from "clsx";
+import clsx from 'clsx';
 
-import * as s from "./message-bubble.css";
+import * as s from './message-bubble.css';
 
-import { MessageVM } from "../../../entities/messages/model/message.types";
-import { MessageStatus } from "../../../entities/messages/ui/message-status/MessageStatus";
-import { AttachmentRenderer } from "../../../entities/messages/ui/attachment-renderer/AttachmentRenderer";
-import { MediaItem } from "../../../features/media-viewer/model/media-viewer.types";
+import { MessageVM } from '../../../entities/messages/model/message.types';
+import { MessageStatus } from '../../../entities/messages/ui/message-status/MessageStatus';
+import { AttachmentRenderer } from '../../../entities/messages/ui/attachment-renderer/AttachmentRenderer';
+import { MediaItem } from '../../../features/media-viewer/model/media-viewer.types';
 import { ReplySnippet } from '../../../entities/messages/ui/reply-snippet/ReplySnippet';
 import { formatDate } from '../../../shared/lib/format/formatDate';
 import { useDeleteMessage } from '../../../features/message-actions/hooks/useMessageActions';
@@ -27,9 +31,9 @@ export const MessageBubble = ({
   message,
   isGrouped,
   isMine,
-  mediaItems
+  mediaItems,
 }: Props) => {
-  const [menu, setMenu] = useState<{x: number, y: number} | null>(null);
+  const [menu, setMenu] = useState<{ x: number; y: number } | null>(null);
 
   const deleteMessage = useDeleteMessage(message.chatId);
 
@@ -42,31 +46,17 @@ export const MessageBubble = ({
       setMenu(null);
     };
 
-    window.addEventListener(
-      "click",
-      handleClick
-    );
+    window.addEventListener('click', handleClick);
 
     return () => {
-      window.removeEventListener(
-        "click",
-        handleClick
-      );
+      window.removeEventListener('click', handleClick);
     };
   }, [menu]);
 
   return (
-    <div
-      className={clsx(
-        s.row,
-        isMine && s.mine,
-      )}
-    >
+    <div className={clsx(s.row, isMine && s.mine)}>
       <div
-        className={clsx(
-          s.bubble,
-          isMine && s.myBubble,
-        )}
+        className={clsx(s.bubble, isMine && s.myBubble)}
         onContextMenu={(e) => {
           e.preventDefault();
 
@@ -79,69 +69,59 @@ export const MessageBubble = ({
         {message.replyTo && (
           <ReplySnippet
             replyMessageId={message.replyTo?.id}
-            sender={message.replyTo?.senderName ?? "Unknown"}
-            content={message.replyTo.content ?? ""}
+            sender={message.replyTo?.senderName ?? 'Unknown'}
+            content={message.replyTo.content ?? ''}
             attachments={message.replyTo.attachments}
           />
         )}
 
         {message.attachments.length > 0 && (
           <div className={s.attachments}>
-            {message.attachments.map(
-              attachment => (
-                <AttachmentRenderer
-                  key={attachment.id}
-                  attachment={attachment}
-                  mediaItems={mediaItems}
-                />
-              )
-            )}
+            {message.attachments.map((attachment) => (
+              <AttachmentRenderer
+                key={attachment.id}
+                attachment={attachment}
+                mediaItems={mediaItems}
+              />
+            ))}
           </div>
         )}
 
-        {message.content && (
-          <div className={s.text}>
-            {message.content}
-          </div>
-        )}
+        {message.content && <div className={s.text}>{message.content}</div>}
 
         <div className={s.footer}>
-          <span>
-            {formatDate(message.sentAt, { format: 'time' })}
-          </span>
+          <span>{formatDate(message.sentAt, { format: 'time' })}</span>
           {message.status && isMine && (
-            <MessageStatus
-              status={message.status}
-            />
+            <MessageStatus status={message.status} />
           )}
         </div>
 
         {menu && (
-          <div style={{
-            position: "fixed",
-            left: menu.x,
-            top: menu.y,
-            zIndex: 9999,
-          }}>
+          <div
+            style={{
+              position: 'fixed',
+              left: menu.x,
+              top: menu.y,
+              zIndex: 9999,
+            }}
+          >
             <MessageContextMenu
               canEdit={!!isMine}
               onAction={(action) => {
                 switch (action) {
-                  case "reply":
-                    dispatch(
-                      startReply(message)
-                    );
+                  case 'reply':
+                    dispatch(startReply(message));
                     break;
 
-                  case "edit":
+                  case 'edit':
                     dispatch(startEdit(message));
                     break;
 
-                  case "delete":
+                  case 'delete':
                     deleteMessage.mutateAsync(message.id);
                     break;
 
-                  case "copy":
+                  case 'copy':
                     break;
                 }
 

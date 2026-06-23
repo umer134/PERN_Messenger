@@ -1,7 +1,7 @@
-import { X } from "lucide-react";
+import { X } from 'lucide-react';
 
-import * as s from "./image-card.css";
-import { resolveMediaUrl } from "../../../lib/media/resolveMediaUrl";
+import * as s from './image-card.css';
+import { resolveMediaUrl } from '../../../lib/media/resolveMediaUrl';
 
 type Props = {
   src: string;
@@ -22,23 +22,12 @@ export const ImageCard = ({
   removable,
   onRemove,
 }: Props) => {
-
   return (
-    <div className={s.root}
-      onClick={onClick}
-    >
-      <img
-        src={resolveMediaUrl(src)}
-        alt={alt}
-        className={s.image}
-      />
+    <div className={s.root} onClick={onClick}>
+      <img src={resolveMediaUrl(src)} alt={alt} className={s.image} />
 
       {removable && (
-        <button
-          type="button"
-          className={s.removeButton}
-          onClick={onRemove}
-        >
+        <button type="button" className={s.removeButton} onClick={onRemove}>
           <X size={14} />
         </button>
       )}

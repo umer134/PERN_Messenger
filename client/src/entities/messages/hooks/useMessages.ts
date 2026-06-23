@@ -1,46 +1,25 @@
-import { useQuery } from "@tanstack/react-query";
-import { MessageApi } from "../api/message.api";
-import { MessageAdapter } from "../model/message.adapter";
+import { useQuery } from '@tanstack/react-query';
+import { MessageApi } from '../api/message.api';
+import { MessageAdapter } from '../model/message.adapter';
 
-export const useMessages = (
-  chatId:string
-) => {
+export const useMessages = (chatId: string) => {
+  return useQuery({
+    queryKey: ['messages', chatId],
 
-return useQuery({
+    queryFn: async () => {
+      const response = await MessageApi.getMessages(chatId);
 
-queryKey:[
- "messages",
- chatId
-],
+      return {
+        messages: response.data.messages.map((message) =>
+          MessageAdapter.toVM(message),
+        ),
 
+        nextCursor: response.data.nextCursor,
+      };
+    },
 
-queryFn: async()=>{
+    enabled: !!chatId,
 
- const response =
-  await MessageApi.getMessages(chatId);
-
-
- return {
-
- messages:
- response.data.messages.map(
-  message =>
-  MessageAdapter.toVM(message)
- ),
-
- nextCursor:
- response.data.nextCursor
-
- };
-
-},
-
-
-enabled:!!chatId,
-
-
-staleTime:1000 * 60 * 5,
-
-});
-
+    staleTime: 1000 * 60 * 5,
+  });
 };

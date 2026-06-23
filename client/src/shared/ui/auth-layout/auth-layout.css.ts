@@ -6,6 +6,5 @@ export const layout = style({
   alignItems: 'center',
   justifyContent: 'center',
 
-  background: 
-    'radial-gradient(circle at top, #111 0%, #09090B 60%)',
+  background: 'radial-gradient(circle at top, #111 0%, #09090B 60%)',
 });

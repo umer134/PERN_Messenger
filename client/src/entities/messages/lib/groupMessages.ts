@@ -1,4 +1,4 @@
-import { MessageGroupVM, MessageVM } from "../model/message.types";
+import { MessageGroupVM, MessageVM } from '../model/message.types';
 
 // groupMessages.ts
 export const groupMessages = (messages: MessageVM[]): MessageGroupVM[] => {

@@ -1,19 +1,19 @@
-import { style } from "@vanilla-extract/css";
-import { vars } from "../../../shared/styles/theme/theme.css";
+import { style } from '@vanilla-extract/css';
+import { vars } from '../../../shared/styles/theme/theme.css';
 
 export const root = style({
   padding: 16,
 
   borderTop: `1px solid ${vars.color.border}`,
 
-  display: "flex",
-  flexDirection: "column",
+  display: 'flex',
+  flexDirection: 'column',
   gap: 12,
 });
 
 export const inputRow = style({
-  display: "flex",
-  alignItems: "center",
+  display: 'flex',
+  alignItems: 'center',
   gap: 12,
 });
 
@@ -23,7 +23,7 @@ export const textarea = style({
   minHeight: 44,
   maxHeight: 180,
 
-  resize: "none",
+  resize: 'none',
 
   border: `1px solid ${vars.color.border}`,
 
@@ -33,12 +33,12 @@ export const textarea = style({
 
   color: vars.color.text,
 
-  padding: "12px 14px",
+  padding: '12px 14px',
 
-  outline: "none",
+  outline: 'none',
 
   selectors: {
-    "&:focus": {
+    '&:focus': {
       borderColor: vars.color.primary,
     },
   },
@@ -50,17 +50,17 @@ export const iconButton = style({
 
   borderRadius: vars.radius.full,
 
-  border: "none",
+  border: 'none',
 
   background: vars.color.surface,
 
   color: vars.color.textSecondary,
 
-  cursor: "pointer",
+  cursor: 'pointer',
 
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
 });
 
 export const sendButton = style([
@@ -72,80 +72,78 @@ export const sendButton = style([
 ]);
 
 export const voiceButton = style({
-    width: 40,
+  width: 40,
 
-    height: 40,
+  height: 40,
 
-    flexShrink: 0,
+  flexShrink: 0,
 
-    borderRadius: vars.radius.full,
+  borderRadius: vars.radius.full,
 
-    background: vars.color.primary,
+  background: vars.color.primary,
 
-    color: vars.color.primaryText,
+  color: vars.color.primaryText,
 
-    cursor: "pointer",
+  cursor: 'pointer',
 
-    display: "flex",
+  display: 'flex',
 
-    alignItems: "center",
+  alignItems: 'center',
 
-    justifyContent: "center",
-    
-    selectors: {
-      "&[data-recording='true']": {
-        background:
-          vars.color.danger,
-      },
+  justifyContent: 'center',
+
+  selectors: {
+    "&[data-recording='true']": {
+      background: vars.color.danger,
     },
+  },
 });
 
 export const recording = style({
-    flex: 1,
+  flex: 1,
 
-    display: "flex",
+  display: 'flex',
 
-    alignItems: "center",
+  alignItems: 'center',
 
-    gap: 12,
+  gap: 12,
 
-    padding: "0 12px",
+  padding: '0 12px',
 });
 
 export const cancelButton = style({
-    width: 40,
+  width: 40,
 
-    height: 40,
+  height: 40,
 
-    flexShrink: 0,
+  flexShrink: 0,
 
-    color: vars.color.primary,
-    
-    cursor: "pointer",
+  color: vars.color.primary,
 
-    display: "flex",
+  cursor: 'pointer',
 
-    alignItems: "center",
+  display: 'flex',
 
-    justifyContent:
-      "center",
+  alignItems: 'center',
 
-    borderRadius: "50%",
+  justifyContent: 'center',
+
+  borderRadius: '50%',
 });
 
 export const recordingDot = style({
-    width: 8,
+  width: 8,
 
-    height: 8,
+  height: 8,
 
-    borderRadius: "50%",
+  borderRadius: '50%',
 
-    background: "red",
+  background: 'red',
 });
 
 export const attachments = style({
-  display: "flex",
-  flexWrap: "wrap",
+  display: 'flex',
+  flexWrap: 'wrap',
 
   gap: 8,
 });

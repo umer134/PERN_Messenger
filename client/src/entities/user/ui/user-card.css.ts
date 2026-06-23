@@ -1,29 +1,28 @@
-import { style } from "@vanilla-extract/css";
-import { vars } from "../../../shared/styles/theme/theme.css";
+import { style } from '@vanilla-extract/css';
+import { vars } from '../../../shared/styles/theme/theme.css';
 
 export const root = style({
-  width: "100%",
+  width: '100%',
 
-  display: "flex",
+  display: 'flex',
 
-  alignItems: "center",
+  alignItems: 'center',
 
   gap: 12,
 
-  padding: "10px 16px",
+  padding: '10px 16px',
 
-  border: "none",
+  border: 'none',
 
-  background: "transparent",
+  background: 'transparent',
 
-  cursor: "pointer",
+  cursor: 'pointer',
 
   color: vars.color.text,
 
   selectors: {
-    "&:hover": {
-      background:
-        vars.color.surface,
+    '&:hover': {
+      background: vars.color.surface,
     },
   },
 });
@@ -33,9 +32,9 @@ export const avatar = style({
 
   height: 42,
 
-  borderRadius: "50%",
+  borderRadius: '50%',
 
-  objectFit: "cover",
+  objectFit: 'cover',
 
   flexShrink: 0,
 });

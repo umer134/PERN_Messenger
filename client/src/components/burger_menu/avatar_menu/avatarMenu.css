@@ -1,6 +1,5 @@
-
 .avatar-other.expanded {
-    flex-direction: column;
+  flex-direction: column;
 }
 
 .avatar-other.expanded .logout-toggleTheme.expanded {
@@ -21,18 +20,18 @@
 }
 
 .avatar.expanded img {
-    border-radius: 0;
+  border-radius: 0;
 }
 .avatar-menu {
   display: none; /* Скрываем меню по умолчанию */
   position: absolute;
-    top: 25px;
-    right: 1px;
-    font-size: 30px;
-    /* transform: translateX(-50%); */
-    background: none;
-    padding: 10px;
-    border-radius: 8px;
+  top: 25px;
+  right: 1px;
+  font-size: 30px;
+  /* transform: translateX(-50%); */
+  background: none;
+  padding: 10px;
+  border-radius: 8px;
 }
 
 .avatar.expanded .avatar-menu {
@@ -55,6 +54,6 @@
 
 .avatar-settings-menu {
   color: aliceblue;
-    position: absolute;
-    right: 35px;
+  position: absolute;
+  right: 35px;
 }

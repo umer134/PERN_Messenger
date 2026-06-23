@@ -1,12 +1,7 @@
 export type MessageAttachmentVM = {
   id: string;
 
-  type: 
-    | "image"
-    | "file"
-    | "video"
-    | "audio"
-    | "voice";
+  type: 'image' | 'file' | 'video' | 'audio' | 'voice';
 
   name: string;
 
@@ -50,7 +45,7 @@ export type MessageVM = {
 
   isRead: boolean;
 
-  status: MessageStatus;
+  status: TMessageStatus;
 };
 
 export type MessageGroupVM = {
@@ -58,8 +53,4 @@ export type MessageGroupVM = {
   messages: MessageVM[];
 };
 
-export type MessageStatus =
-  | "sending"
-  | "sent"
-  | "delivered"
-  | "read";
+export type TMessageStatus = 'sending' | 'sent' | 'delivered' | 'read';

@@ -1,5 +1,5 @@
 import { style } from '@vanilla-extract/css';
-import { vars } from "../../styles/theme/theme.css";
+import { vars } from '../../styles/theme/theme.css';
 
 export const input = style({
   width: '100%',
@@ -19,4 +19,3 @@ export const input = style({
     boxShadow: '0 0 0 3px rgba(59, 130, 246, 0.15)',
   },
 });
-

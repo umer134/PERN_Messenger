@@ -1,21 +1,20 @@
-import { style } from "@vanilla-extract/css";
+import { style } from '@vanilla-extract/css';
 
 export const root = style({
   minWidth: 180,
 
-  display: "flex",
-  flexDirection: "column",
+  display: 'flex',
+  flexDirection: 'column',
 
   padding: 6,
 
   borderRadius: 12,
 
-  background: "#1f1f1f",
+  background: '#1f1f1f',
 
-  border: "1px solid rgba(255,255,255,.08)",
+  border: '1px solid rgba(255,255,255,.08)',
 
-  boxShadow:
-    "0 8px 32px rgba(0,0,0,.35)",
+  boxShadow: '0 8px 32px rgba(0,0,0,.35)',
 
   zIndex: 1000,
 });
@@ -23,24 +22,23 @@ export const root = style({
 export const item = style({
   height: 36,
 
-  border: "none",
+  border: 'none',
 
-  background: "transparent",
+  background: 'transparent',
 
   borderRadius: 8,
 
-  display: "flex",
+  display: 'flex',
 
-  alignItems: "center",
+  alignItems: 'center',
 
-  padding: "0 12px",
+  padding: '0 12px',
 
-  cursor: "pointer",
+  cursor: 'pointer',
 
   selectors: {
-    "&:hover": {
-      background:
-        "rgba(255,255,255,.06)",
+    '&:hover': {
+      background: 'rgba(255,255,255,.06)',
     },
   },
 });

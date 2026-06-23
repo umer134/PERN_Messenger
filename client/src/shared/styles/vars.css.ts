@@ -46,8 +46,7 @@ export const tokens = {
   },
 
   shadow: {
-    card: 
-      '0 0 0 1px rgba(255, 255, 255, 0.04), 0 8px 30px rgba(0, 0, 0, 0.32)',
+    card: '0 0 0 1px rgba(255, 255, 255, 0.04), 0 8px 30px rgba(0, 0, 0, 0.32)',
   },
 
   motion: {

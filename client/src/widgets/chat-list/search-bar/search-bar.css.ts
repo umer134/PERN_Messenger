@@ -20,7 +20,7 @@ export const container = style({
   background: vars.color.surface,
 
   border: `1px solid ${vars.color.border}`,
-  
+
   transition: '150ms',
 });
 
@@ -37,5 +37,5 @@ export const input = style({
 
   '::placeholder': {
     color: vars.color.textSecondary,
-  }
+  },
 });

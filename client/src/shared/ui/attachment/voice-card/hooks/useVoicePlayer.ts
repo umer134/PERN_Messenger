@@ -1,9 +1,9 @@
-import  { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useAudioPlayer } from '../../../../../features/audio/audio-player/model/useAudioPlayer';
 
 export const useVoicePlayer = (src: string, id: string) => {
   const audioRef = useRef<HTMLAudioElement>(null);
-  
+
   const [playing, setPlaying] = useState(false);
 
   const [currentTime, setCurrentTime] = useState(0);
@@ -15,15 +15,14 @@ export const useVoicePlayer = (src: string, id: string) => {
   const toggle = () => {
     const audio = audioRef.current;
 
-    if(!audio) return;
+    if (!audio) return;
 
-    if(audio.paused) {
-      setActiveAudioId(id)
+    if (audio.paused) {
+      setActiveAudioId(id);
 
       audio.play();
-      
-      setPlaying(true);
 
+      setPlaying(true);
     } else {
       audio.pause();
 
@@ -36,19 +35,19 @@ export const useVoicePlayer = (src: string, id: string) => {
   useEffect(() => {
     const audio = audioRef.current;
 
-    if(!audio) return;
+    if (!audio) return;
 
-    if(activeAudioId !== id && !audio.paused) {
-      audio.pause(); 
+    if (activeAudioId !== id && !audio.paused) {
+      audio.pause();
 
       setPlaying(false);
     }
-  }, [setActiveAudioId, id])
+  }, [setActiveAudioId, id]);
 
   useEffect(() => {
     const audio = audioRef.current;
 
-    if(!audio) return;
+    if (!audio) return;
 
     const handleTime = () => {
       setCurrentTime(audio.currentTime);
@@ -68,36 +67,18 @@ export const useVoicePlayer = (src: string, id: string) => {
       setActiveAudioId(null);
     };
 
-    audio.addEventListener(
-      "timeupdate",
-      handleTime
-    );
+    audio.addEventListener('timeupdate', handleTime);
 
-    audio.addEventListener(
-      "loadedmetadata",
-      handleLoaded
-    );
+    audio.addEventListener('loadedmetadata', handleLoaded);
 
-    audio.addEventListener(
-      "ended",
-      handleEnded
-    );
+    audio.addEventListener('ended', handleEnded);
 
     return () => {
-      audio.removeEventListener(
-        "timeupdate",
-        handleTime
-      );
+      audio.removeEventListener('timeupdate', handleTime);
 
-      audio.removeEventListener(
-        "loadedmetadata",
-        handleLoaded
-      );
+      audio.removeEventListener('loadedmetadata', handleLoaded);
 
-      audio.removeEventListener(
-        "ended",
-        handleEnded
-      );
+      audio.removeEventListener('ended', handleEnded);
     };
   }, [setActiveAudioId]);
 

@@ -3,18 +3,18 @@ import { style } from '@vanilla-extract/css';
 export const root = style({
   height: 48,
 
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "space-between",
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
 
-  padding: "0 12px",
+  padding: '0 12px',
 
   borderRadius: 12,
 });
 
 export const left = style({
-  display: "flex",
-  alignItems: "center",
+  display: 'flex',
+  alignItems: 'center',
 
   gap: 8,
 
@@ -22,9 +22,9 @@ export const left = style({
 });
 
 export const filename = style({
-  overflow: "hidden",
+  overflow: 'hidden',
 
-  whiteSpace: "nowrap",
+  whiteSpace: 'nowrap',
 
-  textOverflow: "ellipsis",
+  textOverflow: 'ellipsis',
 });

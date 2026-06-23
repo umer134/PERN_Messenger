@@ -1,28 +1,22 @@
-import {
-  Check,
-  CheckCheck,
-  Clock3,
-} from "lucide-react";
-import { MessageStatus as status } from "../../model/message.types";
+import { Check, CheckCheck, Clock3 } from 'lucide-react';
+import { TMessageStatus as status } from '../../model/message.types';
 
 type Props = {
   status: status;
 };
 
-export const MessageStatus = ({
-  status,
-}: Props) => {
+export const MessageStatus = ({ status }: Props) => {
   switch (status) {
-    case "sending":
+    case 'sending':
       return <Clock3 size={12} />;
 
-    case "sent":
+    case 'sent':
       return <Check size={12} />;
 
-    case "delivered":
+    case 'delivered':
       return <CheckCheck size={12} />;
 
-    case "read":
+    case 'read':
       return <CheckCheck size={12} />;
 
     default:

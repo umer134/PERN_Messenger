@@ -1,25 +1,24 @@
-import { useEffect } from "react";
+import { useEffect } from 'react';
 
-import { useAppDispatch } from "../../../app/hooks";
+import { useAppDispatch } from '../../../app/hooks';
 
-import { addTypingUser, removeTypingUser, } from "../model/typing.slice";
+import { addTypingUser, removeTypingUser } from '../model/typing.slice';
 
-import { subscribeTypingStart, subscribeTypingStop, } from "../../../shared/socket/listeners/typing.listeners";
+import {
+  subscribeTypingStart,
+  subscribeTypingStop,
+} from '../../../shared/socket/listeners/typing.listeners';
 
 export const useTypingEvents = () => {
-
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-
-    const startHandler = ({ chatId, userId, username, }) => {
-
-      dispatch(addTypingUser({chatId, userId, username}));
+    const startHandler = ({ chatId, userId, username }) => {
+      dispatch(addTypingUser({ chatId, userId, username }));
     };
 
-    const stopHandler = ({ chatId, userId, }) => {
-
-      dispatch(removeTypingUser({chatId, userId}));
+    const stopHandler = ({ chatId, userId }) => {
+      dispatch(removeTypingUser({ chatId, userId }));
     };
 
     const unsubStart = subscribeTypingStart(startHandler);
@@ -30,6 +29,5 @@ export const useTypingEvents = () => {
       unsubStart();
       unsubStop();
     };
-
   }, []);
 };

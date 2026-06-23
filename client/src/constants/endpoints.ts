@@ -1,4 +1,4 @@
-import { env } from '../config/env.config';
+import { env } from '@/config/env.config';
 
 export const API_ENDPOINTS = {
   AUTH: {
@@ -15,7 +15,8 @@ export const API_ENDPOINTS = {
   USERS: {
     GET_ALL: `${env.apiUrl}/users`,
     GET_BY_ID: (id: string) => `${env.apiUrl}/users/${id}`,
-    GET_BY_USERNAME: (username: string) => `${env.apiUrl}/api/users/search?username=${username}`,
+    GET_BY_USERNAME: (username: string) =>
+      `${env.apiUrl}/api/users/search?username=${username}`,
     UPDATE: (id: string) => `${env.apiUrl}/users/${id}`,
     DELETE: (id: string) => `${env.apiUrl}/users/${id}`,
   },
@@ -34,5 +35,5 @@ export const API_ENDPOINTS = {
     READ: (chatId: string) => `${env.apiUrl}/api/messages/read/${chatId}`,
     UPDATE: `${env.apiUrl}/api/messages`,
     DELETE: (id: string) => `${env.apiUrl}/api/messages/${id}`,
-  }
-} as const; 
+  },
+} as const;

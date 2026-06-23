@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction, } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { AuthMeResponse } from './auth.model';
 
 type AuthState = {
@@ -7,37 +7,32 @@ type AuthState = {
   isInitialized: boolean;
 };
 
-const initialState:
-  AuthState = {
-    me: null,
-    isAuth: false,
-    isInitialized: false
-  };
+const initialState: AuthState = {
+  me: null,
+  isAuth: false,
+  isInitialized: false,
+};
 
 const authSlice = createSlice({
-    name: 'auth',
+  name: 'auth',
 
-    initialState,
+  initialState,
 
-    reducers: {
-      setSession(state, action: PayloadAction<AuthMeResponse>) {
-        state.me = action.payload;
-        state.isAuth = true;
-      },
-      clearSession(state) {
-        state.me = null;
-        state.isAuth = false;
-      },
-      setInitialized(state) {
-        state.isInitialized = true;
-      }
+  reducers: {
+    setSession(state, action: PayloadAction<AuthMeResponse>) {
+      state.me = action.payload;
+      state.isAuth = true;
     },
-  });
+    clearSession(state) {
+      state.me = null;
+      state.isAuth = false;
+    },
+    setInitialized(state) {
+      state.isInitialized = true;
+    },
+  },
+});
 
-export const {
-  setSession,
-  clearSession,
-  setInitialized
-} = authSlice.actions;
+export const { setSession, clearSession, setInitialized } = authSlice.actions;
 
 export default authSlice.reducer;

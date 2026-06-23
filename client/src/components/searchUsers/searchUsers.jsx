@@ -1,14 +1,19 @@
-import { useEffect, useState, useRef } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useEffect, useState, useRef } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import debounce from 'lodash.debounce';
-import { searchUsers, clearSearchUsers } from "../../features/search/usersSlice";
-import OtherProfile from "./otherProfile";
+import {
+  searchUsers,
+  clearSearchUsers,
+} from '../../features/search/usersSlice';
+import OtherProfile from './otherProfile';
 import './searchUser.css';
 
 const SearchUsers = () => {
   const [searchInp, setSearchInp] = useState('');
   const [select, setSelect] = useState(null);
-  const { searchUsersResult, isLoading, error } = useSelector((state) => state.searchUsers);
+  const { searchUsersResult, isLoading, error } = useSelector(
+    (state) => state.searchUsers,
+  );
   const dispatch = useDispatch();
 
   const debouncedSearch = useRef(
@@ -16,15 +21,15 @@ const SearchUsers = () => {
       if (query.trim()) {
         dispatch(searchUsers(query));
       } else {
-        dispatch(clearSearchUsers()); 
-        setSelect(null);             
+        dispatch(clearSearchUsers());
+        setSelect(null);
       }
-    }, 300)
+    }, 300),
   ).current;
 
   useEffect(() => {
-  debouncedSearch(searchInp); 
-  return () => debouncedSearch.cancel();
+    debouncedSearch(searchInp);
+    return () => debouncedSearch.cancel();
   }, [searchInp, debouncedSearch]);
 
   const handleClear = () => {
@@ -36,25 +41,29 @@ const SearchUsers = () => {
   return (
     <div className="search-container">
       <input
-        className="search-input" 
+        className="search-input"
         type="text"
         placeholder="Search users..."
         value={searchInp}
         onChange={(e) => setSearchInp(e.target.value)}
       />
-      
+
       {isLoading && <div>Loading...</div>}
-      
+
       {error && <p>{error}</p>}
       <button onClick={() => handleClear()}>x</button>
       {searchUsersResult?.length > 0 && (
         <ul className="other-profiles_list">
           {searchUsersResult.map((user) => (
-            <li onClick={() => setSelect(user)} key={user.id}>{user.username}</li>
+            <li onClick={() => setSelect(user)} key={user.id}>
+              {user.username}
+            </li>
           ))}
         </ul>
       )}
-      {select && <OtherProfile key={select.id} user={select} removeUser={setSelect} />}
+      {select && (
+        <OtherProfile key={select.id} user={select} removeUser={setSelect} />
+      )}
     </div>
   );
 };

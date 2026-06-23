@@ -13,7 +13,6 @@ const dotBase = style({
   borderRadius: vars.radius.full,
   backgroundColor: 'currentColor',
   animation: `${dotFade} 1.4s ease-in-out infinite`,
-  
 });
 
 export const dot = recipe({
@@ -43,20 +42,20 @@ export const typingContainer = recipe({
   },
   variants: {
     size: {
-      xs : {
+      xs: {
         fontSize: vars.fontSize.xs,
         gap: '2px',
       },
       sm: {
-        fontSize: vars.fontSize.sm,   
+        fontSize: vars.fontSize.sm,
         gap: '4px',
       },
       md: {
-        fontSize: vars.fontSize.md,  
+        fontSize: vars.fontSize.md,
         gap: '6px',
       },
       lg: {
-        fontSize: vars.fontSize.lg,   
+        fontSize: vars.fontSize.lg,
         gap: '8px',
       },
     },

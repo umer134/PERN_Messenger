@@ -1,9 +1,8 @@
-import { useEffect } from "react";
-import { AuthService } from "../../features/auth/services/auth.service";
-import { CurrentUserService } from "../../entities/current-user/service/current-user.service";
+import { useEffect } from 'react';
+import { AuthService } from '@/features/auth';
+import { CurrentUserService } from '@/entities/current-user';
 
 export function AuthProvider({ children }) {
-
   useEffect(() => {
     const init = async () => {
       try {

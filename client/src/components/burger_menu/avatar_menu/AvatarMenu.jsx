@@ -1,11 +1,10 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser } from "@fortawesome/free-solid-svg-icons";
-import { useEffect, useState } from "react";
-import { useRef } from "react"; // обязательно
-import ChangeAvatarModal from "../../edit/editProfile/edit_avatar/changeAvatarModal";
-import { useUpdateProfileMutation } from "../../../features/profile/profileApi";
-import { useEnv } from "../../../hooks/useEnv";
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUser } from '@fortawesome/free-solid-svg-icons';
+import { useEffect, useState } from 'react';
+import { useRef } from 'react'; // обязательно
+import ChangeAvatarModal from '../../edit/editProfile/edit_avatar/changeAvatarModal';
+import { useUpdateProfileMutation } from '../../../features/profile/profileApi';
+import { useEnv } from '../../../hooks/useEnv';
 
 const AvatarMenu = ({ user, expanded, setExpanded }) => {
   const { baseUrl: BASE_URL } = useEnv();
@@ -31,7 +30,9 @@ const AvatarMenu = ({ user, expanded, setExpanded }) => {
   };
 
   const handleSaveAvatar = async (blob) => {
-    const file = new File([blob], `avatar-${Date.now()}.jpg`, { type: blob.type });
+    const file = new File([blob], `avatar-${Date.now()}.jpg`, {
+      type: blob.type,
+    });
     const formData = new FormData();
     formData.append('avatar', file);
 
@@ -50,13 +51,15 @@ const AvatarMenu = ({ user, expanded, setExpanded }) => {
   }, [user]);
 
   useEffect(() => {
-    if(expanded) setShowMenu(true);
-    else if(!expanded){ setShowMenu(false); setOpenMenu(false) };
-  },[expanded]);
-
+    if (expanded) setShowMenu(true);
+    else if (!expanded) {
+      setShowMenu(false);
+      setOpenMenu(false);
+    }
+  }, [expanded]);
 
   return (
-    <div className={`avatar ${expanded ? "expanded" : ""}`}>
+    <div className={`avatar ${expanded ? 'expanded' : ''}`}>
       {avatarUrl ? (
         <img
           src={`${BASE_URL}${avatarUrl}`}
@@ -66,10 +69,12 @@ const AvatarMenu = ({ user, expanded, setExpanded }) => {
           }}
         />
       ) : (
-        <FontAwesomeIcon icon={faUser} size="2x" 
-        onClick={() => {
+        <FontAwesomeIcon
+          icon={faUser}
+          size="2x"
+          onClick={() => {
             setExpanded(!expanded);
-          }} 
+          }}
         />
       )}
 
@@ -77,7 +82,12 @@ const AvatarMenu = ({ user, expanded, setExpanded }) => {
         <button
           className="avatar-menu"
           onClick={() => setOpenMenu(!openMenu)}
-          style={{ border: "none", background: "none", zIndex: 20, color:'aliceblue' }}
+          style={{
+            border: 'none',
+            background: 'none',
+            zIndex: 20,
+            color: 'aliceblue',
+          }}
         >
           =
         </button>
@@ -95,7 +105,7 @@ const AvatarMenu = ({ user, expanded, setExpanded }) => {
       <input
         type="file"
         ref={fileInputRef}
-        style={{ display: "none" }}
+        style={{ display: 'none' }}
         accept="image/*"
         onChange={handleFileChange}
       />
@@ -107,7 +117,7 @@ const AvatarMenu = ({ user, expanded, setExpanded }) => {
           onClose={() => setSelectedFile(null)}
           onSave={(croppedBlob) => {
             handleSaveAvatar(croppedBlob);
-            setSelectedFile(null); 
+            setSelectedFile(null);
           }}
         />
       )}

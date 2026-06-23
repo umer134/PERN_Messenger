@@ -1,6 +1,6 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { MessageAction } from "./message-actions.types";
-import { MessageVM } from "../../../entities/messages/model/message.types";
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { MessageAction } from './message-actions.types';
+import { MessageVM } from '../../../entities/messages/model/message.types';
 
 interface MessageActionsState {
   actionType: MessageAction | null;
@@ -18,17 +18,17 @@ const messageActions = createSlice({
   initialState,
   reducers: {
     startReply: (state, action: PayloadAction<MessageVM>) => {
-      state.actionType = "reply";
+      state.actionType = 'reply';
       state.message = action.payload;
     },
 
     startEdit: (state, action: PayloadAction<MessageVM>) => {
-      state.actionType = "edit";
+      state.actionType = 'edit';
       state.message = action.payload;
     },
 
     startDelete: (state, action: PayloadAction<MessageVM>) => {
-      state.actionType = "delete";
+      state.actionType = 'delete';
       state.message = action.payload;
     },
 
@@ -39,5 +39,6 @@ const messageActions = createSlice({
   },
 });
 
-export const {startReply, startEdit, startDelete, clearAction} = messageActions.actions;
+export const { startReply, startEdit, startDelete, clearAction } =
+  messageActions.actions;
 export default messageActions.reducer;

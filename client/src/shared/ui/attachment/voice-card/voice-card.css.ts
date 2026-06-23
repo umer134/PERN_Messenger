@@ -1,11 +1,10 @@
-
 import { style } from '@vanilla-extract/css';
 import { vars } from '../../../styles/theme/theme.css';
 
 export const root = style({
-  display: "inline-flex",
+  display: 'inline-flex',
 
-  alignItems: "center",
+  alignItems: 'center',
 
   gap: 12,
 
@@ -30,29 +29,27 @@ export const playButton = style({
 
 export const body = style({
   flex: 1,
-  
 });
 
 export const waveform = style({
   width: 'fit-content',
-  position: "relative",
+  position: 'relative',
 
-  display: "flex",
+  display: 'flex',
 
-  alignItems: "center",
+  alignItems: 'center',
 
   gap: 2,
 
   height: 32,
 
-  cursor: "pointer",
+  cursor: 'pointer',
 
-  overflow: "hidden",
+  overflow: 'hidden',
 });
 
 export const progress = style({
-
-  position: "absolute",
+  position: 'absolute',
 
   left: 0,
 
@@ -62,15 +59,13 @@ export const progress = style({
 
   width: 0,
 
-  pointerEvents: "none",
+  pointerEvents: 'none',
 
   borderRadius: 999,
 
-  background:
-    "rgba(255,255,255,0.08)",
+  background: 'rgba(255,255,255,0.08)',
 
-  transition:
-    "width 120ms linear",
+  transition: 'width 120ms linear',
 });
 
 export const bar = style({
@@ -80,16 +75,13 @@ export const bar = style({
 
   flexShrink: 0,
 
-  background:
-    "rgba(255,255,255,0.28)",
+  background: 'rgba(255,255,255,0.28)',
 
-  transition:
-    "background .15s ease",
+  transition: 'background .15s ease',
 });
 
 export const activeBar = style({
-  background:
-    "rgba(255,255,255,0.9)",
+  background: 'rgba(255,255,255,0.9)',
 });
 
 export const duration = style({

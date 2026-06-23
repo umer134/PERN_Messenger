@@ -5,5 +5,5 @@ type props = {
 };
 
 export const AuthCard: React.FC<props> = ({ children }: props) => {
-  return <div className={styles.card}>{children}</div>
+  return <div className={styles.card}>{children}</div>;
 };

@@ -1,3 +1,4 @@
-import { paths } from "../../../shared/api/schema";
+import { paths } from '../../../shared/api/schema';
 
-export type UserResponse = paths['/api/users/search']['get']['responses']['200']['content']['application/json'][number];
+export type UserResponse =
+  paths['/api/users/search']['get']['responses']['200']['content']['application/json'][number];

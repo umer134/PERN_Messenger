@@ -1,6 +1,5 @@
-
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import {  Navigate }  from "react-router-dom";
+import { Navigate } from 'react-router-dom';
 import MainPage from './pages/main/ui/mainPage';
 import { SignPage } from './pages/sign_page/signPage';
 import ProtectedRoute from './app/protected-route';
@@ -13,10 +12,10 @@ function App() {
         <Route element={<ProtectedRoute />}>
           <Route path="/main" element={<MainPage />} />
         </Route>
-        <Route path='*' element={<Navigate to="/login" replace/>} />
+        <Route path="*" element={<Navigate to="/login" replace />} />
       </Routes>
     </Router>
-  )
+  );
 }
 
 export default App;

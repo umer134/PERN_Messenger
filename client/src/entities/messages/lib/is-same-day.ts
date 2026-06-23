@@ -1,7 +1,4 @@
-export const isSameDay = (
-  a: Date,
-  b: Date,
-) => {
+export const isSameDay = (a: Date, b: Date) => {
   return (
     a.getFullYear() === b.getFullYear() &&
     a.getMonth() === b.getMonth() &&

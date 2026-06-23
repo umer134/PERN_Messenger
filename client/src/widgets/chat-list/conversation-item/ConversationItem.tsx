@@ -1,15 +1,15 @@
-import { User, Users } from "lucide-react";
+import { User, Users } from 'lucide-react';
 
-import { ConversationPreview } from "../../../entities/conversation/model/conversation.types";
+import { ConversationPreview } from '../../../entities/conversation/model/conversation.types';
 
-import * as s from "./conversation-item.css";
-import { useMediaViewer } from "../../../features/media-viewer/lib/useMediaViewer";
-import { Avatar } from "../../../shared/ui/Avatar";
-import { resolveMediaUrl } from "../../../shared/lib/media/resolveMediaUrl";
-import { formatDate } from "../../../shared/lib/format/formatDate";
-import { useAppSelector } from "../../../app/hooks";
-import { selectTypingUsers } from "../../../features/typing/model/typing.selectors";
-import { TypingIndicator } from "../../../shared/ui/typing-indicator/TypingIndicator";
+import * as s from './conversation-item.css';
+import { useMediaViewer } from '../../../features/media-viewer/lib/useMediaViewer';
+import { Avatar } from '../../../shared/ui/Avatar';
+import { resolveMediaUrl } from '../../../shared/lib/media/resolveMediaUrl';
+import { formatDate } from '../../../shared/lib/format/formatDate';
+import { useAppSelector } from '../../../app/hooks';
+import { selectTypingUsers } from '../../../features/typing/model/typing.selectors';
+import { TypingIndicator } from '../../../shared/ui/typing-indicator/TypingIndicator';
 
 type Props = {
   conversation: ConversationPreview;
@@ -19,8 +19,11 @@ type Props = {
   onClick?: () => void;
 };
 
-export const ConversationItem = ({ conversation, selected, onClick, }: Props) => {
-
+export const ConversationItem = ({
+  conversation,
+  selected,
+  onClick,
+}: Props) => {
   const typingUsers = useAppSelector(selectTypingUsers(conversation.id));
 
   const isTyping = typingUsers.length > 0;
@@ -29,67 +32,56 @@ export const ConversationItem = ({ conversation, selected, onClick, }: Props) =>
 
   return (
     <div
-      className={`${s.root} ${selected ? s.selected : ""}`}
+      className={`${s.root} ${selected ? s.selected : ''}`}
       onClick={onClick}
     >
       {conversation.avatar ? (
         <Avatar
           src={conversation.avatar}
           alt={conversation.title}
-          status={conversation.isOnline ? "online" : "offline"}
+          status={conversation.isOnline ? 'online' : 'offline'}
           onClick={(e) => {
             e.stopPropagation();
-            
-            if(!conversation.avatar) return;
+
+            if (!conversation.avatar) return;
 
             open(
               [
                 {
                   id: conversation.id,
-                  type: "image",
+                  type: 'image',
                   url: resolveMediaUrl(conversation.avatar),
                   name: conversation.title,
-                }
-              ], 0
+                },
+              ],
+              0,
             );
           }}
         />
       ) : (
         <div className={s.avatar}>
-          {conversation.isGroup ? (
-            <Users size={20} />
-          ) : (
-            <User size={20} />
-          )}
+          {conversation.isGroup ? <Users size={20} /> : <User size={20} />}
         </div>
       )}
 
       <div className={s.content}>
         <div className={s.topRow}>
-          <span className={s.title}>
-            {conversation.title}
-          </span>
+          <span className={s.title}>{conversation.title}</span>
 
           <span className={s.time}>
-            {formatDate(conversation.updatedAt, { format: "smart"})}
+            {formatDate(conversation.updatedAt, { format: 'smart' })}
           </span>
         </div>
 
         <div className={s.bottomRow}>
           {isTyping ? (
-            <TypingIndicator
-              statusText={typingUsers[0].username}
-            />
+            <TypingIndicator statusText={typingUsers[0].username} />
           ) : (
-            <span className={s.message}>
-              {conversation.lastMessage}
-            </span>
+            <span className={s.message}>{conversation.lastMessage}</span>
           )}
 
           {conversation.unreadCount > 0 && (
-            <span className={s.badge}>
-              {conversation.unreadCount}
-            </span>
+            <span className={s.badge}>{conversation.unreadCount}</span>
           )}
         </div>
       </div>

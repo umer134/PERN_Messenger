@@ -1,24 +1,23 @@
-import { useState } from "react";
+import { useState } from 'react';
 
 type Props = {
   src: string;
 };
 
-export const ImageViewer = ({ src, }: Props) => {
-
+export const ImageViewer = ({ src }: Props) => {
   const [scale, setScale] = useState(1);
-  const [position, setPosition] = useState({ x: 0, y: 0});
+  const [position, setPosition] = useState({ x: 0, y: 0 });
   const [dragging, setDragging] = useState(false);
-  const [start, setStart] = useState({ x: 0, y: 0});
+  const [start, setStart] = useState({ x: 0, y: 0 });
 
   return (
     <img
       src={src}
       alt=""
       style={{
-        maxWidth: "100%",
-        maxHeight: "100%",
-        objectFit: "contain",
+        maxWidth: '100%',
+        maxHeight: '100%',
+        objectFit: 'contain',
         transform: `
           translate(
           ${position.x}px,
@@ -26,18 +25,13 @@ export const ImageViewer = ({ src, }: Props) => {
           )
           scale(${scale})
         `,
-        cursor:
-          scale > 1
-            ? dragging
-              ? "grabbing"
-              : "grab"
-            : "default",
+        cursor: scale > 1 ? (dragging ? 'grabbing' : 'grab') : 'default',
       }}
       draggable={false}
       onWheel={(e) => {
         e.preventDefault();
 
-        setScale(prev => {
+        setScale((prev) => {
           const next = prev - e.deltaY * 0.001;
 
           return Math.min(Math.max(next, 1), 5);
@@ -52,9 +46,9 @@ export const ImageViewer = ({ src, }: Props) => {
         });
       }}
       onMouseMove={(e) => {
-        if(!dragging) return;
+        if (!dragging) return;
 
-        setPosition(prev => ({
+        setPosition((prev) => ({
           x: prev.x + (e.clientX - start.x),
           y: prev.y + (e.clientY - start.y),
         }));
@@ -64,7 +58,6 @@ export const ImageViewer = ({ src, }: Props) => {
           y: e.clientY,
         });
       }}
-
       onDoubleClick={() => {
         if (scale === 1) {
           setScale(2);
@@ -77,7 +70,6 @@ export const ImageViewer = ({ src, }: Props) => {
           });
         }
       }}
-
       onMouseUp={() => setDragging(false)}
     />
   );

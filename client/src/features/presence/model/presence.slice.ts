@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 
 type PresenceUser = {
   online: boolean;
@@ -14,61 +14,36 @@ const initialState: PresenceState = {
 };
 
 const slice = createSlice({
-  name: "presence",
+  name: 'presence',
 
   initialState,
 
   reducers: {
-
-    userOnline: (
-      state,
-      action
-    ) => {
-
-      state.users[
-        action.payload.userId
-      ] = {
+    userOnline: (state, action) => {
+      state.users[action.payload.userId] = {
         online: true,
       };
     },
 
-    userOffline: (
-      state,
-      action
-    ) => {
-
-      state.users[
-        action.payload.userId
-      ] = {
+    userOffline: (state, action) => {
+      state.users[action.payload.userId] = {
         online: false,
-        lastSeen:
-          action.payload.lastSeen,
+        lastSeen: action.payload.lastSeen,
       };
     },
 
-    setOnlineUsers: (
-      state,
-      action
-    ) => {
-
+    setOnlineUsers: (state, action) => {
       const users = action.payload;
 
-      users.forEach(userId => {
-
+      users.forEach((userId) => {
         state.users[userId] = {
           online: true,
         };
-
       });
     },
-
   },
 });
 
-export const {
-  userOnline,
-  userOffline,
-  setOnlineUsers
-} = slice.actions;
+export const { userOnline, userOffline, setOnlineUsers } = slice.actions;
 
 export default slice.reducer;

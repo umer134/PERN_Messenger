@@ -1,8 +1,8 @@
-import { style } from "@vanilla-extract/css";
-import { vars } from "../../../shared/styles/theme/theme.css";
+import { style } from '@vanilla-extract/css';
+import { vars } from '../../../shared/styles/theme/theme.css';
 
 export const root = style({
-  overflowY: "auto",
+  overflowY: 'auto',
 
   flex: 1,
 });
@@ -10,8 +10,7 @@ export const root = style({
 export const empty = style({
   padding: 24,
 
-  textAlign: "center",
+  textAlign: 'center',
 
-  color:
-    vars.color.textSecondary,
+  color: vars.color.textSecondary,
 });

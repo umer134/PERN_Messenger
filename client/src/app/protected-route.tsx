@@ -4,11 +4,9 @@ import { useAppSelector } from './hooks';
 export default function ProtectedRoute() {
   const { isAuth, isInitialized } = useAppSelector((state) => state.auth);
 
-  if(!isInitialized) {
+  if (!isInitialized) {
     return null;
   }
 
-  return isAuth ? <Outlet /> : (
-    <Navigate to="/login" replace />
-  )
+  return isAuth ? <Outlet /> : <Navigate to="/login" replace />;
 }

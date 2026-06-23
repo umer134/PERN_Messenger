@@ -1,24 +1,13 @@
-import {
-  useState,
-} from "react";
+import { useState } from 'react';
 
-import {
-  AudioPlayerContext,
-} from "./AudioPlayerContext";
+import { AudioPlayerContext } from './AudioPlayerContext';
 
 type Props = {
   children: React.ReactNode;
 };
 
-export const AudioPlayerProvider = ({
-  children,
-}: Props) => {
-  const [
-    activeAudioId,
-    setActiveAudioId,
-  ] = useState<string | null>(
-    null
-  );
+export const AudioPlayerProvider = ({ children }: Props) => {
+  const [activeAudioId, setActiveAudioId] = useState<string | null>(null);
 
   return (
     <AudioPlayerContext.Provider

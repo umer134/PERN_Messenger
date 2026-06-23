@@ -1,7 +1,4 @@
-export type MediaType =
-  | "image"
-  | "video"
-  | "audio";
+export type MediaType = 'image' | 'video' | 'audio';
 
 export type MediaItem = {
   id: string;

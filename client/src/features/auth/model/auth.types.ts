@@ -1,4 +1,4 @@
-import { AuthMeResponse } from "./auth.model";
+import { AuthMeResponse } from './auth.model';
 
 export interface LoginDto {
   email: string;

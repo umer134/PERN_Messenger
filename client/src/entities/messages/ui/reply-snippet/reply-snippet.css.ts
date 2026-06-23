@@ -1,12 +1,11 @@
-import { style } from "@vanilla-extract/css";
+import { style } from '@vanilla-extract/css';
 
 export const root = style({
   paddingLeft: 10,
 
   marginBottom: 8,
 
-  borderLeft:
-    "3px solid rgba(255,255,255,.3)",
+  borderLeft: '3px solid rgba(255,255,255,.3)',
 });
 
 export const author = style({
@@ -18,11 +17,11 @@ export const author = style({
 export const content = style({
   fontSize: 12,
 
-  opacity: .75,
+  opacity: 0.75,
 
-  overflow: "hidden",
+  overflow: 'hidden',
 
-  whiteSpace: "nowrap",
+  whiteSpace: 'nowrap',
 
-  textOverflow: "ellipsis",
+  textOverflow: 'ellipsis',
 });

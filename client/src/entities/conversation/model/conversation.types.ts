@@ -12,7 +12,7 @@ export type ConversationPreview = {
   lastMessage?: string;
 
   updatedAt: string;
-  
+
   isVirtual?: string;
 
   participantId?: string;

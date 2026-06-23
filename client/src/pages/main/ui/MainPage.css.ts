@@ -1,12 +1,12 @@
-import { style } from "@vanilla-extract/css";
-import { vars } from "../../../shared/styles/theme/theme.css";
+import { style } from '@vanilla-extract/css';
+import { vars } from '../../../shared/styles/theme/theme.css';
 
 export const root = style({
-  height: "100vh",
+  height: '100vh',
 
-  display: "grid",
+  display: 'grid',
 
-  gridTemplateColumns: "320px 1fr",
+  gridTemplateColumns: '320px 1fr',
 
   background: vars.color.bg,
 });

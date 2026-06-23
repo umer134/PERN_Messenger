@@ -1,11 +1,11 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 export type CurrentUserState = {
   id: string | null;
   username: string | null;
   email: string | null;
   avatar: string | null | undefined;
-  role: "user" | "admin" | "moderator" | null;
+  role: 'user' | 'admin' | 'moderator' | null;
   isHydrated: boolean;
 };
 
@@ -19,20 +19,20 @@ const initialState: CurrentUserState = {
 };
 
 const currentUserSlice = createSlice({
-  name: "currentUser",
+  name: 'currentUser',
   initialState,
 
   reducers: {
     setCurrentUser: (
       state,
-      action: PayloadAction<Partial<CurrentUserState>>
+      action: PayloadAction<Partial<CurrentUserState>>,
     ) => {
       Object.assign(state, action.payload);
     },
 
     hydrateCurrentUser: (
       state,
-      action: PayloadAction<Omit<CurrentUserState, "isHydrated">>
+      action: PayloadAction<Omit<CurrentUserState, 'isHydrated'>>,
     ) => {
       Object.assign(state, action.payload);
       state.isHydrated = true;
@@ -44,10 +44,7 @@ const currentUserSlice = createSlice({
   },
 });
 
-export const {
-  setCurrentUser,
-  clearCurrentUser,
-  hydrateCurrentUser,
-} = currentUserSlice.actions;
+export const { setCurrentUser, clearCurrentUser, hydrateCurrentUser } =
+  currentUserSlice.actions;
 
 export default currentUserSlice.reducer;

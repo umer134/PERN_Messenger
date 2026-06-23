@@ -16,40 +16,37 @@ type CropArea = {
 type Props = {
   imageSrc: string;
   onClose: () => void;
-  onSave: (file: File) => void
+  onSave: (file: File) => void;
 };
 
 export const AvatarCropModal = ({ imageSrc, onClose, onSave }: Props) => {
-  const [crop, setCrop] = useState({ x: 0, y: 0});
+  const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
   const [croppedArea, setCroppedArea] = useState<CropArea | null>(null);
 
   const onCropComplete = useCallback(
     (_: unknown, croppedAreaPixels: CropArea) => {
       setCroppedArea(croppedAreaPixels);
-    }, []
+    },
+    [],
   );
 
   const handleSave = async () => {
-    if(!croppedArea) return;
+    if (!croppedArea) return;
 
     const blob = await getCroppedImg(imageSrc, croppedArea);
 
-    const file = new File([blob], `avatar-${Date.now()}.jpg`, { type: 'image/jpeg', });
+    const file = new File([blob], `avatar-${Date.now()}.jpg`, {
+      type: 'image/jpeg',
+    });
 
     onSave(file);
     onClose();
   };
 
   return (
-    <div
-      className={styles.backdrop}
-      onClick={onClose}
-    >
-      <div
-        className={styles.modal}
-        onClick={(e) => e.stopPropagation()}
-      >
+    <div className={styles.backdrop} onClick={onClose}>
+      <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
         <h3>Crop avatar</h3>
         <div className={styles.cropArea}>
           <Cropper
@@ -57,7 +54,7 @@ export const AvatarCropModal = ({ imageSrc, onClose, onSave }: Props) => {
             crop={crop}
             zoom={zoom}
             aspect={1}
-            cropShape='round'
+            cropShape="round"
             showGrid={false}
             onCropChange={setCrop}
             onZoomChange={setZoom}
@@ -68,7 +65,7 @@ export const AvatarCropModal = ({ imageSrc, onClose, onSave }: Props) => {
         <div style={{ marginTop: 16 }}>
           <input
             className={styles.slider}
-            type='range'
+            type="range"
             min={1}
             max={3}
             step={0.1}
@@ -78,21 +75,15 @@ export const AvatarCropModal = ({ imageSrc, onClose, onSave }: Props) => {
         </div>
 
         <div className={styles.footer}>
-          <Button
-            type="button"
-            variant="ghost"
-            onClick={onClose}
-          >
+          <Button type="button" variant="ghost" onClick={onClose}>
             Cancel
           </Button>
 
-          <Button 
-            type="button"
-            onClick={handleSave}>
+          <Button type="button" onClick={handleSave}>
             Save avatar
           </Button>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};

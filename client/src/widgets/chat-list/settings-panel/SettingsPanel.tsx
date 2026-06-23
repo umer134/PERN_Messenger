@@ -1,32 +1,20 @@
-import {
-  ArrowLeft,
-  Moon,
-  Bell,
-  Shield
-} from "lucide-react";
+import { ArrowLeft, Moon, Bell, Shield } from 'lucide-react';
 
-import * as s from "./settings-panel.css";
+import * as s from './settings-panel.css';
 
 type Props = {
   onBack: () => void;
 };
 
-export const SettingsPanel = ({
-  onBack,
-}: Props) => {
+export const SettingsPanel = ({ onBack }: Props) => {
   return (
     <div className={s.root}>
       <header className={s.header}>
-        <button
-          onClick={onBack}
-          className={s.backButton}
-        >
+        <button onClick={onBack} className={s.backButton}>
           <ArrowLeft size={20} />
         </button>
 
-        <span className={s.title}>
-          Настройки
-        </span>
+        <span className={s.title}>Настройки</span>
       </header>
 
       <div className={s.content}>

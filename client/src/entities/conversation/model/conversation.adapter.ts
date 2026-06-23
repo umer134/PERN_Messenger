@@ -1,5 +1,5 @@
-import { ConversationResponse } from "./conversation.model";
-import { ConversationPreview } from "./conversation.types";
+import { ConversationResponse } from './conversation.model';
+import { ConversationPreview } from './conversation.types';
 
 export class ConversationAdapter {
   static toPreview(conversation: ConversationResponse): ConversationPreview {
@@ -14,6 +14,6 @@ export class ConversationAdapter {
       isVirtual: '',
       participantId: '',
       isOnline: undefined,
-    }
+    };
   }
 }

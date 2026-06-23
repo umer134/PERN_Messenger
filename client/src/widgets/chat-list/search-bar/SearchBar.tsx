@@ -1,4 +1,4 @@
-import { Search } from "lucide-react";
+import { Search } from 'lucide-react';
 
 import * as s from './search-bar.css';
 

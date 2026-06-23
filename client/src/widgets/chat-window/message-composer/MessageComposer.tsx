@@ -1,120 +1,102 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from 'react';
 
-import { useAppDispatch, useAppSelector } from "../../../app/hooks";
-
-import { 
-  selectActiveMessage,
-  selectMessageAction,
-} from "../../../features/message-actions/model/message-actions.selectors";
+import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 
 import {
-  Paperclip,
-  Send,
-  Mic,
-  Square,
-  Trash2,
-} from "lucide-react";
+  selectActiveMessage,
+  selectMessageAction,
+} from '../../../features/message-actions/model/message-actions.selectors';
 
-import { useVoiceRecorder } from "./hooks/useVoiceRecorder";
+import { Paperclip, Send, Mic, Square, Trash2 } from 'lucide-react';
 
-import * as s from "./message-composer.css";
-import { AttachmentPreview } from "./attachment/AttachmentPreview";
-import { formatDuration } from "../../../shared/lib/format/formatDuration";
-import { ReplyPreview } from "./reply-preview/ReplyPreview";
-import { clearAction } from "../../../features/message-actions/model/message-actions.slice";
-import { EditPreview } from "./edit-preview/EditPreview";
-import { emitTypingStart, emitTypingStop } from "../../../shared/socket/emitters/typing.emitters";
+import { useVoiceRecorder } from './hooks/useVoiceRecorder';
+
+import * as s from './message-composer.css';
+import { AttachmentPreview } from './attachment/AttachmentPreview';
+import { formatDuration } from '../../../shared/lib/format/formatDuration';
+import { ReplyPreview } from './reply-preview/ReplyPreview';
+import { clearAction } from '../../../features/message-actions/model/message-actions.slice';
+import { EditPreview } from './edit-preview/EditPreview';
+import {
+  emitTypingStart,
+  emitTypingStop,
+} from '../../../shared/socket/emitters/typing.emitters';
 
 type Props = {
   conversationId: string;
 
-  onSend: (content: string,files: File[]) => void;
+  onSend: (content: string, files: File[]) => void;
 
   onEdit: (messageId: string, content: string) => void;
 };
 
-export const MessageComposer = ({ conversationId, onSend, onEdit, }: Props) => {
-
+export const MessageComposer = ({ conversationId, onSend, onEdit }: Props) => {
   const dispatch = useAppDispatch();
 
   const actionType = useAppSelector(selectMessageAction);
   const activeMessage = useAppSelector(selectActiveMessage);
 
-  const { recording, duration, 
-    startRecording, stopRecording, 
-    cancelRecording 
+  const {
+    recording,
+    duration,
+    startRecording,
+    stopRecording,
+    cancelRecording,
   } = useVoiceRecorder();
 
-  const [message, setMessage] =
-    useState("");
+  const [message, setMessage] = useState('');
 
-  const [files, setFiles] =
-    useState<File[]>([]);
+  const [files, setFiles] = useState<File[]>([]);
 
-  const textareaRef =
-  useRef<HTMLTextAreaElement>(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const typingRef = useRef(false);
   const stopTimeRef = useRef<NodeJS.Timeout | null>(null);
 
-  const fileInputRef =
-    useRef<HTMLInputElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleSend = () => {
-
-    if(typingRef.current) {
+    if (typingRef.current) {
       emitTypingStop(conversationId);
 
       typingRef.current = false;
     }
 
-    const trimmed =
-      message.trim();
+    const trimmed = message.trim();
 
-    if (!trimmed && files.length === 0)
-      return;
+    if (!trimmed && files.length === 0) return;
 
-    if (
-      actionType === "edit" &&
-      activeMessage
-    ) {
-      onEdit(
-        activeMessage.id,
-        trimmed
-      );
+    if (actionType === 'edit' && activeMessage) {
+      onEdit(activeMessage.id, trimmed);
 
       dispatch(clearAction());
-      setMessage("");
+      setMessage('');
 
       return;
     }
 
     onSend(trimmed, files);
 
-    setMessage("");
+    setMessage('');
     setFiles([]);
     dispatch(clearAction());
   };
 
-  const handleVoiceRecording = async() => {
-
-    if(!recording) {
+  const handleVoiceRecording = async () => {
+    if (!recording) {
       await startRecording();
       return;
     }
 
     const blob = await stopRecording();
 
-    if(!blob) return;
+    if (!blob) return;
 
-    const file = new File(
-      [blob], `voice-${Date.now()}.webm`,
-      {
-        type: 'audio/webm',
-      }
-    );
+    const file = new File([blob], `voice-${Date.now()}.webm`, {
+      type: 'audio/webm',
+    });
 
-    onSend("", [file]);
+    onSend('', [file]);
   };
 
   useEffect(() => {
@@ -122,13 +104,13 @@ export const MessageComposer = ({ conversationId, onSend, onEdit, }: Props) => {
 
     if (!el) return;
 
-    el.style.height = "0px";
+    el.style.height = '0px';
     el.style.height = `${el.scrollHeight}px`;
   }, [message]);
 
   useEffect(() => {
-    if (actionType === "edit" && activeMessage) {
-      setMessage(activeMessage.content ?? "");
+    if (actionType === 'edit' && activeMessage) {
+      setMessage(activeMessage.content ?? '');
 
       textareaRef.current?.focus();
     }
@@ -142,26 +124,20 @@ export const MessageComposer = ({ conversationId, onSend, onEdit, }: Props) => {
 
   return (
     <div className={s.root}>
-      {actionType === "reply" && 
-        activeMessage && (
-          <ReplyPreview
-            author={
-              activeMessage.senderName ?? "Unknown"
-            }
-            content={
-              activeMessage.content ?? ""
-            }
-            onClose={() => dispatch(clearAction())}
-          />
-        )}
+      {actionType === 'reply' && activeMessage && (
+        <ReplyPreview
+          author={activeMessage.senderName ?? 'Unknown'}
+          content={activeMessage.content ?? ''}
+          onClose={() => dispatch(clearAction())}
+        />
+      )}
 
-      {actionType === "edit" && 
-        activeMessage && (
-          <EditPreview
-            content={activeMessage.content ?? ""}
-            onClose={() => dispatch(clearAction())}
-          />
-        )}
+      {actionType === 'edit' && activeMessage && (
+        <EditPreview
+          content={activeMessage.content ?? ''}
+          onClose={() => dispatch(clearAction())}
+        />
+      )}
 
       {files.length > 0 && (
         <div className={s.attachments}>
@@ -169,10 +145,8 @@ export const MessageComposer = ({ conversationId, onSend, onEdit, }: Props) => {
             <AttachmentPreview
               key={`${file.name}-${file.size}`}
               file={file}
-              onRemove={() => 
-                setFiles((prev) => 
-                  prev.filter((f) => f !== file)
-                )
+              onRemove={() =>
+                setFiles((prev) => prev.filter((f) => f !== file))
               }
             />
           ))}
@@ -185,30 +159,22 @@ export const MessageComposer = ({ conversationId, onSend, onEdit, }: Props) => {
         type="file"
         ref={fileInputRef}
         onChange={(e) => {
-          const selected =
-            Array.from(
-              e.target.files ?? []
-            );
+          const selected = Array.from(e.target.files ?? []);
 
-          setFiles(prev => [
-            ...prev,
-            ...selected
-          ]);
+          setFiles((prev) => [...prev, ...selected]);
         }}
       />
 
       <div className={s.inputRow}>
         <button
           className={s.iconButton}
-          onClick={() =>
-            fileInputRef.current?.click()
-          }
+          onClick={() => fileInputRef.current?.click()}
         >
           <Paperclip size={18} />
         </button>
 
         {recording ? (
-          <div className={s.recording} > 
+          <div className={s.recording}>
             <button
               type="button"
               className={s.cancelButton}
@@ -234,13 +200,13 @@ export const MessageComposer = ({ conversationId, onSend, onEdit, }: Props) => {
 
               setMessage(value);
 
-              if(!typingRef.current) {
-                emitTypingStart(conversationId)
+              if (!typingRef.current) {
+                emitTypingStart(conversationId);
 
                 typingRef.current = true;
               }
 
-              if(stopTimeRef.current) {
+              if (stopTimeRef.current) {
                 clearTimeout(stopTimeRef.current);
               }
 
@@ -251,10 +217,7 @@ export const MessageComposer = ({ conversationId, onSend, onEdit, }: Props) => {
               }, 1500);
             }}
             onKeyDown={(e) => {
-              if (
-                e.key === "Enter" &&
-                !e.shiftKey
-              ) {
+              if (e.key === 'Enter' && !e.shiftKey) {
                 e.preventDefault();
 
                 handleSend();
@@ -263,26 +226,13 @@ export const MessageComposer = ({ conversationId, onSend, onEdit, }: Props) => {
           />
         )}
 
-        {message.trim() ||
-        files.length > 0 ? (
-          <button
-            className={s.sendButton}
-            onClick={handleSend}
-          >
+        {message.trim() || files.length > 0 ? (
+          <button className={s.sendButton} onClick={handleSend}>
             <Send size={18} />
           </button>
         ) : (
-          <button
-            className={s.voiceButton}
-            onClick={
-              handleVoiceRecording
-            }
-          >
-            {recording ? (
-              <Square size={18} />
-            ): (
-              <Mic size={18} />
-            )}
+          <button className={s.voiceButton} onClick={handleVoiceRecording}>
+            {recording ? <Square size={18} /> : <Mic size={18} />}
           </button>
         )}
       </div>

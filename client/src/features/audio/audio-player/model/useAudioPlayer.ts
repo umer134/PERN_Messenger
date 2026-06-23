@@ -1,23 +1,13 @@
-import {
-  useContext,
-} from "react";
+import { useContext } from 'react';
 
-import {
-  AudioPlayerContext,
-} from "./AudioPlayerContext";
+import { AudioPlayerContext } from './AudioPlayerContext';
 
-export const useAudioPlayer =
-  () => {
-    const context =
-      useContext(
-        AudioPlayerContext
-      );
+export const useAudioPlayer = () => {
+  const context = useContext(AudioPlayerContext);
 
-    if (!context) {
-      throw new Error(
-        "AudioPlayerProvider missing"
-      );
-    }
+  if (!context) {
+    throw new Error('AudioPlayerProvider missing');
+  }
 
-    return context;
-  };
+  return context;
+};

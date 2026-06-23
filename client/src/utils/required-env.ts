@@ -1,6 +1,8 @@
 import { ImportMetaEnv } from '../config/env.types';
 
-export function getRequiredEnv(key: string): ImportMetaEnv[keyof ImportMetaEnv] {
+export function getRequiredEnv(
+  key: string,
+): ImportMetaEnv[keyof ImportMetaEnv] {
   const value = import.meta.env[key as keyof ImportMetaEnv];
   if (!value) {
     throw new Error(`Environment variable not found: ${key}`);

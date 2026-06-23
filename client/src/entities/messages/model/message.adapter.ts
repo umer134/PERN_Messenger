@@ -1,15 +1,19 @@
-import { MessageResponseModel } from "./message.model";
-import { MessageAttachmentVM, MessageStatus, MessageVM } from "./message.types";
-import { resolveMediaUrl } from "../../../shared/lib/media/resolveMediaUrl";
-import { resolveAttachmentTypeFromPath } from "../lib/resolveAttachmentType";
+import { MessageResponseModel } from './message.model';
+import {
+  MessageAttachmentVM,
+  TMessageStatus,
+  MessageVM,
+} from './message.types';
+import { resolveMediaUrl } from '../../../shared/lib/media/resolveMediaUrl';
+import { resolveAttachmentTypeFromPath } from '../lib/resolveAttachmentType';
 
 export class MessageAdapter {
-  static resolveStatus(message: MessageResponseModel): MessageStatus {
+  static resolveStatus(message: MessageResponseModel): TMessageStatus {
     if (message.is_read) {
-      return "read";
+      return 'read';
     }
 
-    return "sent";
+    return 'sent';
   }
 
   static toVM(message: MessageResponseModel): MessageVM {
@@ -31,11 +35,11 @@ export class MessageAdapter {
       status: MessageAdapter.resolveStatus(message),
 
       attachments:
-        message.attachedFiles?.map(file => ({
+        message.attachedFiles?.map((file) => ({
           id: file.file_path,
-          type: resolveAttachmentTypeFromPath(file?.file_path || ""),
+          type: resolveAttachmentTypeFromPath(file?.file_path || ''),
           url: resolveMediaUrl(file.file_path),
-          name: file.file_path.split("/").pop() || "file",
+          name: file.file_path.split('/').pop() || 'file',
         })) ?? [],
 
       replyTo: message.replyTo
@@ -44,13 +48,14 @@ export class MessageAdapter {
             senderId: message.replyTo?.senderId || '',
             senderName: message.replyTo?.sender?.username || '',
             content: message.replyTo?.content || '',
-            attachments: message.replyTo?.attachedFiles?.map(file => ({
-              id: file.file_path,
-              type: resolveAttachmentTypeFromPath(file?.file_path || ""),
-              url: resolveMediaUrl(file.file_path),
-              name: file.file_path.split("/").pop() || "file",
-            })) ?? []
-          } 
+            attachments:
+              message.replyTo?.attachedFiles?.map((file) => ({
+                id: file.file_path,
+                type: resolveAttachmentTypeFromPath(file?.file_path || ''),
+                url: resolveMediaUrl(file.file_path),
+                name: file.file_path.split('/').pop() || 'file',
+              })) ?? [],
+          }
         : null,
     };
   }

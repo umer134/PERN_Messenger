@@ -1,6 +1,6 @@
-import { MessageGroupVM } from "../../../../entities/messages/model/message.types";
-import { MediaItem } from "../../../../features/media-viewer/model/media-viewer.types";
-import { MessageBubble } from "../../message-bubble/MessageBubble";
+import { MessageGroupVM } from '../../../../entities/messages/model/message.types';
+import { MediaItem } from '../../../../features/media-viewer/model/media-viewer.types';
+import { MessageBubble } from '../../message-bubble/MessageBubble';
 
 type Props = {
   group: MessageGroupVM;
@@ -8,18 +8,11 @@ type Props = {
   mediaItems: MediaItem[];
 };
 
-export const MessageGroup = ({
-  group,
-  isMine,
-  mediaItems,
-}: Props) => {
-
+export const MessageGroup = ({ group, isMine, mediaItems }: Props) => {
   return (
     <div>
       {group.messages.map((msg) => (
-        <div key={msg.id}
-          id={`message-${msg.id}`}
-        >
+        <div key={msg.id} id={`message-${msg.id}`}>
           <MessageBubble
             key={msg.id}
             message={msg}
@@ -28,7 +21,6 @@ export const MessageGroup = ({
             mediaItems={mediaItems}
           />
         </div>
-
       ))}
     </div>
   );

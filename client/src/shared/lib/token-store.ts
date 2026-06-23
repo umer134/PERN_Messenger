@@ -6,15 +6,10 @@ export class TokenStore {
   }
 
   static setAccessToken(token: string) {
-    localStorage.setItem(
-      this.ACCESS_KEY,
-      token
-    );
+    localStorage.setItem(this.ACCESS_KEY, token);
   }
 
   static clear() {
-    localStorage.removeItem(
-      this.ACCESS_KEY
-    );
+    localStorage.removeItem(this.ACCESS_KEY);
   }
 }

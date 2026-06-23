@@ -11,7 +11,7 @@ const spacingProperties = defineProperties({
 
     margin: vars.spacing,
     marginTop: vars.spacing,
-    marginBottom: vars.spacing, 
+    marginBottom: vars.spacing,
     marginLeft: vars.spacing,
     marginRight: vars.spacing,
 
@@ -21,46 +21,20 @@ const spacingProperties = defineProperties({
 
 const layoutProperties = defineProperties({
   properties: {
-    display: [
-      'none',
-      'flex',
-      'block',
-      'inline-flex',
-    ],
+    display: ['none', 'flex', 'block', 'inline-flex'],
 
-    flexDirection: [
-      'row',
-      'column',
-    ],
+    flexDirection: ['row', 'column'],
 
-    justifyContent: [
-      'center',
-      'space-between',
-      'flex-start',
-      'flex-end',
-    ],
+    justifyContent: ['center', 'space-between', 'flex-start', 'flex-end'],
 
-    alignItems: [
-      'center',
-      'flex-start',
-      'flex-end',
-    ],
+    alignItems: ['center', 'flex-start', 'flex-end'],
 
-    width: [
-      '100%',
-      'fit-content',
-    ],
+    width: ['100%', 'fit-content'],
 
-    height: [
-      '100%',
-      '100vh',
-    ],
+    height: ['100%', '100vh'],
   },
 });
 
-export const sprinkles = createSprinkles(
-  spacingProperties,
-  layoutProperties,
-);
+export const sprinkles = createSprinkles(spacingProperties, layoutProperties);
 
 export type Sprinkles = Parameters<typeof sprinkles>[0];

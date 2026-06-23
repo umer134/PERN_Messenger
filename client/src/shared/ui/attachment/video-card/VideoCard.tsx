@@ -1,14 +1,11 @@
-import { resolveMediaUrl } from "../../../lib/media/resolveMediaUrl";
+import { resolveMediaUrl } from '../../../lib/media/resolveMediaUrl';
 
 type Props = {
   src: string;
   onClick: () => void;
 };
 
-export const VideoCard = ({
-  src,
-  onClick
-}: Props) => {
+export const VideoCard = ({ src, onClick }: Props) => {
   return (
     <video
       muted

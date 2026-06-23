@@ -1,10 +1,4 @@
-type DateFormat =
-  | "time"
-  | "date"
-  | "datetime"
-  | "dateMonth"
-  | "full"
-  | "smart";
+type DateFormat = 'time' | 'date' | 'datetime' | 'dateMonth' | 'full' | 'smart';
 
 type FormatDateOptions = {
   locale?: string;
@@ -12,72 +6,70 @@ type FormatDateOptions = {
   showYear?: boolean;
 };
 
-const DEFAULT_LOCALE = "ru-RU";
+const DEFAULT_LOCALE = 'ru-RU';
 
 export function formatDate(
   input: string | number | Date,
-  options: FormatDateOptions = {}
+  options: FormatDateOptions = {},
 ) {
   const {
     locale = DEFAULT_LOCALE,
-    format = "datetime",
+    format = 'datetime',
     showYear = true,
   } = options;
 
   const date = new Date(input);
 
   if (Number.isNaN(date.getTime())) {
-    return "";
+    return '';
   }
 
   const now = new Date();
 
-  const isToday =
-    date.toDateString() === now.toDateString();
+  const isToday = date.toDateString() === now.toDateString();
 
   const isYesterday =
-    new Date(now.getTime() - 86400000).toDateString() ===
-    date.toDateString();
+    new Date(now.getTime() - 86400000).toDateString() === date.toDateString();
 
   const timeFormatter = new Intl.DateTimeFormat(locale, {
-    hour: "2-digit",
-    minute: "2-digit",
+    hour: '2-digit',
+    minute: '2-digit',
   });
 
   const dateFormatter = new Intl.DateTimeFormat(locale, {
-    day: "2-digit",
-    month: "2-digit",
-    year: showYear ? "numeric" : undefined,
+    day: '2-digit',
+    month: '2-digit',
+    year: showYear ? 'numeric' : undefined,
   });
 
   const monthNameFormatter = new Intl.DateTimeFormat(locale, {
-    day: "2-digit",
-    month: "long",
-    year: showYear ? "numeric" : undefined,
+    day: '2-digit',
+    month: 'long',
+    year: showYear ? 'numeric' : undefined,
   });
 
   const dateTimeFormatter = new Intl.DateTimeFormat(locale, {
-    day: "2-digit",
-    month: "2-digit",
-    year: showYear ? "numeric" : undefined,
-    hour: "2-digit",
-    minute: "2-digit",
+    day: '2-digit',
+    month: '2-digit',
+    year: showYear ? 'numeric' : undefined,
+    hour: '2-digit',
+    minute: '2-digit',
   });
 
   switch (format) {
-    case "time":
+    case 'time':
       return timeFormatter.format(date);
 
-    case "date":
+    case 'date':
       return dateFormatter.format(date);
 
-    case "dateMonth":
+    case 'dateMonth':
       return monthNameFormatter.format(date);
 
-    case "datetime":
+    case 'datetime':
       return dateTimeFormatter.format(date);
 
-    case "smart":
+    case 'smart':
       if (isToday) {
         return `Сегодня ${timeFormatter.format(date)}`;
       }

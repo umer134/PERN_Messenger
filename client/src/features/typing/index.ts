@@ -1,2 +1,2 @@
-export * from '../typing';
-export * as typingReducer from './model/typing.slice';
+export * from './hooks';
+export * from './model';

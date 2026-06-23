@@ -1,4 +1,3 @@
-
 export interface ProfileApiResponse {
   id: string;
   username: string;
@@ -11,7 +10,7 @@ export interface CurrentUserApiResponse {
   id: string;
   name: string;
   email: string;
-  role?: "user" | "admin" | "moderator" | null;
+  role?: 'user' | 'admin' | 'moderator' | null;
   avatar?: string | null | undefined;
   createdAt?: string;
   isActive?: boolean;
@@ -33,8 +32,7 @@ export type ProfileFormData = UpdateProfileDto & {
   password?: string;
   confirmPassword?: string;
   acceptTerms?: boolean;
-
-} 
+};
 
 export interface ProfileStoreState {
   id: string;

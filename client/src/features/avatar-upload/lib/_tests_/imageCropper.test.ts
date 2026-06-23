@@ -2,7 +2,11 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'; // для Vitest
 // или import { describe, it, expect, beforeEach } from '@jest/globals'; // для Jest
 
-import { createImage, getCroppedImg, getCroppedImgWithOptions } from '../cropImage';
+import {
+  createImage,
+  getCroppedImg,
+  getCroppedImgWithOptions,
+} from '../cropImage';
 import type { CropArea } from '../cropImage';
 
 // Моки для глобальных объектов
@@ -43,13 +47,13 @@ describe('cropImage', () => {
     it('should create image successfully', async () => {
       const url = 'https://example.com/image.jpg';
       const imagePromise = createImage(url);
-      
+
       // Симулируем успешную загрузку
       const mockImage = (global.Image as any).instances?.[0] || new MockImage();
       if (mockImage.onload) {
         mockImage.onload();
       }
-      
+
       const result = await imagePromise;
       expect(result).toBeDefined();
       expect(result.src).toBe(url);
@@ -62,7 +66,7 @@ describe('cropImage', () => {
     it('should reject on load error', async () => {
       const url = 'https://example.com/broken.jpg';
       const imagePromise = createImage(url);
-      
+
       // Симулируем ошибку загрузки
       const mockImage = new MockImage();
       setTimeout(() => {
@@ -70,7 +74,7 @@ describe('cropImage', () => {
           mockImage.onerror('Load error');
         }
       }, 0);
-      
+
       await expect(imagePromise).rejects.toThrow('Failed to load image');
     });
   });
@@ -84,25 +88,30 @@ describe('cropImage', () => {
     };
 
     it('should validate image source', async () => {
-      await expect(getCroppedImg('', mockCrop)).rejects.toThrow('Image source is required');
+      await expect(getCroppedImg('', mockCrop)).rejects.toThrow(
+        'Image source is required',
+      );
     });
 
     it('should validate crop dimensions', async () => {
-      await expect(getCroppedImg('test.jpg', { ...mockCrop, width: 0 }))
-        .rejects.toThrow('Invalid crop area dimensions');
-      
-      await expect(getCroppedImg('test.jpg', { ...mockCrop, height: -5 }))
-        .rejects.toThrow('Invalid crop area dimensions');
+      await expect(
+        getCroppedImg('test.jpg', { ...mockCrop, width: 0 }),
+      ).rejects.toThrow('Invalid crop area dimensions');
+
+      await expect(
+        getCroppedImg('test.jpg', { ...mockCrop, height: -5 }),
+      ).rejects.toThrow('Invalid crop area dimensions');
     });
 
     it('should handle canvas context error', async () => {
       // Мокаем getContext чтобы вернул null
       const originalGetContext = HTMLCanvasElement.prototype.getContext;
       HTMLCanvasElement.prototype.getContext = vi.fn().mockReturnValue(null);
-      
-      await expect(getCroppedImg('test.jpg', mockCrop))
-        .rejects.toThrow('Could not get canvas context');
-      
+
+      await expect(getCroppedImg('test.jpg', mockCrop)).rejects.toThrow(
+        'Could not get canvas context',
+      );
+
       HTMLCanvasElement.prototype.getContext = originalGetContext;
     });
   });
@@ -116,26 +125,30 @@ describe('cropImage', () => {
     };
 
     it('should validate quality parameter', async () => {
-      await expect(getCroppedImgWithOptions({
-        ...mockOptions,
-        quality: 1.5
-      })).rejects.toThrow('Quality must be between 0 and 1');
-      
-      await expect(getCroppedImgWithOptions({
-        ...mockOptions,
-        quality: -0.5
-      })).rejects.toThrow('Quality must be between 0 and 1');
+      await expect(
+        getCroppedImgWithOptions({
+          ...mockOptions,
+          quality: 1.5,
+        }),
+      ).rejects.toThrow('Quality must be between 0 and 1');
+
+      await expect(
+        getCroppedImgWithOptions({
+          ...mockOptions,
+          quality: -0.5,
+        }),
+      ).rejects.toThrow('Quality must be between 0 and 1');
     });
 
     it('should accept different output formats', async () => {
       const formats = ['image/jpeg', 'image/png', 'image/webp'] as const;
-      
+
       for (const format of formats) {
         const promise = getCroppedImgWithOptions({
           ...mockOptions,
           outputFormat: format,
         });
-        
+
         // Тест не должен упасть на валидации формата
         expect(promise).toBeDefined();
       }

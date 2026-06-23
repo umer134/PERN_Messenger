@@ -22,7 +22,12 @@ type Props = {
   onBottomChange: (value: boolean) => void;
 };
 
-export const MessagesList = ({ messages, mediaItems, conversationId, onBottomChange }: Props) => {
+export const MessagesList = ({
+  messages,
+  mediaItems,
+  conversationId,
+  onBottomChange,
+}: Props) => {
   const dispatch = useAppDispatch();
 
   const myId = useAppSelector(selectCurrentUserId);
@@ -40,7 +45,7 @@ export const MessagesList = ({ messages, mediaItems, conversationId, onBottomCha
 
   const scrollToBottom = () => {
     bottomRef.current?.scrollIntoView({
-      behavior: "smooth"
+      behavior: 'smooth',
     });
     readMessages.mutate(conversationId);
 
@@ -48,17 +53,17 @@ export const MessagesList = ({ messages, mediaItems, conversationId, onBottomCha
   };
 
   useEffect(() => {
-    if(!targetMessageId) {
+    if (!targetMessageId) {
       return;
     }
 
     const element = document.getElementById(`message-${targetMessageId}`);
 
-    if(!element) return;
+    if (!element) return;
 
     element.scrollIntoView({
-      behavior: "smooth",
-      block: "center",
+      behavior: 'smooth',
+      block: 'center',
     });
 
     element.classList.add(s.highlightedMessage);
@@ -68,19 +73,18 @@ export const MessagesList = ({ messages, mediaItems, conversationId, onBottomCha
     }, 1500);
 
     dispatch(clearScrollTarget());
-    
   }, [targetMessageId]);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({
-      behavior: "auto",
+      behavior: 'auto',
     });
   }, [conversationId]);
 
   useEffect(() => {
     if (!showScrollButton) {
       bottomRef.current?.scrollIntoView({
-        behavior: "smooth",
+        behavior: 'smooth',
       });
     }
   }, [messages.length]);
@@ -88,31 +92,26 @@ export const MessagesList = ({ messages, mediaItems, conversationId, onBottomCha
   useEffect(() => {
     const container = listRef.current;
 
-    if(!container) return;
+    if (!container) return;
 
     const handleScroll = () => {
-
-      const distanceFromBottom = 
-        container.scrollHeight -
-        container.scrollTop - 
-        container.clientHeight;
+      const distanceFromBottom =
+        container.scrollHeight - container.scrollTop - container.clientHeight;
 
       const nearBottom = distanceFromBottom < 80;
 
       onBottomChange(nearBottom);
-    
-      setShowScrollButton(!nearBottom);
 
+      setShowScrollButton(!nearBottom);
     };
 
     handleScroll();
 
-    container.addEventListener("scroll", handleScroll);
+    container.addEventListener('scroll', handleScroll);
 
     return () => {
-      container.removeEventListener("scroll", handleScroll);
+      container.removeEventListener('scroll', handleScroll);
     };
-
   }, [messages]);
 
   return (
@@ -129,7 +128,7 @@ export const MessagesList = ({ messages, mediaItems, conversationId, onBottomCha
           ))}
           <div ref={bottomRef} />
         </div>
-      </div>        
+      </div>
       {showScrollButton && (
         <button className={s.scrollButton} onClick={scrollToBottom}>
           <ChevronDown size={18} />

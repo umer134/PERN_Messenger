@@ -21,60 +21,36 @@ export const MediaViewerModal = ({ items, activeIndex, onClose }: Props) => {
   const media = items[index];
 
   useEffect(() => {
-    const handleKeyDown = (
-      e: KeyboardEvent,
-    ) => {
-      if (e.key === "ArrowLeft") {
-        setIndex(prev =>
-          Math.max(prev - 1, 0)
-        );
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'ArrowLeft') {
+        setIndex((prev) => Math.max(prev - 1, 0));
       }
 
-      if (e.key === "ArrowRight") {
-        setIndex(prev =>
-          Math.min(
-            prev + 1,
-            items.length - 1
-          )
-        );
+      if (e.key === 'ArrowRight') {
+        setIndex((prev) => Math.min(prev + 1, items.length - 1));
       }
 
-      if (e.key === "Escape") {
+      if (e.key === 'Escape') {
         onClose();
       }
-  };
+    };
 
-  window.addEventListener(
-    "keydown",
-    handleKeyDown
-  );
+    window.addEventListener('keydown', handleKeyDown);
 
-  return () =>
-    window.removeEventListener(
-      "keydown",
-      handleKeyDown
-    );
-}, [items.length, onClose]);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [items.length, onClose]);
 
   return (
-    <div
-      className={s.backdrop}
-    >
+    <div className={s.backdrop}>
       <div className={s.header}>
         <span>
           {index + 1} / {items.length}
         </span>
 
-        <span>
-          {media.name}
-        </span>
+        <span>{media.name}</span>
 
-        <button
-          onClick={onClose}
-        >
-          <X 
-            color="white"
-          />
+        <button onClick={onClose}>
+          <X color="white" />
         </button>
       </div>
       <div
@@ -84,25 +60,21 @@ export const MediaViewerModal = ({ items, activeIndex, onClose }: Props) => {
         }}
       >
         <button
-          onClick={() => setIndex(prev => Math.max(prev -1, 0))}
-          style={{color: 'white'}}
+          onClick={() => setIndex((prev) => Math.max(prev - 1, 0))}
+          style={{ color: 'white' }}
         >
           <ChevronLeft size={25} />
         </button>
-        {media.type === "image" && (
-          <ImageViewer src={media.url} />
-        )} 
-      
-        {media.type === "video" && (
-          <VideoViewer src={media.url} />
-        )}
+        {media.type === 'image' && <ImageViewer src={media.url} />}
 
-        {media.type === "audio" && (
-          <AudioViewer src={media.url} />
-        )}
+        {media.type === 'video' && <VideoViewer src={media.url} />}
+
+        {media.type === 'audio' && <AudioViewer src={media.url} />}
         <button
-          onClick={() => setIndex(prev => Math.min(prev + 1, items.length -1))}
-          style={{color: 'white'}}
+          onClick={() =>
+            setIndex((prev) => Math.min(prev + 1, items.length - 1))
+          }
+          style={{ color: 'white' }}
         >
           <ChevronRight size={25} />
         </button>
@@ -115,16 +87,11 @@ export const MediaViewerModal = ({ items, activeIndex, onClose }: Props) => {
             className={clsx(
               s.thumbnail,
 
-              itemIndex === index &&
-                s.thumbnailActive
+              itemIndex === index && s.thumbnailActive,
             )}
-            onClick={() =>
-              setIndex(itemIndex)
-            }
+            onClick={() => setIndex(itemIndex)}
           >
-            <ThumbnailRenderer
-              media={item}
-            />
+            <ThumbnailRenderer media={item} />
           </button>
         ))}
       </div>

@@ -1,4 +1,1 @@
-export type LeftPanelView = 
-  | "dialogs"
-  | "profile"
-  | "settings"
+export type LeftPanelView = 'dialogs' | 'profile' | 'settings';

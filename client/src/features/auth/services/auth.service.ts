@@ -1,6 +1,6 @@
 import { setSession, clearSession, setInitialized } from '../model/authSlice';
-import { TokenStore } from "../../../shared/lib/token-store";
-import { AuthResponse } from "../model/auth.types";
+import { TokenStore } from '../../../shared/lib/token-store';
+import { AuthResponse } from '../model/auth.types';
 import { store } from '../../../app/providers/store';
 import { refreshSession } from '../../../shared/api/refresh-manager';
 import socket from '../../../shared/socket/socket';
@@ -19,7 +19,7 @@ export class AuthService {
 
   static bootstrap(auth: AuthResponse) {
     TokenStore.setAccessToken(auth.accessToken);
-    console.log("TOKEN", TokenStore.getAccessToken());
+    console.log('TOKEN', TokenStore.getAccessToken());
 
     socket.disconnect();
 
@@ -36,7 +36,7 @@ export class AuthService {
     socket.disconnect();
 
     TokenStore.clear();
-    
+
     store.dispatch(clearSession());
   }
 }

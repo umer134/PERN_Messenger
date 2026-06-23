@@ -15,14 +15,16 @@ class EnvironmentConfig {
     this.config = {
       baseUrl: import.meta.env.VITE_BASE_URL || '',
       apiUrl: import.meta.env.VITE_API_URL || '',
-      nodeEnv: (import.meta.env.MODE as 'development' | 'production' | 'test') || 'development',
+      nodeEnv:
+        (import.meta.env.MODE as 'development' | 'production' | 'test') ||
+        'development',
       isProduction: import.meta.env.PROD,
       isDevelopment: import.meta.env.DEV,
     };
   }
 
   static getInstance(): EnvironmentConfig {
-    if(!EnvironmentConfig.instance) {
+    if (!EnvironmentConfig.instance) {
       EnvironmentConfig.instance = new EnvironmentConfig();
     }
     return EnvironmentConfig.instance;

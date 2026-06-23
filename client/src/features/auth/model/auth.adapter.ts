@@ -1,15 +1,14 @@
-import { AuthEntity } from "../../../entities/auth.entity";
-import { AuthResponse } from "./auth.model";
-import { RegisterDto } from "./auth.types";
+import { AuthEntity } from '../../../entities/auth.entity';
+import { AuthResponse } from './auth.model';
+import { RegisterDto } from './auth.types';
 
 export class AuthAdapter {
-
   static toEntity(apiAuth: AuthResponse): AuthEntity {
     return new AuthEntity({
       accessToken: apiAuth.accessToken,
       refreshToken: apiAuth.refreshToken,
       me: apiAuth.user,
-    })
+    });
   }
 
   static registerDtoToFormData(dto: RegisterDto): FormData {
@@ -18,12 +17,12 @@ export class AuthAdapter {
     formData.append('name', dto.username);
     formData.append('email', dto.email);
     formData.append('password', dto.password);
-    
-    if(dto.avatar) {
+
+    if (dto.avatar) {
       formData.append('avatar', dto.avatar);
     }
 
-    return formData
+    return formData;
   }
 
   static toApi(auth: AuthEntity): AuthResponse {
@@ -31,7 +30,7 @@ export class AuthAdapter {
       accessToken: auth.accessToken,
       refreshToken: auth.refreshToken,
       user: auth.me,
-    }
+    };
   }
 
   static AuthDtoToApi(dto: RegisterDto) {
@@ -39,8 +38,7 @@ export class AuthAdapter {
       name: dto.username,
       email: dto.email,
       password: dto.password,
-      avatar: dto.avatar, 
-    }
+      avatar: dto.avatar,
+    };
   }
-
 }

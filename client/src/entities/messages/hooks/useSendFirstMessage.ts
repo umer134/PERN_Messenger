@@ -1,46 +1,31 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import { MessageApi } from "../../../entities/messages/api/message.api";
-import { SendMessageDto } from "../model/send-message.types";
-import { DirectMessageSendResponse } from "../model/message.model";
-import { MessageAdapter } from "../model/message.adapter";
-
-
+import { MessageApi } from '../../../entities/messages/api/message.api';
+import { SendMessageDto } from '../model/send-message.types';
+import { DirectMessageSendResponse } from '../model/message.model';
+import { MessageAdapter } from '../model/message.adapter';
 
 export const useSendFirstMessage = () => {
   const queryClient = useQueryClient();
   return useMutation<DirectMessageSendResponse, Error, SendMessageDto>({
-    mutationFn: async ({ recipientId, content, files, }) => {
-      const response =
-        await MessageApi.sendMessage({
-          recipientId,
-          content,
-          files,
-        });
+    mutationFn: async ({ recipientId, content, files }) => {
+      const response = await MessageApi.sendMessage({
+        recipientId,
+        content,
+        files,
+      });
 
       return response.data;
     },
 
-onSuccess: (data) => {
+    onSuccess: (data) => {
+      queryClient.setQueryData(['messages', data.chat_id], (old: any) => {
+        return {
+          messages: [...(old?.messages ?? []), MessageAdapter.toVM(data)],
 
-  queryClient.setQueryData(
-    ["messages", data.chat_id],
-    (old: any) => {
-
-      return {
-        messages: [
-          ...(old?.messages ?? []),
-          MessageAdapter.toVM(data)
-        ],
-
-        nextCursor:
-          old?.nextCursor ?? null,
-      };
-
-    }
-  );
-
-
-}
+          nextCursor: old?.nextCursor ?? null,
+        };
+      });
+    },
   });
 };

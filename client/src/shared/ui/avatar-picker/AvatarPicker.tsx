@@ -10,9 +10,9 @@ type Props = {
   value?: File;
   initialAvatar?: string | null;
   onChange: (file: File) => void;
-}
+};
 
-export const AvatarPicker = ({value, initialAvatar, onChange}: Props) => {
+export const AvatarPicker = ({ value, initialAvatar, onChange }: Props) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const previewRef = useRef<string | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
@@ -44,14 +44,14 @@ export const AvatarPicker = ({value, initialAvatar, onChange}: Props) => {
       inputRef.current.value = '';
     }
     inputRef.current?.click();
-  }
+  };
 
-  const onFileSelect = (e: React.ChangeEvent<HTMLInputElement>,) => {
+  const onFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
 
-    if(!file) return;
+    if (!file) return;
 
-    if(rawImage) {
+    if (rawImage) {
       URL.revokeObjectURL(rawImage);
     }
 
@@ -63,26 +63,15 @@ export const AvatarPicker = ({value, initialAvatar, onChange}: Props) => {
   };
 
   const avatarSrc =
-  preview ||
-  (initialAvatar
-    ? resolveMediaUrl(initialAvatar)
-    : null);
+    preview || (initialAvatar ? resolveMediaUrl(initialAvatar) : null);
 
   return (
     <>
-      <div
-        className={styles.root}
-        onClick={openPicker}
-      >
+      <div className={styles.root} onClick={openPicker}>
         {avatarSrc ? (
-          <img
-            src={avatarSrc}
-            className={styles.image}
-          />
+          <img src={avatarSrc} className={styles.image} />
         ) : (
-          <div 
-            className={styles.placeholder}
-          >
+          <div className={styles.placeholder}>
             <User size={28} />
           </div>
         )}
@@ -95,8 +84,8 @@ export const AvatarPicker = ({value, initialAvatar, onChange}: Props) => {
         <input
           ref={inputRef}
           className={styles.hiddenInput}
-          type='file'
-          accept='image/*'
+          type="file"
+          accept="image/*"
           onChange={onFileSelect}
         />
       </div>
@@ -106,7 +95,7 @@ export const AvatarPicker = ({value, initialAvatar, onChange}: Props) => {
           key={rawImage}
           imageSrc={rawImage}
           onClose={() => {
-            if(rawImage) {
+            if (rawImage) {
               URL.revokeObjectURL(rawImage);
             }
             setRawImage(null);

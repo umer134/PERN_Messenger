@@ -1,12 +1,12 @@
 import { style } from '@vanilla-extract/css';
 
 export const root = style({
-  display: "flex",
-  alignItems: "center",
+  display: 'flex',
+  alignItems: 'center',
 
   gap: 12,
 
-  margin: "20px 0",
+  margin: '20px 0',
 });
 
 export const line = style({
@@ -15,5 +15,5 @@ export const line = style({
 });
 
 export const label = style({
-  fontSize: "12px",
+  fontSize: '12px',
 });

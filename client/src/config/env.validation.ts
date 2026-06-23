@@ -12,7 +12,7 @@ const envSchema = z.object({
 function validateEnv() {
   const parsedEnv = envSchema.safeParse(import.meta.env);
 
-  if(!parsedEnv.success) {
+  if (!parsedEnv.success) {
     console.error('Invalid environment variables:', parsedEnv.error.format());
     throw new Error('Environment validation failed');
   }

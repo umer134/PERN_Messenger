@@ -11,7 +11,7 @@ type MediaViewerState = {
   items: MediaItem[];
 
   activeIndex: number;
-}
+};
 
 export const MediaViewerProvider = ({ children }: Props) => {
   const [media, setMedia] = useState<MediaItem | null>(null);
@@ -19,7 +19,8 @@ export const MediaViewerProvider = ({ children }: Props) => {
   return (
     <MediaViewerContext.Provider
       value={{
-        open: (items: MediaItem[], activeIndex: number) => setViewer({items, activeIndex}),
+        open: (items: MediaItem[], activeIndex: number) =>
+          setViewer({ items, activeIndex }),
         close: () => setViewer(null),
       }}
     >
@@ -33,5 +34,5 @@ export const MediaViewerProvider = ({ children }: Props) => {
         />
       )}
     </MediaViewerContext.Provider>
-  )
-}
+  );
+};

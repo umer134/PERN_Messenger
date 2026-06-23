@@ -38,4 +38,3 @@ globalStyle('a', {
   color: 'inherit',
   textDecoration: 'none',
 });
-
