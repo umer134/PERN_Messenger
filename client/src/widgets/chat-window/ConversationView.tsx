@@ -7,11 +7,10 @@ import { EmptyState } from "./empty-state/EmptyState";
 type Props = {
   selectedConversation: SelectedConversation | null;
 
-  onSelectedConversation: (conversation: SelectedConversation) => void;
+  onDraftChatCreated: (chatId: string) => void;
 };
 
-export const ConversationView = ({ selectedConversation, onSelectedConversation}: Props) => {
-  
+export const ConversationView = ({ selectedConversation, onDraftChatCreated}: Props) => {
   if(!selectedConversation) return <EmptyState />;
 
   if(selectedConversation.type === "conversation") {
@@ -26,10 +25,7 @@ export const ConversationView = ({ selectedConversation, onSelectedConversation}
     <section className={s.root}>
       <DraftConversationContent
         user={ selectedConversation.draft.participant }
-        onConversationCreated={(data) => onSelectedConversation({
-          type: "conversation",
-          data: data,
-        })}
+        onConversationCreated={onDraftChatCreated}
       />
     </section>
   )

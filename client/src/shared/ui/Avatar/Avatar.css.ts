@@ -66,16 +66,16 @@ export const fallback = style({
 
 export const status = style({
   position: 'absolute',
-  right: 0,
-  bottom: 0,
-  width: 10,
-  height: 10,
+  right: 3,
+  bottom: 2,
+  width: 11,
+  height: 11,
   borderRadius: vars.radius.full,
   border: `2px solid ${vars.color.surface}`,
 });
 
 export const statusColor = {
-  online: { background: '#22c55e' },
+  online: { background: '#60A5FA' },
   offline: { background: '#6b7280' },
   away: { background: '#f59e0b' },
 };

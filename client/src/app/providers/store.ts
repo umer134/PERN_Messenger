@@ -10,6 +10,7 @@ import messageActionsReducer from '../../features/message-actions/model/message-
 import { chatApi } from "../../features/chat/chatApi";
 import messageNavigationReducer from '../../features/navigation/message-navigation/model/message-navigation.slice';
 import typingReducer  from '../../features/typing/model/typing.slice';
+import presenceReducer from "../../features/presence/model/presence.slice";
 
 export const store = configureStore({
     reducer: {
@@ -23,6 +24,7 @@ export const store = configureStore({
         messageActions: messageActionsReducer,
         messageNavigation: messageNavigationReducer,
         typing: typingReducer,
+        presence: presenceReducer,
         // theme: darkmodeReducer,
     },
     middleware: (getDefaultMiddleware) => {

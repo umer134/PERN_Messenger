@@ -9,7 +9,7 @@ import { MessagesList } from "../message-list/MessageList";
 type Props = {
   user: User;
 
-  onConversationCreated: (conversation: ConversationPreview) => void;
+  onConversationCreated: (chatId: string) => void;
 };
 
 export const DraftConversationContent = ({ user, onConversationCreated}: Props) => {
@@ -24,19 +24,7 @@ export const DraftConversationContent = ({ user, onConversationCreated}: Props) 
       files,
     });
 
-    if(result.conversation.id)
-    onConversationCreated({
-      id: result.conversation.id,
-      title: result.conversation.title,
-      avatar: result.conversation.avatar || undefined,
-      isGroup: result.conversation.isGroup,
-      unreadCount: result.conversation.unreadCount,
-      lastMessage: result.conversation.lastMessage || '',
-      updatedAt: result.conversation.updatedAt,
-      isVirtual: false || undefined,
-      participantId: result.conversation.participantId || undefined,
-      isOnline: result.conversation.isOnline,
-    });
+    if(result.chat_id) onConversationCreated(result.chat_id);
 
   };
 
@@ -48,16 +36,21 @@ export const DraftConversationContent = ({ user, onConversationCreated}: Props) 
           title: user.username,
           avatar: user.avatar,
           isGroup: false,
+          participantId: user.id
         }}
       />
 
       <MessagesList
         messages={[]}
         mediaItems={[]}
+        onBottomChange={() => true}
+        conversationId={user.id}
       />
 
       <MessageComposer
         onSend={handleSend}
+        conversationId={user.id}
+        onEdit={() => false}
       />
     </>
   );

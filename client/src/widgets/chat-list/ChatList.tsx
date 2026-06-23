@@ -33,6 +33,36 @@ export const ConversationList = ({selectedConversation, onSelectedConversation}:
   const { data: users = [] } = useSearchUser(query); 
 
   useConversationEvents();
+
+  const handleSelectUser = (user) => {
+
+    const existingConversation =
+      conversations.find(
+        conversation =>
+          conversation.participantId === user.id
+      );
+
+    if (existingConversation) {
+
+      onSelectedConversation({
+        type: "conversation",
+        data: existingConversation,
+      });
+
+      return;
+    }
+
+    onSelectedConversation({
+      type: "draft",
+
+      draft: {
+        id: `draft-${user.id}`,
+        participant: user,
+        isVirtual: true,
+      }
+    });
+
+  };
   
   return (
     <aside className={s.root}>
@@ -56,18 +86,7 @@ export const ConversationList = ({selectedConversation, onSelectedConversation}:
           />
 
           {query.length > 0 ? (
-            <SearchResults users={users} onSelectUser={(user) => onSelectedConversation({
-              type: "draft",
-
-              draft: {
-                id: `draft-${user.id}`,
-
-                participant: user,
-
-                isVirtual: true,
-              }
-
-            })}/>
+            <SearchResults users={users} onSelectUser={handleSelectUser}/>
           ) : (
             <ConversationItems
               conversations={conversations}

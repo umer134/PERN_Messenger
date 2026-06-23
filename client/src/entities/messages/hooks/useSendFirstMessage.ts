@@ -3,6 +3,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { MessageApi } from "../../../entities/messages/api/message.api";
 import { SendMessageDto } from "../model/send-message.types";
 import { DirectMessageSendResponse } from "../model/message.model";
+import { MessageAdapter } from "../model/message.adapter";
 
 
 
@@ -20,15 +21,26 @@ export const useSendFirstMessage = () => {
       return response.data;
     },
 
-    onSuccess: (data) => {
-      queryClient.setQueryData(
-        ["messages", data.chat_id],
-        (old: any[] = []) => [...old, data]
-      );
+onSuccess: (data) => {
 
-      queryClient.invalidateQueries({
-        queryKey: ['conversations', 'list']
-      });
+  queryClient.setQueryData(
+    ["messages", data.chat_id],
+    (old: any) => {
+
+      return {
+        messages: [
+          ...(old?.messages ?? []),
+          MessageAdapter.toVM(data)
+        ],
+
+        nextCursor:
+          old?.nextCursor ?? null,
+      };
+
     }
+  );
+
+
+}
   });
 };

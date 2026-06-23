@@ -9,11 +9,14 @@ export const SOCKET_EVENTS = {
   CHAT_JOIN: "chat:join",
   CHAT_LEAVE: "chat:leave",
 
+  CHAT_CREATED: "chat:created",
   CHAT_UPDATED: "chat:updated",
 
   TYPING_START: "typing:start",
   TYPING_STOP: "typing:stop",
 
-  USER_TYPING: "user:typing",
-  USER_STOPPED_TYPING: "user:stopped_typing",
+  PRESENCE_ONLINE: "presence:online",
+  PRESENCE_OFFLINE: "presence:offline",
+  PRESENCE_INIT: "presence:init",
+  
 } as const;

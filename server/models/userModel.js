@@ -26,7 +26,7 @@ const UserModel = sequelize.define('users', {
     },
     avatar_url: {type: DataTypes.STRING(255)},
     online: {type: DataTypes.BOOLEAN, defaultValue: false},
-    last_seen: {type: DataTypes.TIME},
+    last_seen: {type: DataTypes.DATE},
     isActivated: {type: DataTypes.BOOLEAN, defaultValue: false},
     activationLink: {type: DataTypes.STRING},
 }, { tableName: "users",

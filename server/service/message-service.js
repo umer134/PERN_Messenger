@@ -9,126 +9,200 @@ const notifyChatUpdated = require("../helpers/notifyChatUpdated");
 
 class MessageService {
 
-  async sendMessage({senderId, chatId, recipientId, content, replyToId, files, type}) {
-    const transaction = await sequelize.transaction();
+  async sendMessage({
+    senderId,
+    chatId,
+    recipientId,
+    content,
+    replyToId,
+    files,
+    type,
+  }) {
+
+    const transaction =
+      await sequelize.transaction();
 
     try {
+
       let chat;
+      let isNew = false;
 
-      if(chatId) {
-        chat = await ChatModel.findByPk(chatId, {
-          transaction
-        });
+      if (chatId) {
 
-        if(!chat) {
-          throw ApiError.BadRequest("Chat not found");
-        }
-      }
-
-      else {
-        if(!recipientId) {
-          throw ApiError.BadRequest('recipientId required');
-        }
-
-        chat = await chatService.findOrCreatePrivateChat(
-          senderId, recipientId, transaction
+        chat = await ChatModel.findByPk(
+          chatId,
+          { transaction }
         );
+
+        if (!chat) {
+          throw ApiError.BadRequest(
+            "Chat not found"
+          );
+        }
+
+      } else {
+
+        if (!recipientId) {
+          throw ApiError.BadRequest(
+            "recipientId required"
+          );
+        }
+
+        const result =
+          await chatService.findOrCreatePrivateChat(
+            senderId,
+            recipientId,
+            transaction
+          );
+
+        chat = result.chat;
+        isNew = result.isNew;
       }
 
-      const message = await MessageModel.create({
-        chat_id: chat.id,
-        sender_id: senderId,
-        content: content || null,
-        reply_to_id: replyToId || null,
-      }, { transaction });
+      const message =
+        await MessageModel.create(
+          {
+            chat_id: chat.id,
+            sender_id: senderId,
+            content: content || null,
+            reply_to_id: replyToId || null,
+          },
+          {
+            transaction,
+          }
+        );
 
       if (files?.length) {
-        const fileRecords = files.map(file => ({
-          message_id: message.id,
-          file_path: `/uploads/message_files/${file.filename}`,
-          type: type || detectFileType(file)
-        }));
 
-        await MessageFilesModel.bulkCreate(fileRecords, {
-          transaction
-        });
+        const fileRecords =
+          files.map(file => ({
+            message_id: message.id,
+            file_path:
+              `/uploads/message_files/${file.filename}`,
+            type:
+              type ||
+              detectFileType(file),
+          }));
+
+        await MessageFilesModel.bulkCreate(
+          fileRecords,
+          {
+            transaction,
+          }
+        );
       }
 
       await transaction.commit();
 
-      const conversation =
-        await chatService.buildConversationPreview(
-          chat.id,
-          senderId
+      const fullMessage =
+        await MessageModel.findByPk(
+          message.id,
+          {
+            include: [
+              {
+                model: MessageFilesModel,
+                as: "attachedFiles",
+                attributes: [
+                  "file_path",
+                  "type",
+                ],
+              },
+              {
+                model: UserModel,
+                as: "sender",
+                attributes: [
+                  "id",
+                  "username",
+                  "avatar_url",
+                ],
+              },
+              {
+                model: MessageModel,
+                as: "replyTo",
+                attributes: [
+                  "id",
+                  "content",
+                  "sender_id",
+                ],
+                include: [
+                  {
+                    model: UserModel,
+                    as: "sender",
+                    attributes: [
+                      "id",
+                      "username",
+                    ],
+                  },
+                  {
+                    model: MessageFilesModel,
+                    as: "attachedFiles",
+                    attributes: [
+                      "file_path",
+                      "type",
+                    ],
+                  },
+                ],
+              },
+            ],
+          }
         );
-      
-      const fullMessage = await MessageModel.findByPk(
-        message.id,
-        {
-          include: [
-            {
-              model: MessageFilesModel,
-              as: "attachedFiles",
-              attributes: ["file_path", "type"],
-            },
-            {
-              model: UserModel,
-              as: "sender", 
-              attributes: [
-                "id",
-                "username",
-                "avatar_url",
-              ],
-            },
-            {
-              model: MessageModel, 
-              as: "replyTo",
-              attributes: [
-                "id",
-                "content",
-                "sender_id",
-              ],
-              include: [
-                {
-                  model: UserModel,
-                  as: "sender",
-                  attributes: [
-                    "id", 
-                    "username",
-                  ]
-                },
-                {
-                  model: MessageFilesModel,
-                  as: "attachedFiles",
-                  attributes: ["file_path", "type"],
-                }
-              ]
-            }
-          ],
-        }
-      );
 
-      const messageDto = new MessageDto(fullMessage);
+      const messageDto =
+        new MessageDto(fullMessage);
 
       const io = getID();
 
-      io.to(chat.id).emit("messages:new", messageDto);
-      //io.emit("chat:updated", { chatId: chat.id });
-      await notifyChatUpdated(io, chat.id);
+      io.to(chat.id)
+        .emit(
+          "messages:new",
+          messageDto
+        );
 
-      return {
-        conversation,
-        message: messageDto,
-      };
-      
+      await notifyChatUpdated(
+        io,
+        chat.id
+      );
+
+      if (
+        isNew &&
+        recipientId
+      ) {
+
+        const senderPreview =
+          await chatService.buildConversationPreview(
+            chat.id,
+            senderId
+          );
+
+        const recipientPreview =
+          await chatService.buildConversationPreview(
+            chat.id,
+            recipientId
+          );
+
+        io.to(`user:${senderId}`)
+          .emit(
+            "chat:created",
+            senderPreview
+          );
+
+        io.to(`user:${recipientId}`)
+          .emit(
+            "chat:created",
+            recipientPreview
+          );
+      }
+
+      return messageDto;
 
     } catch (e) {
-        if (!transaction.finished) {
-          await transaction.rollback();
-        }
 
-        throw e;
+      if (!transaction.finished) {
+        await transaction.rollback();
       }
+
+      throw e;
+    }
   }
 
   async markAsRead(chatId, userId) {

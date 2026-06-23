@@ -1,6 +1,8 @@
 const { Server } = require('socket.io');
 const socketAuth = require('../middlewares/socket-auth');
 const typingEventHelper = require('./helpers/typingEventHelper');
+const { onlineUsers } = require('./presence');
+const { UserModel } = require('../models');
 
 let io;
 
@@ -17,14 +19,81 @@ function initSocket(server) {
   io.use(socketAuth);
 
   io.on("connection", socket => {
+    const userId = socket.user.id;
+
+    let userSockets =
+      onlineUsers.get(userId);
+
+    if (!userSockets) {
+
+      userSockets = new Set();
+
+      onlineUsers.set(
+        userId,
+        userSockets
+      );
+
+      console.log('ONLINE_USERS', onlineUsers )
+
+      io.emit(
+        "presence:online",
+        {
+          userId,
+        }
+      );
+    }
+
+    userSockets.add(socket.id);
 
     console.log(
       "CONNECTED USER",
-      socket.user.id,
+      userId,
       socket.id
     );
 
-    socket.join(`user:${socket.user.id}`);
+    socket.join(`user:${userId}`);
+
+    socket.emit(
+      "presence:init",
+      {
+        users: [...onlineUsers.keys()]
+      }
+    );
+
+    socket.on("disconnect", async () => {
+      const sockets =
+        onlineUsers.get(socket.user.id);
+
+      if (!sockets) return;
+
+      sockets.delete(socket.id);
+
+      if (sockets.size === 0) {
+
+        onlineUsers.delete(socket.user.id);
+
+        const lastSeen = Date.now();
+
+        await UserModel.update(
+          {
+            last_seen: new Date(lastSeen),
+          },
+          {
+            where: {
+              id: socket.user.id,
+            },
+          }
+        );
+
+        io.emit(
+          "presence:offline",
+          {
+            userId: socket.user.id,
+            lastSeen,
+          }
+        );
+      }
+    });
 
     socket.on("chat:join", chatId => {
       console.log("JOINEDCHAT:", chatId)

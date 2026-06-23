@@ -7,14 +7,19 @@ import { Avatar } from "../../../shared/ui/Avatar";
 import { useAppSelector } from "../../../app/hooks";
 import { selectTypingUsers } from "../../../features/typing/model/typing.selectors";
 import { TypingIndicator } from "../../../shared/ui/typing-indicator/TypingIndicator";
+import { selectPresence } from "../../../features/presence/model/presence.selectors";
+import { formatDate } from "../../../shared/lib/format/formatDate";
  
 type Props = {
   conversation: ConversationDetails;
 };
 
-export const ConversationHeader = ({ conversation, }: Props) => {
+export const ConversationHeader = ({ conversation }: Props) => {
 
+  console.log("conversation", conversation)
   const typingUsers = useAppSelector(selectTypingUsers(conversation.id));
+
+  const presence = useAppSelector(selectPresence(conversation.participantId));
 
   return (
     <header className={s.root}>
@@ -41,13 +46,12 @@ export const ConversationHeader = ({ conversation, }: Props) => {
           {typingUsers.length > 0 ? (
             <TypingIndicator size="xs" statusText={typingUsers[0].username} />
           ) : (
-          conversation?.isGroup
-            ? `${conversation?.membersCount} participants`
-            : conversation?.isOnline
-            ? "online"
-            : "offline"
-            )
-          }
+            conversation?.isGroup
+              ? `${conversation?.membersCount} participants`
+              : presence?.online ? 'online'
+                : presence?.lastSeen ? formatDate(presence.lastSeen, { format: "smart" })
+                : conversation?.lastSeen ? formatDate(conversation.lastSeen!, {format: 'smart'}) : "offline"
+          )}
         </span>
       </div>
     </header>

@@ -4,6 +4,7 @@ const { sequelize, ChatModel, ChatMemberModel, UserModel, MessageModel, MessageF
 const ApiError = require("../exceptions/api-error");
 const { getID } = require('../socket/socket');
 const getPreviewText = require('../utils/getPreviewText');
+const { onlineUsers } = require('../socket/presence');
 
 class ChatService {
 
@@ -26,7 +27,10 @@ class ChatService {
     });
 
     if (existingChat) {
-      return existingChat;
+      return {
+        chat: existingChat,
+        isNew: false,
+      };
     }
 
     const newChat = await ChatModel.create({
@@ -44,7 +48,10 @@ class ChatService {
       }
     ], { transaction });
 
-    return newChat;
+    return {
+      chat: newChat,
+      isNew: true
+    };
   }  
   
   async createChat (recipientId, senderId) {
@@ -73,7 +80,10 @@ class ChatService {
       { chat_id: newChat.id, user_id: recipientId }
     ]);
   
-    return newChat;
+    return {
+      chat: newChat,
+      isNew: true,
+    };
   }
 
   async getUserChats(userId) {
@@ -208,6 +218,7 @@ class ChatService {
           attributes: [
             'id',
             'username',
+            'last_seen',
             ['avatar_url', 'avatar']
           ]
         },
@@ -256,6 +267,8 @@ class ChatService {
       transaction,
     });
 
+    const isOnline = onlineUsers.has(otherMember?.id);
+
     return {
       id: chat.id,
 
@@ -281,7 +294,9 @@ class ChatService {
       participantId:
         otherMember?.id,
 
-      isOnline: false,
+      isOnline,
+
+      lastSeen: otherMemberData?.last_seen ?? null,
     };
   }
 

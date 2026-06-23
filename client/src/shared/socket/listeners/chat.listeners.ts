@@ -1,6 +1,20 @@
 import socket from "../socket";
 import { SOCKET_EVENTS } from "../events/socket-events";
 
+export const subscribeChatCreated = (handler) => {
+  socket.on(
+    SOCKET_EVENTS.CHAT_CREATED,
+    handler
+  );
+
+  return () => {
+    socket.off(
+      SOCKET_EVENTS.CHAT_CREATED, 
+      handler
+    )
+  }
+}
+
 export const subscribeChatUpdated = (handler) => {
   socket.on(
     SOCKET_EVENTS.CHAT_UPDATED,
