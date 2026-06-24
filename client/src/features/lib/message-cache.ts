@@ -1,5 +1,9 @@
+import { MessageResponse } from '@/entities';
+
+type Old = MessageResponse;
+
 export const appendMessage = (queryClient, chatId, message) => {
-  queryClient.setQueryData(['messages', chatId], (old: any) => {
+  queryClient.setQueryData(['messages', chatId], (old: Old) => {
     if (!old) return old;
 
     return {
@@ -10,7 +14,7 @@ export const appendMessage = (queryClient, chatId, message) => {
 };
 
 export const markMessageRead = (queryClient, chatId, messageIds) => {
-  queryClient.setQueryData(['messages', chatId], (old: any) => {
+  queryClient.setQueryData(['messages', chatId], (old: Old) => {
     if (!old) return old;
 
     const updated = {
@@ -31,7 +35,7 @@ export const markMessageRead = (queryClient, chatId, messageIds) => {
 };
 
 export const markMessagesDelivered = (queryClient, chatId, messageId) => {
-  queryClient.setQueryData(['messages', chatId], (old: any) => {
+  queryClient.setQueryData(['messages', chatId], (old: Old) => {
     if (!old) return old;
 
     return {
@@ -49,7 +53,7 @@ export const markMessagesDelivered = (queryClient, chatId, messageId) => {
 };
 
 export const updateMessage = (queryClient, chatId, updated) => {
-  queryClient.setQueryData(['messages', chatId], (old: any) => {
+  queryClient.setQueryData(['messages', chatId], (old: Old) => {
     if (!old) return old;
 
     return {
@@ -62,7 +66,7 @@ export const updateMessage = (queryClient, chatId, updated) => {
 };
 
 export const removeMessage = (queryClient, chatId, messageId) => {
-  queryClient.setQueryData(['messages', chatId], (old: any) => {
+  queryClient.setQueryData(['messages', chatId], (old: Old) => {
     if (!old) return old;
 
     return {

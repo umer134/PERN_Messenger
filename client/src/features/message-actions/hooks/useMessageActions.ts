@@ -2,8 +2,10 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { MessageActionsApi } from '../api/messageActions.api';
 import {
   MessageEditDto,
-  MessageEditResponse,
+  MessageResponse,
 } from '@/entities/messages/model/message.model';
+
+type Old = MessageResponse;
 
 export const useDeleteMessage = (chatId: string) => {
   const queryClient = useQueryClient();
@@ -17,12 +19,14 @@ export const useDeleteMessage = (chatId: string) => {
 
       const prev = queryClient.getQueryData(['messages', chatId]);
 
-      queryClient.setQueryData(['messages', chatId], (old: any) => {
+      queryClient.setQueryData(['messages', chatId], (old: Old) => {
         if (!old) return old;
 
         return {
           ...old,
-          messages: old.messages.filter((m: any) => m.id !== messageId),
+          messages: old.messages.filter(
+            (m: Old['messages'][number]) => m.id !== messageId,
+          ),
         };
       });
 
@@ -52,12 +56,12 @@ export const useEditMessage = (chatId: string) => {
       });
 
       const prev = queryClient.getQueryData(['messages', chatId]);
-      queryClient.setQueryData(['messages', chatId], (old: any) => {
+      queryClient.setQueryData(['messages', chatId], (old: Old) => {
         if (!old) return old;
 
         return {
           ...old,
-          messages: old.messages.map((msg: any) =>
+          messages: old.messages.map((msg: Old['messages'][number]) =>
             msg.id === id
               ? {
                   ...msg,

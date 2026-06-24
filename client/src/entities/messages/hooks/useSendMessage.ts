@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { MessageApi } from '../api/message.api';
 import { useAppSelector } from '@/app/hooks';
 import { selectCurrentUserId } from '@/entities/current-user/model/currentUser.selectors';
+import { MessageResponse } from '../model';
 
 export function useSendMessage(chatId: string) {
   const queryClient = useQueryClient();
@@ -32,7 +33,7 @@ export function useSendMessage(chatId: string) {
 
       queryClient.setQueryData(
         ['messages', chatId],
-        (old: any = { messages: [] }) => {
+        (old: Omit<MessageResponse, 'nextCursor'> = { messages: [] }) => {
           return {
             ...old,
             messages: [...(old?.messages ?? []), optimisticMessage],

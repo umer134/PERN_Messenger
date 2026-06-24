@@ -2,18 +2,19 @@
 import { useEffect } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 
-import { MessageAdapter } from '@/entities/messages/model/message.adapter';
+import { MessageAdapter } from '@/entities/messages/model';
 
 import { appendMessage } from '@/features/lib';
 
-import { emitDelivered } from '@/shared/socket/emitters/message.emitters';
+import { emitDelivered } from '@/shared/socket/emitters';
 
-import { useReadMessages } from '@/entities/messages/hooks/useReadMessages';
+import { useReadMessages } from '@/entities/messages/hooks';
 
 import { useAppSelector } from '@/app/hooks';
-import { selectCurrentUserId } from '@/entities/current-user/model/currentUser.selectors';
+import { selectCurrentUserId } from '@/entities/current-user/model';
 
-import { subscribeMessageNew } from '@/shared/socket/listeners/message.listeners';
+import { subscribeMessageNew } from '@/shared/socket/listeners';
+import { MessageResponseModel } from '@/entities';
 
 export const useIncomingMessages = (chatId: string, isAtBottom: boolean) => {
   const queryClient = useQueryClient();
@@ -23,7 +24,7 @@ export const useIncomingMessages = (chatId: string, isAtBottom: boolean) => {
   const readMessage = useReadMessages();
 
   useEffect(() => {
-    const handler = (rawMessage: any) => {
+    const handler = (rawMessage: MessageResponseModel) => {
       const message = MessageAdapter.toVM(rawMessage);
 
       appendMessage(queryClient, chatId, message);

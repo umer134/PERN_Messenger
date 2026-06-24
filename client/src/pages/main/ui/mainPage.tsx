@@ -9,11 +9,13 @@ import { useTypingEvents } from '@/features/typing/hooks/useTypingEvents';
 import { useTypingCleanup } from '@/features/typing/hooks/useTypingCleanup';
 import { usePresenceEvents } from '@/features/presence/hooks/usePresenceEvents';
 import { useChatCreatedEvents } from '@/shared/socket/hooks/useChatCreatedEvents';
+import { ConversationPreview } from '@/entities/conversation';
 
 const MainPage = () => {
   const [selectedConversation, setSelectedConversation] =
     useState<SelectedConversation | null>(null);
-  const [pendingConversation, setPendingConversation] = useState<any>(null);
+  const [pendingConversation, setPendingConversation] =
+    useState<ConversationPreview | null>(null);
   const [pendingChatId, setPendingChatId] = useState<string | null>(null);
   const { id } = useAppSelector((state) => state.currentUser);
 

@@ -1,6 +1,7 @@
 import { useQueryClient } from '@tanstack/react-query';
 import { useEffect, useRef } from 'react';
 import { subscribeChatCreated } from '../listeners/chat.listeners';
+import { ConversationPreview, ConversationResponse } from '@/entities';
 
 export const useChatCreatedEvents = (
   pendingChatId,
@@ -21,13 +22,16 @@ export const useChatCreatedEvents = (
     const handler = (conversation) => {
       console.log('chatCreated', conversation);
 
-      queryClient.setQueryData(['conversations', 'list'], (old: any = []) => {
-        if (old.some((c) => c.id === conversation.id)) {
-          return old;
-        }
+      queryClient.setQueryData(
+        ['conversations', 'list'],
+        (old: ConversationPreview[] = []) => {
+          if (old.some((c) => c.id === conversation.id)) {
+            return old;
+          }
 
-        return [conversation, ...old];
-      });
+          return [conversation, ...old];
+        },
+      );
 
       if (pendingChatIdRef.current === conversation.id) {
         setSelectedConversation({
@@ -37,7 +41,6 @@ export const useChatCreatedEvents = (
 
         setPendingChatId(null);
       } else {
-        // socket пришёл раньше id
         setPendingConversation(conversation);
       }
     };

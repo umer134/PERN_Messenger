@@ -15,7 +15,6 @@ type Props = {
 };
 
 export const ConversationHeader = ({ conversation }: Props) => {
-  console.log('conversation', conversation);
   const typingUsers = useAppSelector(selectTypingUsers(conversation.id));
 
   const presence = useAppSelector(selectPresence(conversation.participantId));
