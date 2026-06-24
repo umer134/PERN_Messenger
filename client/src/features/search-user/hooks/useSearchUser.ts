@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { UserApi } from '@/entities/user/api/user.api';
-import { UserSearchAdapter } from '@/model/userSearch.adapter';
+import { UserSearchAdapter } from '../model/userSearch.adapter';
 import { UserResponse } from '@/entities/user/model/user.model';
 import { User } from '@/entities/user/model/user.types';
 

@@ -1,4 +1,4 @@
-import { AuthResponse } from '@/features/auth/model/auth.types';
+import { AuthResponse } from '../features/auth/model/auth.types';
 
 export class AuthEntity {
   private readonly _accessToken: string;

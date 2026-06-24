@@ -1,6 +1,6 @@
 import * as s from './user-card.css';
 
-import { User } from '@/model/user.types';
+import { User } from '../model/user.types';
 import { Avatar } from '@/shared/ui/Avatar';
 
 type Props = {

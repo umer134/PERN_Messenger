@@ -4,8 +4,8 @@ import { apiCLient } from '@/shared/api/http-client';
 import {
   DirectMessageSendResponse,
   MessageResponse,
-} from '@/model/message.model';
-import { SendMessageDto } from '@/model/send-message.types';
+} from '../model/message.model';
+import { SendMessageDto } from '../model/send-message.types';
 
 const { MESSAGES } = API_ENDPOINTS;
 export class MessageApi {

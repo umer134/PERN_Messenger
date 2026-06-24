@@ -2,7 +2,7 @@ import { Image } from 'lucide-react';
 import { Video } from 'lucide-react';
 import { Music } from 'lucide-react';
 
-import { MediaItem } from '@/model/media-viewer.types';
+import { MediaItem } from '../model/media-viewer.types';
 
 import * as s from './media-viewer-modal.css';
 
