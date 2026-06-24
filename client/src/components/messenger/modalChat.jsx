@@ -3,11 +3,11 @@ import { useSelector, useDispatch } from 'react-redux';
 import {
   useCreateChatMutation,
   useSendMessageMutation,
-} from '../../features/chat/chatApi';
+} from '@/features/chat/chatApi';
 import {
   setActiveChatId,
   setActiveChatUserId,
-} from '../../features/chat/chatSlice';
+} from '@/features/chat/chatSlice';
 
 const ModalChat = ({ onClose }) => {
   const [text, setText] = useState('');

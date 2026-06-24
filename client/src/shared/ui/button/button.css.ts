@@ -1,5 +1,5 @@
 import { style, styleVariants } from '@vanilla-extract/css';
-import { vars } from '../../styles/theme/theme.css';
+import { vars } from '@/shared/styles/theme/theme.css';
 
 export const base = style({
   borderRadius: vars.radius.md,

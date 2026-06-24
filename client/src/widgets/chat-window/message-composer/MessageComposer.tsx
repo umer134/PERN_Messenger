@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
 
-import { useAppDispatch, useAppSelector } from '../../../app/hooks';
+import { useAppDispatch, useAppSelector } from '@/app/hooks';
 
 import {
   selectActiveMessage,
   selectMessageAction,
-} from '../../../features/message-actions/model/message-actions.selectors';
+} from '@/features/message-actions/model';
 
 import { Paperclip, Send, Mic, Square, Trash2 } from 'lucide-react';
 
@@ -13,14 +13,14 @@ import { useVoiceRecorder } from './hooks/useVoiceRecorder';
 
 import * as s from './message-composer.css';
 import { AttachmentPreview } from './attachment/AttachmentPreview';
-import { formatDuration } from '../../../shared/lib/format/formatDuration';
+import { formatDuration } from '@/shared/lib/format/formatDuration';
 import { ReplyPreview } from './reply-preview/ReplyPreview';
-import { clearAction } from '../../../features/message-actions/model/message-actions.slice';
+import { clearAction } from '@/features/message-actions/model/message-actions.slice';
 import { EditPreview } from './edit-preview/EditPreview';
 import {
   emitTypingStart,
   emitTypingStop,
-} from '../../../shared/socket/emitters/typing.emitters';
+} from '@/shared/socket/emitters/typing.emitters';
 
 type Props = {
   conversationId: string;

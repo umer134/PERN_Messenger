@@ -1,11 +1,11 @@
 import { useEffect } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 
-import { MessageAdapter } from '../../../entities/messages/model/message.adapter';
+import { MessageAdapter } from '@/entities/messages/model';
 
-import { updateMessage } from '../../lib/message-cache';
+import { updateMessage } from '@/features/lib';
 
-import { subscribeMessageEdited } from '../../../shared/socket/listeners/message.listeners';
+import { subscribeMessageEdited } from '@/shared/socket/listeners/message.listeners';
 
 export const useEditedMessages = (chatId: string) => {
   const queryClient = useQueryClient();

@@ -2,9 +2,9 @@ import { Settings, User, LogOut, Menu } from 'lucide-react';
 import { useState } from 'react';
 
 import * as s from './current-user-panel.css';
-import { Avatar } from '../../../shared/ui/Avatar';
-import { useAppSelector } from '../../../app/hooks';
-import { useLogout } from '../../../features/auth/hooks/useLogout';
+import { Avatar } from '@/shared/ui/Avatar';
+import { useAppSelector } from '@/app/hooks';
+import { useLogout } from '@/features/auth/hooks/useLogout';
 
 type Props = {
   onOpenProfile: () => void;

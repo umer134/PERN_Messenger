@@ -1,4 +1,4 @@
-import { useEnv } from '../../hooks/useEnv';
+import { useEnv } from '@/hooks/useEnv';
 
 const MessageFiles = ({ files }) => {
   const { baseUrl: BASE_URL } = useEnv();

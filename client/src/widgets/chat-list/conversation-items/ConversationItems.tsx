@@ -1,5 +1,5 @@
 import * as s from './conversation-items.css';
-import { ConversationPreview } from '../../../entities/conversation/model/conversation.types';
+import { ConversationPreview } from '@/entities/conversation/model/conversation.types';
 import { ConversationItem } from '../conversation-item/ConversationItem';
 
 type Props = {

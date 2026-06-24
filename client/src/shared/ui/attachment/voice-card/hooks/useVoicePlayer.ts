@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { useAudioPlayer } from '../../../../../features/audio/audio-player/model/useAudioPlayer';
+import { useAudioPlayer } from '@/features/audio/audio-player/model';
 
 export const useVoicePlayer = (src: string, id: string) => {
   const audioRef = useRef<HTMLAudioElement>(null);

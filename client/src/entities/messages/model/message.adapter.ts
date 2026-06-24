@@ -1,10 +1,6 @@
 import { MessageResponseModel } from './message.model';
-import {
-  MessageAttachmentVM,
-  TMessageStatus,
-  MessageVM,
-} from './message.types';
-import { resolveMediaUrl } from '../../../shared/lib/media/resolveMediaUrl';
+import { TMessageStatus, MessageVM } from './message.types';
+import { resolveMediaUrl } from '@/shared/lib/media/resolveMediaUrl';
 import { resolveAttachmentTypeFromPath } from '../lib/resolveAttachmentType';
 
 export class MessageAdapter {

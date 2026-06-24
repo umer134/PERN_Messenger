@@ -1,5 +1,5 @@
 import { style } from '@vanilla-extract/css';
-import { vars } from '../../styles/theme/theme.css';
+import { vars } from '@/shared/styles/theme/theme.css';
 
 export const input = style({
   width: '100%',

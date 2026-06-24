@@ -1,17 +1,17 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
-import CustomToast from '../customToast/CustomToast';
+import CustomToast from '@/customToast/CustomToast';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
-import { useGetChatsQuery } from '../../features/chat/chatApi';
+import { useGetChatsQuery } from '@/features/chat/chatApi';
 import {
   setActiveChatId,
   setActiveChatUserId,
-} from '../../features/chat/chatSlice';
-import socket from '../../features/socketIO/socket';
+} from '@/features/chat/chatSlice';
+import socket from '@/features/socketIO/socket';
 import './chatList.css';
-import { useEnv } from '../../hooks/useEnv';
+import { useEnv } from '@/hooks/useEnv';
 
 const ChatList = () => {
   const { baseUrl: BASE_URL } = useEnv();

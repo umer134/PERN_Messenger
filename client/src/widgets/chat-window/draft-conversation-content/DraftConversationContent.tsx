@@ -1,6 +1,5 @@
-import { ConversationPreview } from '../../../entities/conversation/model/conversation.types';
-import { useSendFirstMessage } from '../../../entities/messages/hooks/useSendFirstMessage';
-import { User } from '../../../entities/user/model/user.types';
+import { useSendFirstMessage } from '@/entities/messages/hooks/useSendFirstMessage';
+import { User } from '@/entities/user/model/user.types';
 import { ConversationHeader } from '../conversation-header/ConversationHeader';
 import { MessageComposer } from '../message-composer/MessageComposer';
 import { MessagesList } from '../message-list/MessageList';

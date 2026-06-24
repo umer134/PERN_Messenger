@@ -1,6 +1,6 @@
-import { API_ENDPOINTS } from '../../../constants/endpoints';
-import { apiCLient } from '../../../shared/api/http-client';
-import { meRequest, meResponse } from '../model/current-user.model';
+import { API_ENDPOINTS } from '@/constants/endpoints';
+import { apiCLient } from '@/shared/api/http-client';
+import { meRequest, meResponse } from '@/model/current-user.model';
 
 const { ME } = API_ENDPOINTS;
 export class currentUserApi {

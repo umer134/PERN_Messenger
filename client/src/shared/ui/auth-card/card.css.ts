@@ -1,5 +1,5 @@
 import { style } from '@vanilla-extract/css';
-import { vars } from '../../styles/theme/theme.css';
+import { vars } from '@/shared/styles';
 
 export const card = style({
   width: '420px',

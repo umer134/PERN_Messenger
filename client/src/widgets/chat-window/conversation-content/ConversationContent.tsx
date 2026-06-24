@@ -1,18 +1,18 @@
 import { ConversationHeader } from '../conversation-header/ConversationHeader';
 import { MessagesList } from '../message-list/MessageList';
 import { MessageComposer } from '../message-composer/MessageComposer';
-import { useMessages } from '../../../entities/messages/hooks/useMessages';
-import { useSendMessage } from '../../../entities/messages/hooks/useSendMessage';
-import { ConversationPreview } from '../../../entities/conversation/model/conversation.types';
-import { useChatSocket } from '../../../shared/socket/hooks/useChatSocket';
-import { useMessageEvents } from '../../../features/messages/lib/useMessageEvents';
+import { useMessages } from '@/entities/messages/hooks/useMessages';
+import { useSendMessage } from '@/entities/messages/hooks/useSendMessage';
+import { ConversationPreview } from '@/entities/conversation/model/conversation.types';
+import { useChatSocket } from '@/shared/socket/hooks/useChatSocket';
+import { useMessageEvents } from '@/features/messages/lib/useMessageEvents';
 
 import * as s from '../conversation-view.css';
 import { useEffect, useState } from 'react';
-import { useReadMessages } from '../../../entities/messages/hooks/useReadMessages';
-import { useEditMessage } from '../../../features/message-actions/hooks/useMessageActions';
-import { useAppSelector } from '../../../app/hooks';
-import { selectActiveMessage } from '../../../features/message-actions/model/message-actions.selectors';
+import { useReadMessages } from '@/entities/messages/hooks/useReadMessages';
+import { useEditMessage } from '@/features/message-actions/hooks/useMessageActions';
+import { useAppSelector } from '@/app/hooks';
+import { selectActiveMessage } from '@/features/message-actions/model/message-actions.selectors';
 
 type Props = {
   conversation: ConversationPreview;

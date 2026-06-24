@@ -1,12 +1,12 @@
-import { ImageCard } from '../../../../shared/ui/attachment/image-card/ImageCard';
-import { FileCard } from '../../../../shared/ui/attachment/file-card/FileCard';
+import { ImageCard } from '@/shared/ui/attachment/image-card/ImageCard';
+import { FileCard } from '@/shared/ui/attachment/file-card/FileCard';
 
-import { MessageAttachmentVM } from '../../model/message.types';
-import { MediaItem } from '../../../../features/media-viewer/model/media-viewer.types';
-import { useMediaViewer } from '../../../../features/media-viewer/lib/useMediaViewer';
-import { VoiceCard } from '../../../../shared/ui/attachment/voice-card/VoiceCard';
-import { AudioCard } from '../../../../shared/ui/attachment/audio-card/AudioCard';
-import { VideoCard } from '../../../../shared/ui/attachment/video-card/VideoCard';
+import { MessageAttachmentVM } from '@/entities/messages/model';
+import { MediaItem } from '@/features/media-viewer';
+import { useMediaViewer } from '@/features/media-viewer';
+import { VoiceCard } from '@//shared/ui';
+import { AudioCard } from '@/shared/ui';
+import { VideoCard } from '@/shared/ui';
 
 type Props = {
   attachment: MessageAttachmentVM;

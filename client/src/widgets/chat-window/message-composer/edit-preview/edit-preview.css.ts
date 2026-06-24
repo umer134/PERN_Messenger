@@ -1,5 +1,5 @@
 import { style } from '@vanilla-extract/css';
-import { vars } from '../../../../shared/styles/theme/theme.css';
+import { vars } from '@/shared/styles/theme/theme.css';
 
 export const root = style({
   display: 'flex',

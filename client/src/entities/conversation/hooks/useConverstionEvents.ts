@@ -1,6 +1,6 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useEffect } from 'react';
-import socket from '../../../shared/socket/socket';
+import socket from '@/shared/socket/socket';
 
 export const useConversationEvents = () => {
   const queryClient = useQueryClient();

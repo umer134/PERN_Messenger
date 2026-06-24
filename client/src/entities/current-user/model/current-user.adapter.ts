@@ -1,4 +1,4 @@
-import { UpdateProfileDto } from '../types/currentUser.types';
+import { UpdateProfileDto } from '@/types/currentUser.types';
 
 export class CurrentUserAdapter {
   static toApi(dto: UpdateProfileDto) {

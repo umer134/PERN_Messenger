@@ -1,5 +1,5 @@
 import * as s from './message-context-menu.css';
-import { MessageAction } from '../model/message-actions.types';
+import { MessageAction } from '@/model/message-actions.types';
 
 type Props = {
   canEdit: boolean;

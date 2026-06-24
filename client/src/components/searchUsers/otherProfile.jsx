@@ -11,10 +11,10 @@ import {
   setActiveChatId,
   setActiveChatUserId,
   setUserId,
-} from '../../features/chat/chatSlice';
-import { useFindChatQuery } from '../../features/chat/chatApi';
-import ModalChat from '../messenger/modalChat';
-import { useEnv } from '../../hooks/useEnv';
+} from '@/features/chat/chatSlice';
+import { useFindChatQuery } from '@/features/chat/chatApi';
+import ModalChat from '@/messenger/modalChat';
+import { useEnv } from '@/hooks/useEnv';
 
 const OtherProfile = ({ user, removeUser }) => {
   const { baseUrL: BASE_RL } = useEnv();

@@ -1,4 +1,4 @@
-import { paths } from '../../../shared/api/schema';
+import { paths } from '@/shared/api/schema';
 
 type AuthEndpoint = '/api/login' | '/api/registration';
 

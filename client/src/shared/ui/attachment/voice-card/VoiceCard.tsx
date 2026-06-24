@@ -1,7 +1,7 @@
 import { Pause, Play } from 'lucide-react';
 import * as s from './voice-card.css';
 import { useVoicePlayer } from './hooks/useVoicePlayer';
-import { formatDuration } from '../../../lib/format/formatDuration';
+import { formatDuration } from '@/shared/lib';
 import React from 'react';
 
 type Props = {

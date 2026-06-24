@@ -1,7 +1,7 @@
 import { X } from 'lucide-react';
 
 import * as s from './image-card.css';
-import { resolveMediaUrl } from '../../../lib/media/resolveMediaUrl';
+import { resolveMediaUrl } from '@/shared/lib';
 
 type Props = {
   src: string;

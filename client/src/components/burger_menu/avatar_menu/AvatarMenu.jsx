@@ -2,9 +2,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 import { useEffect, useState } from 'react';
 import { useRef } from 'react'; // обязательно
-import ChangeAvatarModal from '../../edit/editProfile/edit_avatar/changeAvatarModal';
-import { useUpdateProfileMutation } from '../../../features/profile/profileApi';
-import { useEnv } from '../../../hooks/useEnv';
+import ChangeAvatarModal from '@/edit/editProfile/edit_avatar/changeAvatarModal';
+import { useUpdateProfileMutation } from '@/features/profile/profileApi';
+import { useEnv } from '@/hooks/useEnv';
 
 const AvatarMenu = ({ user, expanded, setExpanded }) => {
   const { baseUrl: BASE_URL } = useEnv();

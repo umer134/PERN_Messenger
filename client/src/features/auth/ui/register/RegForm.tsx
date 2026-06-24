@@ -7,12 +7,12 @@ import {
   RegisterSchema,
 } from '../../model/validation/register.schema';
 
-import { Field } from '../../../../shared/ui/field/Field';
-import { Input } from '../../../../shared/ui/input/Input';
-import { PasswordInput } from '../../../../shared/ui/password-input/PasswordInput';
-import { Button } from '../../../../shared/ui/button/Button';
-import { AuthHeader } from '../../../../shared/ui/auth-header/AuthHeader';
-import { AvatarPicker } from '../../../../shared/ui/avatar-picker/AvatarPicker';
+import { Field } from '@/shared/ui/field/Field';
+import { Input } from '@/shared/ui/input/Input';
+import { PasswordInput } from '@/shared/ui/password-input/PasswordInput';
+import { Button } from '@/shared/ui/button/Button';
+import { AuthHeader } from '@/shared/ui/auth-header/AuthHeader';
+import { AvatarPicker } from '@/shared/ui/avatar-picker/AvatarPicker';
 
 type Props = {
   onSubmit: (values: RegisterFormData) => Promise<unknown>;

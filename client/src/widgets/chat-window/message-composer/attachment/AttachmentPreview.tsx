@@ -1,9 +1,9 @@
 import { useEffect, useMemo, useState } from 'react';
-import { ImageCard } from '../../../../shared/ui/attachment/image-card/ImageCard';
-import { FileCard } from '../../../../shared/ui/attachment/file-card/FileCard';
-import { VideoCard } from '../../../../shared/ui/attachment/video-card/VideoCard';
-import { AudioCard } from '../../../../shared/ui/attachment/audio-card/AudioCard';
-import { getAttachmentType } from '../../../../entities/messages/lib/getAttachmentType';
+import { ImageCard } from '@/shared/ui/attachment/image-card/ImageCard';
+import { FileCard } from '@/shared/ui/attachment/file-card/FileCard';
+import { VideoCard } from '@/shared/ui/attachment/video-card/VideoCard';
+import { AudioCard } from '@/shared/ui/attachment/audio-card/AudioCard';
+import { getAttachmentType } from '@/entities/messages/lib/getAttachmentType';
 
 type Props = {
   file: File;

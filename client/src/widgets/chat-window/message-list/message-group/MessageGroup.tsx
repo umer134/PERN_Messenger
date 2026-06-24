@@ -1,6 +1,6 @@
-import { MessageGroupVM } from '../../../../entities/messages/model/message.types';
-import { MediaItem } from '../../../../features/media-viewer/model/media-viewer.types';
-import { MessageBubble } from '../../message-bubble/MessageBubble';
+import { MessageGroupVM } from '@/entities/messages/model/message.types';
+import { MediaItem } from '@/features/media-viewer/model/media-viewer.types';
+import { MessageBubble } from '@/widgets/chat-window/message-bubble';
 
 type Props = {
   group: MessageGroupVM;

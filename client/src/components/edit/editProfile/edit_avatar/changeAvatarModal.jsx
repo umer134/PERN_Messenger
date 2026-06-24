@@ -1,7 +1,7 @@
 import { useState, useCallback } from 'react';
 import Cropper from 'react-easy-crop';
 import './changeAvatarModal.css';
-import { getCroppedImg } from '../../../../features/avatar-upload/lib/cropImage'; // утилита ниже
+import { getCroppedImg } from '@/features/avatar-upload/lib/cropImage'; // утилита ниже
 
 const ChangeAvatarModal = ({ file, onClose, onSave }) => {
   const [crop, setCrop] = useState({ x: 0, y: 0 });

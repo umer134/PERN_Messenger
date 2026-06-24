@@ -1,4 +1,4 @@
-import { User } from '../../user/model/user.types';
+import { User } from '@/user/model/user.types';
 import { ConversationPreview } from './conversation.types';
 
 export type DraftConversation = {

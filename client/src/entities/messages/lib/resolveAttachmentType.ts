@@ -1,4 +1,4 @@
-import { MessageAttachmentVM } from '../model/message.types';
+import { MessageAttachmentVM } from '@/model/message.types';
 
 export function resolveAttachmentTypeFromPath(
   path: string,

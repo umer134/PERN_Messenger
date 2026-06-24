@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import { MessageApi } from '../../../entities/messages/api/message.api';
+import { MessageApi } from '@/entities/messages/api/message.api';
 import { SendMessageDto } from '../model/send-message.types';
 import { DirectMessageSendResponse } from '../model/message.model';
 import { MessageAdapter } from '../model/message.adapter';

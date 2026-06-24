@@ -1,17 +1,17 @@
 import { useState, useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import socket from '../../features/socketIO/socket';
+import socket from '@/features/socketIO/socket';
 import {
   useGetMessagesQuery,
   useSendMessageMutation,
   useReadMessageMutation,
   useGetChatsQuery,
-} from '../../features/chat/chatApi';
+} from '@/features/chat/chatApi';
 import './chatWindow.css';
 import {
   setActiveChatId,
   setActiveChatUserId,
-} from '../../features/chat/chatSlice';
+} from '@/features/chat/chatSlice';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import ChatInput from './ChatInput';

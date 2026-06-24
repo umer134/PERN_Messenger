@@ -1,13 +1,13 @@
 import { useEffect } from 'react';
 
-import { useAppDispatch } from '../../../app/hooks';
+import { useAppDispatch } from '@/app/hooks';
 
 import { addTypingUser, removeTypingUser } from '../model/typing.slice';
 
 import {
   subscribeTypingStart,
   subscribeTypingStop,
-} from '../../../shared/socket/listeners/typing.listeners';
+} from '@/shared/socket/listeners/typing.listeners';
 
 export const useTypingEvents = () => {
   const dispatch = useAppDispatch();

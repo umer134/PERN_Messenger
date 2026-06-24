@@ -1,4 +1,4 @@
-import { ImportMetaEnv } from '../config/env.types';
+import { ImportMetaEnv } from '@/config/env.types';
 
 export function getRequiredEnv(
   key: string,

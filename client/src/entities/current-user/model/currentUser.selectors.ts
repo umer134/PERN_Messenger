@@ -1,4 +1,4 @@
-import { RootState } from '../../../app/providers/store';
+import { RootState } from '@/app/providers/store';
 
 export const selectCurrentUser = (state: RootState) => state.currentUser;
 

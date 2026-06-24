@@ -1,4 +1,4 @@
-import { resolveMediaUrl } from '../../../lib/media/resolveMediaUrl';
+import { resolveMediaUrl } from '@/shared/lib';
 
 type Props = {
   src: string;

@@ -6,7 +6,7 @@ import { ImageViewer } from './ImageViewer';
 import { VideoViewer } from './VideoViewer';
 import { AudioViewer } from './AudioViewer';
 
-import { MediaItem } from '../model/media-viewer.types';
+import { MediaItem } from '@/model/media-viewer.types';
 import clsx from 'clsx';
 import { ThumbnailRenderer } from './ThumbnailRenderer';
 

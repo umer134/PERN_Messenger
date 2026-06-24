@@ -2,17 +2,17 @@ import { useRef, useEffect, useState } from 'react';
 
 import * as s from './message-list.css';
 
-import { MessageVM } from '../../../entities/messages/model/message.types';
+import { MessageVM } from '@/entities/messages/model/message.types';
 
-import { groupMessages } from '../../../entities/messages/lib/groupMessages';
-import { useReadMessages } from '../../../entities/messages/hooks/useReadMessages';
+import { groupMessages } from '@/entities/messages/lib/groupMessages';
+import { useReadMessages } from '@/entities/messages/hooks/useReadMessages';
 import { MessageGroup } from './message-group/MessageGroup';
-import { MediaItem } from '../../../features/media-viewer/model/media-viewer.types';
-import { useAppDispatch, useAppSelector } from '../../../app/hooks';
-import { selectCurrentUserId } from '../../../entities/current-user/model/currentUser.selectors';
+import { MediaItem } from '@/features/media-viewer/model/media-viewer.types';
+import { useAppDispatch, useAppSelector } from '@/app/hooks';
+import { selectCurrentUserId } from '@/entities/current-user/model/currentUser.selectors';
 import { ChevronDown } from 'lucide-react';
-import { selectTargetMessageId } from '../../../features/navigation/message-navigation/model/message-navigation.selectors';
-import { clearScrollTarget } from '../../../features/navigation/message-navigation/model/message-navigation.slice';
+import { selectTargetMessageId } from '@/features/navigation/message-navigation/model/message-navigation.selectors';
+import { clearScrollTarget } from '@/features/navigation/message-navigation/model/message-navigation.slice';
 
 type Props = {
   messages: MessageVM[];

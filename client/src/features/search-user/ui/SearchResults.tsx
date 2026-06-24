@@ -1,7 +1,7 @@
 import * as s from './search-results.css';
 
-import { User } from '../../../entities/user/model/user.types';
-import { UserCard } from '../../../entities/user/ui/UserCard';
+import { User } from '@/entities/user/model/user.types';
+import { UserCard } from '@/entities/user/ui/UserCard';
 
 type Props = {
   users: User[];

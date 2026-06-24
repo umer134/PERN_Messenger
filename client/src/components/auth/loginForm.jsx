@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { clearError, login } from '../../features/auth/authSlice';
+import { clearError, login } from '@/features/auth/authSlice';
 import './loginForm.css';
 
 const LoginForm = () => {

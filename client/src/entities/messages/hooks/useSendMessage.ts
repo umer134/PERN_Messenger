@@ -1,11 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { MessageApi } from '../api/message.api';
-import { SendMessageDto } from '../model/send-message.types';
-import { useAppSelector } from '../../../app/hooks';
-import {
-  selectCurrentUser,
-  selectCurrentUserId,
-} from '../../current-user/model/currentUser.selectors';
+import { useAppSelector } from '@/app/hooks';
+import { selectCurrentUserId } from '@/entities/current-user/model/currentUser.selectors';
 
 export function useSendMessage(chatId: string) {
   const queryClient = useQueryClient();

@@ -1,4 +1,4 @@
-import { MessageVM } from '../../messages/model/message.types';
+import { MessageVM } from '@/messages/model/message.types';
 
 export type ConversationVM = {
   id: string;

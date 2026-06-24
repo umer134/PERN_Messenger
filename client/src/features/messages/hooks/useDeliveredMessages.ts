@@ -1,9 +1,9 @@
 import { useEffect } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 
-import { markMessagesDelivered } from '../../lib/message-cache';
+import { markMessagesDelivered } from '@/features/lib';
 
-import { subscribeMessageDelivered } from '../../../shared/socket/listeners/message.listeners';
+import { subscribeMessageDelivered } from '@/shared/socket/listeners/message.listeners';
 
 export const useDeliveredMessages = (chatId: string) => {
   const queryClient = useQueryClient();

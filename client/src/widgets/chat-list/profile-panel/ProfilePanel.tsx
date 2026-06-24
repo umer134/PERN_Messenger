@@ -4,12 +4,12 @@ import { ArrowLeft, User, Pencil, Check, X } from 'lucide-react';
 
 import * as s from './profile-panel.css';
 
-import { Avatar } from '../../../shared/ui/Avatar';
-import { useAppSelector } from '../../../app/hooks';
-import { AvatarPicker } from '../../../shared/ui/avatar-picker/AvatarPicker';
-import { Field } from '../../../shared/ui/field/Field';
-import { Input } from '../../../shared/ui/input/Input';
-import { useUpdateProfile } from '../../../features/update-profile/hooks/useUpdateProfile';
+import { Avatar } from '@/shared/ui/Avatar';
+import { useAppSelector } from '@/app/hooks';
+import { AvatarPicker } from '@/shared/ui/avatar-picker/AvatarPicker';
+import { Field } from '@/shared/ui/field/Field';
+import { Input } from '@/shared/ui/input/Input';
+import { useUpdateProfile } from '@/features/update-profile/hooks/useUpdateProfile';
 
 type Props = {
   onBack: () => void;

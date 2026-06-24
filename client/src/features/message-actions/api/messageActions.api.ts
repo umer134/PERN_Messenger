@@ -1,9 +1,9 @@
-import { API_ENDPOINTS } from '../../../constants/endpoints';
-import { apiCLient } from '../../../shared/api/http-client';
+import { API_ENDPOINTS } from '@/constants/endpoints';
+import { apiCLient } from '@/shared/api/http-client';
 import {
   MessageEditDto,
   MessageEditResponse,
-} from '../../../entities/messages/model/message.model';
+} from '@/entities/messages/model/message.model';
 
 const { MESSAGES } = API_ENDPOINTS;
 

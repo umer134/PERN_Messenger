@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { setTheme } from '../../../features/darkmode/darkmodeSlice';
+import { setTheme } from '@/features/darkmode/darkmodeSlice';
 import './togglemode.css';
 
 const ToggleTheme = () => {

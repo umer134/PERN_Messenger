@@ -2,13 +2,13 @@ import { User, Users } from 'lucide-react';
 
 import * as s from './conversation-header.css';
 
-import { ConversationDetails } from '../../../entities/conversation/model/conversation-details.types';
-import { Avatar } from '../../../shared/ui/Avatar';
-import { useAppSelector } from '../../../app/hooks';
-import { selectTypingUsers } from '../../../features/typing/model/typing.selectors';
-import { TypingIndicator } from '../../../shared/ui/typing-indicator/TypingIndicator';
-import { selectPresence } from '../../../features/presence/model/presence.selectors';
-import { formatDate } from '../../../shared/lib/format/formatDate';
+import { ConversationDetails } from '@/entities/conversation/model/conversation-details.types';
+import { Avatar } from '@/shared/ui/Avatar';
+import { useAppSelector } from '@/app/hooks';
+import { selectTypingUsers } from '@/features/typing/model/typing.selectors';
+import { TypingIndicator } from '@/shared/ui/typing-indicator/TypingIndicator';
+import { selectPresence } from '@/features/presence/model/presence.selectors';
+import { formatDate } from '@/shared/lib/format/formatDate';
 
 type Props = {
   conversation: ConversationDetails;

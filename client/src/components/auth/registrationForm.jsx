@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
-import { clearError, registration } from '../../features/auth/authSlice';
+import { clearError, registration } from '@/features/auth/authSlice';
 import './loginForm.css';
 
 const RegistrationForm = () => {

@@ -3,7 +3,7 @@ import clsx from 'clsx';
 
 import * as s from './Avatar.css';
 import { User2 } from 'lucide-react';
-import { resolveMediaUrl } from '../../lib/media/resolveMediaUrl';
+import { resolveMediaUrl } from '@/shared/lib';
 
 type AvatarSize = 'sm' | 'md' | 'lg' | 'xl';
 type AvatarStatus = 'online' | 'offline' | 'away' | 'none';

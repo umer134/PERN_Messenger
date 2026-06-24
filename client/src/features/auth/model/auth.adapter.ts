@@ -1,4 +1,4 @@
-import { AuthEntity } from '../../../entities/auth.entity';
+import { AuthEntity } from '@/entities/auth.entity';
 import { AuthResponse } from './auth.model';
 import { RegisterDto } from './auth.types';
 

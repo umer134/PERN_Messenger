@@ -5,7 +5,7 @@ import ToggleTheme from './togglemode/ToggleTheme';
 import './BurgerMenu.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRightFromBracket } from '@fortawesome/free-solid-svg-icons';
-import EditName from '../edit/editProfile/edit_name/EditName';
+import EditName from '@/edit/editProfile/edit_name/EditName';
 import AvatarMenu from './avatar_menu/AvatarMenu';
 import './avatar_menu/avatarMenu.css';
 

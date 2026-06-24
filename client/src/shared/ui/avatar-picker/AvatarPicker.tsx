@@ -3,8 +3,8 @@ import { useRef, useState, useEffect } from 'react';
 
 import * as styles from './avatar-picker.css';
 
-import { AvatarCropModal } from '../avatar-crop-modal/AvatarCropModal';
-import { resolveMediaUrl } from '../../lib/media/resolveMediaUrl';
+import { AvatarCropModal } from '@/shared/ui/avatar-crop-modal';
+import { resolveMediaUrl } from '@/shared/lib';
 
 type Props = {
   value?: File;

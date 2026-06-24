@@ -1,9 +1,9 @@
 import { useEffect } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 
-import { removeMessage } from '../../lib/message-cache';
+import { removeMessage } from '@/features/lib';
 
-import { subscribeMessageDeleted } from '../../../shared/socket/listeners/message.listeners';
+import { subscribeMessageDeleted } from '@/shared/socket/listeners/message.listeners';
 
 export const useDeletedMessages = (chatId: string) => {
   const queryClient = useQueryClient();

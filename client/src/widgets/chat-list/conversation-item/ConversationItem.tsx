@@ -1,15 +1,15 @@
 import { User, Users } from 'lucide-react';
 
-import { ConversationPreview } from '../../../entities/conversation/model/conversation.types';
+import { ConversationPreview } from '@/entities/conversation/model/conversation.types';
 
 import * as s from './conversation-item.css';
-import { useMediaViewer } from '../../../features/media-viewer/lib/useMediaViewer';
-import { Avatar } from '../../../shared/ui/Avatar';
-import { resolveMediaUrl } from '../../../shared/lib/media/resolveMediaUrl';
-import { formatDate } from '../../../shared/lib/format/formatDate';
-import { useAppSelector } from '../../../app/hooks';
-import { selectTypingUsers } from '../../../features/typing/model/typing.selectors';
-import { TypingIndicator } from '../../../shared/ui/typing-indicator/TypingIndicator';
+import { useMediaViewer } from '@/features/media-viewer/lib/useMediaViewer';
+import { Avatar } from '@/shared/ui/Avatar';
+import { resolveMediaUrl } from '@/shared/lib/media/resolveMediaUrl';
+import { formatDate } from '@/shared/lib/format/formatDate';
+import { useAppSelector } from '@/app/hooks';
+import { selectTypingUsers } from '@/features/typing/model/typing.selectors';
+import { TypingIndicator } from '@/shared/ui/typing-indicator/TypingIndicator';
 
 type Props = {
   conversation: ConversationPreview;

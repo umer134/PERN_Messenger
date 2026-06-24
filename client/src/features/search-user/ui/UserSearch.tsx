@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { SearchBar } from '../../../widgets/chat-list/search-bar/SearchBar';
+import { SearchBar } from '@/widgets/chat-list/search-bar/SearchBar';
 
 import { SearchResults } from './SearchResults';
 

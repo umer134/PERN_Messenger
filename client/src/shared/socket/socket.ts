@@ -1,5 +1,5 @@
 import { io } from 'socket.io-client';
-import { env } from '../../config/env.config';
+import { env } from '@/config/env.config';
 import { TokenStore } from '../lib/token-store';
 
 const socket = io(env.apiUrl, {

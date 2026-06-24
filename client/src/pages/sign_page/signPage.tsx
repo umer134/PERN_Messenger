@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import { Navigate } from 'react-router-dom';
 
-import { useAppSelector } from '../../app/hooks';
+import { useAppSelector } from '@/app/hooks';
 
-import { Login, Register } from '../../features/auth/ui';
+import { Login, Register } from '@/features/auth/ui';
 
-import { AuthLayout } from '../../shared/ui/auth-layout/AuthLayout';
-import { AuthCard } from '../../shared/ui/auth-card/AuthCard';
+import { AuthLayout } from '@/shared/ui/auth-layout/AuthLayout';
+import { AuthCard } from '@/shared/ui/auth-card/AuthCard';
 
 type Mode = 'login' | 'register';
 

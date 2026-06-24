@@ -1,6 +1,6 @@
 import { style, keyframes } from '@vanilla-extract/css';
 import { recipe } from '@vanilla-extract/recipes';
-import { vars } from '../../styles/theme/theme.css';
+import { vars } from '@/shared/styles/theme/theme.css';
 
 const dotFade = keyframes({
   '0%, 20%': { opacity: 0 },

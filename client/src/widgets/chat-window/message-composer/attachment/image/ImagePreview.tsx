@@ -1,7 +1,7 @@
 import { useEffect, useMemo } from 'react';
 
 import * as s from './image-preview.css';
-import { ImageCard } from '../../../../../shared/ui/attachment/image-card/ImageCard';
+import { ImageCard } from '@/shared/ui';
 
 type Props = {
   file: File;

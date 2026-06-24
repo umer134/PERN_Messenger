@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { Eye, EyeOff } from 'lucide-react';
-import { Input } from '../input/Input';
-import { cn } from '../../../shared/lib/cn';
+import { Input } from '@/shared/ui/input';
 
 export const PasswordInput = (props: any) => {
   const [show, setShow] = useState(false);

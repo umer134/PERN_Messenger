@@ -3,7 +3,7 @@ import { MessageActionsApi } from '../api/messageActions.api';
 import {
   MessageEditDto,
   MessageEditResponse,
-} from '../../../entities/messages/model/message.model';
+} from '@/entities/messages/model/message.model';
 
 export const useDeleteMessage = (chatId: string) => {
   const queryClient = useQueryClient();

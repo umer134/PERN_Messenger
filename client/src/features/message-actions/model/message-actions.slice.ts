@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { MessageAction } from './message-actions.types';
-import { MessageVM } from '../../../entities/messages/model/message.types';
+import { MessageVM } from '@/entities/messages/model/message.types';
 
 interface MessageActionsState {
   actionType: MessageAction | null;

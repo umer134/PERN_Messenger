@@ -1,9 +1,9 @@
 import { setSession, clearSession, setInitialized } from '../model/authSlice';
-import { TokenStore } from '../../../shared/lib/token-store';
+import { TokenStore } from '@/shared/lib/token-store';
 import { AuthResponse } from '../model/auth.types';
-import { store } from '../../../app/providers/store';
-import { refreshSession } from '../../../shared/api/refresh-manager';
-import socket from '../../../shared/socket/socket';
+import { store } from '@/app/providers/store';
+import { refreshSession } from '@/shared/api/refresh-manager';
+import socket from '@/shared/socket/socket';
 
 export class AuthService {
   static async init() {

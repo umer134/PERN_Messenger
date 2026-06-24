@@ -1,24 +1,24 @@
 import { useEffect, useState } from 'react';
-import { MessageContextMenu } from '../../../features/message-actions/ui/MessageContextMenu';
+import { MessageContextMenu } from '@/features/message-actions/ui/MessageContextMenu';
 
-import { useAppDispatch } from '../../../app/hooks';
+import { useAppDispatch } from '@/app/hooks';
 import {
   startReply,
   startEdit,
   startDelete,
-} from '../../../features/message-actions/model/message-actions.slice';
+} from '@/features/message-actions/model/message-actions.slice';
 
 import clsx from 'clsx';
 
 import * as s from './message-bubble.css';
 
-import { MessageVM } from '../../../entities/messages/model/message.types';
-import { MessageStatus } from '../../../entities/messages/ui/message-status/MessageStatus';
-import { AttachmentRenderer } from '../../../entities/messages/ui/attachment-renderer/AttachmentRenderer';
-import { MediaItem } from '../../../features/media-viewer/model/media-viewer.types';
-import { ReplySnippet } from '../../../entities/messages/ui/reply-snippet/ReplySnippet';
-import { formatDate } from '../../../shared/lib/format/formatDate';
-import { useDeleteMessage } from '../../../features/message-actions/hooks/useMessageActions';
+import { MessageVM } from '@/entities/messages/model/message.types';
+import { MessageStatus } from '@/entities/messages/ui/message-status/MessageStatus';
+import { AttachmentRenderer } from '@/entities/messages/ui/attachment-renderer/AttachmentRenderer';
+import { MediaItem } from '@/features/media-viewer/model/media-viewer.types';
+import { ReplySnippet } from '@/entities/messages/ui/reply-snippet/ReplySnippet';
+import { formatDate } from '@/shared/lib/format/formatDate';
+import { useDeleteMessage } from '@/features/message-actions/hooks/useMessageActions';
 
 type Props = {
   message: MessageVM;

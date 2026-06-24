@@ -1,12 +1,12 @@
 import { useEffect } from 'react';
 
-import { useAppDispatch } from '../../../app/hooks';
+import { useAppDispatch } from '@/app/hooks';
 
 import {
   subscribePresenceOnline,
   subscribePresenceOffline,
   subscribePresenceInit,
-} from '../../../shared/socket/listeners/presence.listeners';
+} from '@/shared/socket/listeners/presence.listeners';
 
 import {
   userOnline,

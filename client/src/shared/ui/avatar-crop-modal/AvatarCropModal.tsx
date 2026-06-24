@@ -3,8 +3,8 @@ import Cropper from 'react-easy-crop';
 
 import * as styles from './avatar-crop-modal.css';
 
-import { Button } from '../button/Button';
-import { getCroppedImg } from '../../../features/avatar-upload/lib/cropImage';
+import { Button } from '@/shared/ui/button';
+import { getCroppedImg } from '@/features/avatar-upload/lib/cropImage';
 
 type CropArea = {
   x: number;

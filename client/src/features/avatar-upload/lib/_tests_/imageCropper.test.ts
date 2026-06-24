@@ -6,8 +6,8 @@ import {
   createImage,
   getCroppedImg,
   getCroppedImgWithOptions,
-} from '../cropImage';
-import type { CropArea } from '../cropImage';
+} from '@/cropImage';
+import type { CropArea } from '@/cropImage';
 
 // Моки для глобальных объектов
 class MockImage {

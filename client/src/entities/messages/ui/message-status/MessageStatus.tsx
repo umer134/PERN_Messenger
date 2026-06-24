@@ -1,5 +1,5 @@
 import { Check, CheckCheck, Clock3 } from 'lucide-react';
-import { TMessageStatus as status } from '../../model/message.types';
+import { TMessageStatus as status } from '@/model/message.types';
 
 type Props = {
   status: status;

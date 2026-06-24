@@ -1,4 +1,4 @@
-import { cn } from '../../../shared/lib/cn';
+import { cn } from '@/shared/lib/cn';
 import * as styles from './button.css';
 import { Loader2 } from 'lucide-react';
 

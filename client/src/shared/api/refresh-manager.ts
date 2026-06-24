@@ -1,5 +1,5 @@
-import { API_ENDPOINTS } from '../../constants/endpoints';
-import { AuthResponse } from '../../features/auth/model/auth.types';
+import { API_ENDPOINTS } from '@/constants/endpoints';
+import { AuthResponse } from '@/features/auth/model/auth.types';
 import { refreshClient } from './refreshClient';
 
 const { AUTH } = API_ENDPOINTS;

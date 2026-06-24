@@ -1,7 +1,7 @@
 import { FileText, Image, X } from 'lucide-react';
 
 import * as s from './file-preview.css';
-import { FileCard } from '../../../../../shared/ui/attachment/file-card/FileCard';
+import { FileCard } from '@/shared/ui';
 
 type Props = {
   file: File;

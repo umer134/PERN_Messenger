@@ -1,4 +1,4 @@
-import { paths } from '../../../shared/api/schema';
+import { paths } from '@/shared/api/schema';
 
 export type MessageResponse =
   paths['/api/chats/{chatId}/messages']['get']['responses']['200']['content']['application/json'];

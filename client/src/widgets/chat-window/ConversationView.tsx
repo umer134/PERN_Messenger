@@ -1,8 +1,8 @@
-import { SelectedConversation } from '../../entities/conversation/model/selected-conversation.types';
-import { ConversationContent } from './conversation-content/ConversationContent';
+import { SelectedConversation } from '@/entities/conversation/model';
+import { ConversationContent } from './conversation-content';
 import * as s from './conversation-view.css';
-import { DraftConversationContent } from './draft-conversation-content/DraftConversationContent';
-import { EmptyState } from './empty-state/EmptyState';
+import { DraftConversationContent } from './draft-conversation-content';
+import { EmptyState } from './empty-state';
 
 type Props = {
   selectedConversation: SelectedConversation | null;

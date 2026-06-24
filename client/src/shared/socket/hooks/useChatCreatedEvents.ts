@@ -1,7 +1,6 @@
 import { useQueryClient } from '@tanstack/react-query';
 import { useEffect, useRef } from 'react';
 import { subscribeChatCreated } from '../listeners/chat.listeners';
-import { SelectedConversation } from '../../../entities/conversation/model/selected-conversation.types';
 
 export const useChatCreatedEvents = (
   pendingChatId,

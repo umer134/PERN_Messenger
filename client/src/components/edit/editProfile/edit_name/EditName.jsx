@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useUpdateProfileMutation } from '../../../../features/profile/profileApi';
+import { useUpdateProfileMutation } from '@/features/profile/profileApi';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPencil } from '@fortawesome/free-solid-svg-icons';
 import './editName.css';

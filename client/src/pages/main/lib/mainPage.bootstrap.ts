@@ -1,5 +1,5 @@
 // import { useEffect } from "react"
-// import socket from "../../../features/socketIO/socket";
+// import socket from "@/features/socketIO/socket";
 
 // export const useMainPageBootstrap = (id: string) => {
 

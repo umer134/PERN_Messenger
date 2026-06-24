@@ -1,5 +1,5 @@
-import { UserResponse } from '../../../entities/user/model/user.model';
-import { User } from '../../../entities/user/model/user.types';
+import { UserResponse } from '@/entities/user/model/user.model';
+import { User } from '@/entities/user/model/user.types';
 
 export class UserSearchAdapter {
   static toEntity(apiUser: UserResponse): User {

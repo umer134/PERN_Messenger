@@ -1,5 +1,5 @@
 import { currentUserApi } from '../api/currentUser.api';
-import { store } from '../../../app/providers/store';
+import { store } from '@/app/providers/store';
 import { hydrateCurrentUser } from '../model/currentUser.slice';
 import { mapCurrentUser } from '../lib/currentUser.mapper';
 import { CurrentUserAdapter } from '../model/current-user.adapter';

@@ -1,10 +1,7 @@
 import { useEffect, useState, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import debounce from 'lodash.debounce';
-import {
-  searchUsers,
-  clearSearchUsers,
-} from '../../features/search/usersSlice';
+import { searchUsers, clearSearchUsers } from '@/features/search/usersSlice';
 import OtherProfile from './otherProfile';
 import './searchUser.css';
 
