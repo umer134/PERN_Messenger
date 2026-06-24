@@ -9,15 +9,21 @@ import {
   subscribeTypingStop,
 } from '@/shared/socket/listeners/typing.listeners';
 
+type Props = {
+  chatId: string;
+  userId: string;
+  username?: string;
+};
+
 export const useTypingEvents = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    const startHandler = ({ chatId, userId, username }) => {
+    const startHandler = ({ chatId, userId, username }: Props) => {
       dispatch(addTypingUser({ chatId, userId, username }));
     };
 
-    const stopHandler = ({ chatId, userId }) => {
+    const stopHandler = ({ chatId, userId }: Props) => {
       dispatch(removeTypingUser({ chatId, userId }));
     };
 

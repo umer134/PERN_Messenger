@@ -1,3 +1,10 @@
+export interface Me {
+  id: string;
+  name: string;
+  email: string;
+  avatar?: string | null;
+  isActivated: boolean;
+}
 export interface ProfileApiResponse {
   id: string;
   username: string;

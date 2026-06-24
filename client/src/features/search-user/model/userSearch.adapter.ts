@@ -1,23 +1,24 @@
 import { UserResponse } from '@/entities/user/model/user.model';
-import { User } from '@/entities/user/model/user.types';
+import { UserPreview } from '@/entities/user/model/user.types';
 
 export class UserSearchAdapter {
-  static toEntity(apiUser: UserResponse): User {
+  static toEntity(apiUser: UserPreview): UserPreview {
     return {
-      id: apiUser.id || '',
-      username: apiUser.name || '',
-      avatar: apiUser.avatar || undefined,
+      id: apiUser.id,
+      username: apiUser.username,
+      avatar: apiUser.avatar,
+      lastSeen: apiUser.lastSeen,
     };
   }
 
-  static toEntities(users: UserResponse[]): User[] {
+  static toEntities(users: UserResponse[]): UserPreview[] {
     return users.map(this.toEntity);
   }
 
-  static toApi(dto: User): UserResponse {
+  static toApi(dto: UserPreview): UserResponse {
     return {
       id: dto.id,
-      name: dto.username,
+      username: dto.username,
       avatar: dto.avatar,
     };
   }

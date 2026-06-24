@@ -18,4 +18,6 @@ export type ConversationPreview = {
   participantId?: string;
 
   isOnline?: boolean;
+
+  lastSeen: string | null;
 };

@@ -1,10 +1,9 @@
-const UserController = require('../controllers/UserController');
-const Router = require('express').Router;
+const UserController = require("../controllers/UserController");
+const Router = require("express").Router;
 const router = new Router();
-const {body} = require('express-validator');
-const authMiddleware = require('../middlewares/auth-middleware');
-const upload = require('../middlewares/upload-avatar');
-
+const { body } = require("express-validator");
+const authMiddleware = require("../middlewares/auth-middleware");
+const upload = require("../middlewares/upload-avatar");
 
 /**
  * @swagger
@@ -44,11 +43,12 @@ const upload = require('../middlewares/upload-avatar');
  *       400:
  *         description: Пользователь уже существует
  */
-router.post('/registration',
-    upload.single('avatar'),
-    body('email').isEmail(), 
-    body('password').isLength({min: 3, max: 32}), 
-    UserController.registration
+router.post(
+  "/registration",
+  upload.single("avatar"),
+  body("email").isEmail(),
+  body("password").isLength({ min: 3, max: 32 }),
+  UserController.registration,
 );
 
 /**
@@ -86,9 +86,9 @@ router.post('/registration',
  *       401:
  *         description: Неверный пароль
  */
-router.post('/login', UserController.login);
-router.post('/logout', UserController.logout);
-router.get('/activate/:link', UserController.activate);
+router.post("/login", UserController.login);
+router.post("/logout", UserController.logout);
+router.get("/activate/:link", UserController.activate);
 
 /**
  * @swagger
@@ -109,7 +109,7 @@ router.get('/activate/:link', UserController.activate);
  *       401:
  *         description: Refresh token недействителен
  */
-router.get('/refresh', UserController.refresh);
+router.get("/refresh", UserController.refresh);
 
 /**
  * @swagger
@@ -130,7 +130,7 @@ router.get('/refresh', UserController.refresh);
  *               items:
  *                 $ref: '#/components/schemas/UserPreview'
  */
-router.get('/users', authMiddleware, UserController.getUsers);
+router.get("/users", authMiddleware, UserController.getUsers);
 
 /**
  * @swagger
@@ -151,7 +151,7 @@ router.get('/users', authMiddleware, UserController.getUsers);
  *       404:
  *         description: Пользователь не найден
  */
-router.get('/me', authMiddleware, UserController.getMe);
+router.get("/me", authMiddleware, UserController.getMe);
 
 /**
  * @swagger
@@ -163,7 +163,7 @@ router.get('/me', authMiddleware, UserController.getMe);
  *     security:
  *       - BearerAuth: []
  *     parameters:
- *       - name: query
+ *       - name: username
  *         in: query
  *         required: true
  *         schema:
@@ -179,7 +179,7 @@ router.get('/me', authMiddleware, UserController.getMe);
  *               items:
  *                 $ref: '#/components/schemas/UserPreview'
  */
-router.get('/users/search', authMiddleware, UserController.searchUsers);
+router.get("/users/search", authMiddleware, UserController.searchUsers);
 
 /**
  * @swagger
@@ -210,6 +210,11 @@ router.get('/users/search', authMiddleware, UserController.searchUsers);
  *             schema:
  *               $ref: '#/components/schemas/Me'
  */
-router.put('/me', authMiddleware, upload.single('avatar'),  UserController.updateMe);
+router.put(
+  "/me",
+  authMiddleware,
+  upload.single("avatar"),
+  UserController.updateMe,
+);
 
 module.exports = router;

@@ -19,7 +19,6 @@ export class AuthService {
 
   static bootstrap(auth: AuthResponse) {
     TokenStore.setAccessToken(auth.accessToken);
-    console.log('TOKEN', TokenStore.getAccessToken());
 
     socket.disconnect();
 

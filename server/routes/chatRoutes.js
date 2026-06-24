@@ -1,7 +1,7 @@
-const { Router } = require('express');
-const authMiddleware = require('../middlewares/auth-middleware');
-const uploadFiles = require('../middlewares/upload-messageFiles');
-const ChatController = require('../controllers/ChatController');
+const { Router } = require("express");
+const authMiddleware = require("../middlewares/auth-middleware");
+const uploadFiles = require("../middlewares/upload-messageFiles");
+const ChatController = require("../controllers/ChatController");
 
 const router = Router();
 
@@ -26,9 +26,9 @@ const router = Router();
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Chat'
+ *               $ref: '#/components/schemas/Conversation'
  */
-router.post('/chats', authMiddleware, ChatController.createChat);
+router.post("/chats", authMiddleware, ChatController.createChat);
 
 /**
  * @swagger
@@ -47,10 +47,9 @@ router.post('/chats', authMiddleware, ChatController.createChat);
  *             schema:
  *               type: array
  *               items:
- *                 $ref: '#/components/schemas/Chat'
+ *                 $ref: '#/components/schemas/Conversation'
  */
-router.get('/chats', authMiddleware, ChatController.getUserChats);
-
+router.get("/chats", authMiddleware, ChatController.getUserChats);
 
 /**
  * @swagger
@@ -89,7 +88,11 @@ router.get('/chats', authMiddleware, ChatController.getUserChats);
  *             schema:
  *               $ref: '#/components/schemas/MessagesPage'
  */
-router.get('/chats/:chatId/messages', authMiddleware, ChatController.getMessages);
+router.get(
+  "/chats/:chatId/messages",
+  authMiddleware,
+  ChatController.getMessages,
+);
 
 /**
  * @swagger
@@ -114,9 +117,9 @@ router.get('/chats/:chatId/messages', authMiddleware, ChatController.getMessages
  *           application/json:
  *             schema:
  *               oneOf:
- *                 - $ref: '#/components/schemas/Chat'
+ *                 - $ref: '#/components/schemas/Conversation'
  *                 - type: 'null'
  */
-router.get('/chats/find/:userId',authMiddleware, ChatController.findUserChat);
+router.get("/chats/find/:userId", authMiddleware, ChatController.findUserChat);
 
 module.exports = router;

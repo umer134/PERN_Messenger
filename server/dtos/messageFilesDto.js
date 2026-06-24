@@ -1,12 +1,6 @@
-
-exports.module = class MessageFilesDto {
-  id;
-  message_id;
-  file_path;
-
+module.exports = class MessageFilesDto {
   constructor(model) {
-    this.id = model.id;
-    this.message_id = model.message_id;
     this.file_path = model.file_path;
-  };
+    this.type = model.type;
+  }
 };

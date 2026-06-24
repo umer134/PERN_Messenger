@@ -23,7 +23,7 @@ export const useChatCreatedEvents = (
       console.log('chatCreated', conversation);
 
       queryClient.setQueryData(
-        ['conversations', 'list'],
+        ['conversation', 'list'],
         (old: ConversationPreview[] = []) => {
           if (old.some((c) => c.id === conversation.id)) {
             return old;

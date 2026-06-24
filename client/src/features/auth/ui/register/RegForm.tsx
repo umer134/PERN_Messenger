@@ -65,7 +65,6 @@ export const RegForm = ({ onSubmit, isLoading, error, onSwitch }: Props) => {
         <AvatarPicker
           value={avatar}
           onChange={(file) => {
-            console.log('NEW FILE', file);
             setValue('avatar', file, {
               shouldDirty: true,
               shouldValidate: true,

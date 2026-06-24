@@ -1,7 +1,7 @@
-const { Router } = require('express');
-const authMiddleware = require('../middlewares/auth-middleware');
-const uploadFiles = require('../middlewares/upload-messageFiles');
-const MessageController = require('../controllers/MessageController');
+const { Router } = require("express");
+const authMiddleware = require("../middlewares/auth-middleware");
+const uploadFiles = require("../middlewares/upload-messageFiles");
+const MessageController = require("../controllers/MessageController");
 
 const router = Router();
 
@@ -19,18 +19,54 @@ const router = Router();
  *       content:
  *         multipart/form-data:
  *           schema:
- *             $ref: '#/components/schemas/SendDirectMessageRequest'
+ *             $ref: '#/components/schemas/SendMessageRequest'
  *     responses:
  *       200:
  *         description: Созданное сообщение и идентификатор чата
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/FullMessage'
+ *               $ref: '#/components/schemas/Message'
  */
-router.post('/messages', uploadFiles.array('files'), authMiddleware, MessageController.sendMessage);
+router.post(
+  "/messages",
+  uploadFiles.array("files"),
+  authMiddleware,
+  MessageController.sendMessage,
+);
 
-router.patch('/messages/read/:chatId', authMiddleware, MessageController.markAsRead)
+/**
+ * @swagger
+ * /api/messages/read/{chatId}:
+ *   patch:
+ *     summary: Пометить сообщения чата прочитанными
+ *     tags:
+ *       - Messages
+ *     security:
+ *       - BearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: chatId
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: uuid
+ *     responses:
+ *       200:
+ *         description: Количество обновленных сообщений
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 updated:
+ *                   type: integer
+ */
+router.patch(
+  "/messages/read/:chatId",
+  authMiddleware,
+  MessageController.markAsRead,
+);
 
 /**
  * @swagger
@@ -53,9 +89,9 @@ router.patch('/messages/read/:chatId', authMiddleware, MessageController.markAsR
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/FullMessage'
+ *               $ref: '#/components/schemas/Message'
  */
-router.put('/messages', authMiddleware, MessageController.editMessage);
+router.put("/messages", authMiddleware, MessageController.editMessage);
 
 /**
  * @swagger
@@ -81,6 +117,10 @@ router.put('/messages', authMiddleware, MessageController.editMessage);
  *             schema:
  *               $ref: '#/components/schemas/DeleteMessageResponse'
  */
-router.delete('/messages/:messageId', authMiddleware, MessageController.deleteMessage);
+router.delete(
+  "/messages/:messageId",
+  authMiddleware,
+  MessageController.deleteMessage,
+);
 
 module.exports = router;

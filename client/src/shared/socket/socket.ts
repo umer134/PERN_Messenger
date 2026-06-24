@@ -13,9 +13,7 @@ const socket = io(env.apiUrl, {
   reconnectionDelayMax: 5000,
 });
 
-socket.on('connect', () => {
-  console.log('SOCKET CONNECTED', socket.id);
-});
+socket.on('connect', () => {});
 
 socket.on('disconnect', (reason) => {
   console.log('SOCKET DISCONNECTED', reason);

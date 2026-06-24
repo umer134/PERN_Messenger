@@ -5,15 +5,16 @@ export class ConversationAdapter {
   static toPreview(conversation: ConversationResponse): ConversationPreview {
     return {
       id: conversation.id,
-      title: conversation.group_name || '',
-      avatar: conversation.group_avatar || '',
-      isGroup: conversation.is_group,
-      unreadCount: 0,
-      lastMessage: conversation.messages?.[conversation.messages?.length || 0],
-      updatedAt: '',
+      title: conversation.title || '',
+      avatar: conversation.avatar || '',
+      isGroup: conversation.isGroup,
+      unreadCount: conversation.unreadCount || 0,
+      lastMessage: conversation.lastMessage || '',
+      updatedAt: conversation.updatedAt || '',
       isVirtual: '',
-      participantId: '',
-      isOnline: undefined,
+      participantId: conversation.participantId || '',
+      isOnline: conversation.isOnline,
+      lastSeen: conversation.lastSeen || null,
     };
   }
 }

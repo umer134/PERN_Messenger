@@ -14,9 +14,9 @@ export class MessageAdapter {
 
   static toVM(message: MessageResponseModel): MessageVM {
     return {
-      id: message.id,
+      id: message.id || '',
 
-      chatId: message.chat_id,
+      chatId: message.chat_id || '',
 
       senderId: message.sender_id || null,
 
@@ -24,9 +24,9 @@ export class MessageAdapter {
 
       content: message.content || null,
 
-      sentAt: message.sent_at,
+      sentAt: message.sent_at || '',
 
-      isRead: message.is_read,
+      isRead: message.is_read || false,
 
       status: MessageAdapter.resolveStatus(message),
 
@@ -42,7 +42,7 @@ export class MessageAdapter {
         ? {
             id: message.replyTo?.id || '',
             senderId: message.replyTo?.senderId || '',
-            senderName: message.replyTo?.sender?.username || '',
+            senderName: message.replyTo?.senderName || '',
             content: message.replyTo?.content || '',
             attachments:
               message.replyTo?.attachedFiles?.map((file) => ({

@@ -1,9 +1,10 @@
 /* AUTO-GENERATED FILE */
 
-export interface User {
+export interface UserPreview {
   id: string;
   name: string;
   avatar: string | null;
+  lastSeen: string | null;
 }
 
 export interface ChatMemberPreview {
@@ -32,7 +33,7 @@ export interface ChatMessageWithRelations {
   content: string | null;
   sent_at: string;
   is_read: boolean;
-  sender: User;
+  sender: UserPreview;
   attachedFiles: ChatFile[];
 }
 

@@ -2,19 +2,33 @@ import { User, Users } from 'lucide-react';
 
 import * as s from './conversation-header.css';
 
-import { ConversationDetails } from '@/entities/conversation/model/conversation-details.types';
+import { ConversationDetails } from '@/entities/conversation';
 import { Avatar } from '@/shared/ui/Avatar';
 import { useAppSelector } from '@/app/hooks';
-import { selectTypingUsers } from '@/features/typing/model/typing.selectors';
-import { TypingIndicator } from '@/shared/ui/typing-indicator/TypingIndicator';
-import { selectPresence } from '@/features/presence/model/presence.selectors';
-import { formatDate } from '@/shared/lib/format/formatDate';
+import { selectTypingUsers } from '@/features/typing';
+import { TypingIndicator } from '@/shared/ui/typing-indicator';
+import { selectPresence } from '@/features/presence/';
+import { formatDate } from '@/shared/lib/format';
 
-type Props = {
-  conversation: ConversationDetails;
+// type Props = {
+//   conversation: ConversationDetails;
+// };
+
+type Conversation = {
+  id: string;
+  participantId: string;
+  avatar: string;
+  title: string;
+  isGroup: boolean;
+  membersCount: number;
+  lastSeen: string;
 };
 
-export const ConversationHeader = ({ conversation }: Props) => {
+export const ConversationHeader = ({
+  conversation,
+}: {
+  conversation: Conversation;
+}) => {
   const typingUsers = useAppSelector(selectTypingUsers(conversation.id));
 
   const presence = useAppSelector(selectPresence(conversation.participantId));

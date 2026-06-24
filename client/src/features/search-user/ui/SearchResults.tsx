@@ -1,12 +1,12 @@
 import * as s from './search-results.css';
 
-import { User } from '@/entities/user/model/user.types';
-import { UserCard } from '@/entities/user/ui/UserCard';
+import { UserPreview } from '@/entities/user/';
+import { UserCard } from '@/entities/user/';
 
 type Props = {
-  users: User[];
+  users: UserPreview[];
 
-  onSelectUser: (user: User) => void;
+  onSelectUser: (user: UserPreview) => void;
 };
 
 export const SearchResults = ({ users, onSelectUser }: Props) => {

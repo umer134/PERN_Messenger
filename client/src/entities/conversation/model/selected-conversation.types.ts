@@ -1,10 +1,10 @@
-import { User } from '@/user/model/user.types';
+import { UserPreview } from '@/entities/user';
 import { ConversationPreview } from './conversation.types';
 
 export type DraftConversation = {
   id: string;
 
-  participant: User;
+  participant: UserPreview;
 
   isVirtual: true;
 };

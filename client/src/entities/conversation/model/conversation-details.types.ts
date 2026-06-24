@@ -1,17 +1,23 @@
 export type ConversationDetails = {
   id: string;
 
-  participantId: string;
-
   title: string;
 
-  avatar?: string;
+  avatar: string | null;
 
   isGroup: boolean;
 
+  unreadCount: number;
+
   membersCount?: number;
 
-  isOnline?: boolean;
+  lastMessage: string | null;
 
-  lastSeen?: number;
+  updatedAt: string;
+
+  participantId: string;
+
+  isOnline: boolean;
+
+  lastSeen: string | null;
 };

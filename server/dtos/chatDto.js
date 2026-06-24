@@ -1,5 +1,4 @@
-
-exports.module = class chatDto {
+module.exports = class chatDto {
   id;
   is_group;
   group_name;
@@ -12,5 +11,5 @@ exports.module = class chatDto {
     this.group_name = model.group_name;
     this.group_avatar = model.group_avatar;
     this.created_at = model.created_at;
-  };
+  }
 };

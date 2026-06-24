@@ -8,14 +8,15 @@ import { SearchBar } from './search-bar/SearchBar';
 
 import { ConversationItems } from './conversation-items/ConversationItems';
 
-import { useSearchUser } from '@/features/search-user/hooks/useSearchUser';
-import { SearchResults } from '@/features/search-user/ui/SearchResults';
-import { SelectedConversation } from '@/entities/conversation/model/selected-conversation.types';
-import { useLoadChats } from '@/entities/conversation/hooks/useLoadChats';
-import { useConversationEvents } from '@/entities/conversation/hooks/useConverstionEvents';
+import { useSearchUser } from '../../features/search-user/hooks/useSearchUser';
+import { SearchResults } from '../../features/search-user/ui/SearchResults';
+import { SelectedConversation } from '../../entities/conversation/model/selected-conversation.types';
+import { useLoadChats } from '../../entities/conversation/hooks/useLoadChats';
+import { useConversationEvents } from '../../entities/conversation/hooks/useConverstionEvents';
 import { LeftPanelView } from './model/conversation-list.types';
 import { ProfilePanel } from './profile-panel/ProfilePanel';
 import { SettingsPanel } from './settings-panel/SettingsPanel';
+import { UserPreview } from '@/entities';
 
 type Props = {
   selectedConversation: SelectedConversation | null;
@@ -35,7 +36,7 @@ export const ConversationList = ({
 
   useConversationEvents();
 
-  const handleSelectUser = (user) => {
+  const handleSelectUser = (user: UserPreview) => {
     const existingConversation = conversations.find(
       (conversation) => conversation.participantId === user.id,
     );

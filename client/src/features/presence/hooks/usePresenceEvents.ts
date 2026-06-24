@@ -13,17 +13,17 @@ import {
   userOffline,
   setOnlineUsers,
 } from '../model/presence.slice';
+import { UserPreview } from '@/entities';
 
 export const usePresenceEvents = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    const initHandler = ({ users }) => {
+    const initHandler = ({ users }: { users: UserPreview[] }) => {
       dispatch(setOnlineUsers(users));
     };
 
-    const onlineHandler = ({ userId }) => {
-      console.log('ONLINE EVENT', userId);
+    const onlineHandler = ({ userId }: { userId: string }) => {
       dispatch(
         userOnline({
           userId,
@@ -31,8 +31,13 @@ export const usePresenceEvents = () => {
       );
     };
 
-    const offlineHandler = ({ userId, lastSeen }) => {
-      console.log('OFFLINE EVENT', userId, lastSeen);
+    const offlineHandler = ({
+      userId,
+      lastSeen,
+    }: {
+      userId: string;
+      lastSeen: Date;
+    }) => {
       dispatch(
         userOffline({
           userId,

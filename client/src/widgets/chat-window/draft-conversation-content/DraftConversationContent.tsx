@@ -1,11 +1,11 @@
 import { useSendFirstMessage } from '@/entities/messages/hooks/useSendFirstMessage';
-import { User } from '@/entities/user/model/user.types';
+import { UserPreview } from '@/entities/user/model/user.types';
 import { ConversationHeader } from '../conversation-header/ConversationHeader';
 import { MessageComposer } from '../message-composer/MessageComposer';
 import { MessagesList } from '../message-list/MessageList';
 
 type Props = {
-  user: User;
+  user: UserPreview;
 
   onConversationCreated: (chatId: string) => void;
 };
@@ -32,9 +32,11 @@ export const DraftConversationContent = ({
         conversation={{
           id: user.id,
           title: user.username,
-          avatar: user.avatar,
+          avatar: user.avatar ?? '',
           isGroup: false,
           participantId: user.id,
+          membersCount: 2,
+          lastSeen: user.lastSeen || '',
         }}
       />
 
