@@ -8,7 +8,7 @@ import { appendMessage } from '@/features/lib';
 
 import { emitDelivered } from '@/shared/socket/emitters';
 
-import { useReadMessages } from '@/entities/messages/hooks';
+import { useReadMessages } from '@/features/messages/hooks/crudHooks';
 
 import { useAppSelector } from '@/app/hooks';
 import { selectCurrentUserId } from '@/entities/current-user/model';

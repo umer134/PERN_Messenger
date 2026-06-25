@@ -1,12 +1,12 @@
-import { useIncomingMessages } from '../hooks/useIncomingMessages';
+import { useIncomingMessages } from '../hooks/eventHooks/useIncomingMessages';
 
-import { useReadMessagesEvents } from '../hooks/useReadMessageEvents';
+import { useReadMessagesEvents } from '../hooks/eventHooks/useReadMessageEvents';
 
-import { useDeliveredMessages } from '../hooks/useDeliveredMessages';
+import { useDeliveredMessages } from '../hooks/eventHooks/useDeliveredMessages';
 
-import { useEditedMessages } from '../hooks/useEditedMessages';
+import { useEditedMessages } from '../hooks/eventHooks/useEditedMessages';
 
-import { useDeletedMessages } from '../hooks/useDeletedMessages';
+import { useDeletedMessages } from '../hooks/eventHooks/useDeletedMessages';
 
 export const useMessageEvents = (chatId: string, isAtBottom: boolean) => {
   useIncomingMessages(chatId, isAtBottom);

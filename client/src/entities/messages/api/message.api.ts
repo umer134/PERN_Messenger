@@ -1,5 +1,5 @@
 import { AxiosResponse } from 'axios';
-import { API_ENDPOINTS } from '@/constants/endpoints';
+import { API_ENDPOINTS } from '@/shared/api/endpoints';
 import { apiCLient } from '@/shared/api/http-client';
 import {
   DirectMessageSendResponse,

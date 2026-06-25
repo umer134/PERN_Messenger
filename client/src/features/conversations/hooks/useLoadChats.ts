@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { ConversationApi } from '../api/conversation.api';
+import { ConversationApi } from '@/entities/conversation';
 
 export const useLoadChats = () =>
   useQuery({

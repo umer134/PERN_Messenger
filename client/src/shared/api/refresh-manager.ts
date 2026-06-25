@@ -1,4 +1,4 @@
-import { API_ENDPOINTS } from '@/constants/endpoints';
+import { API_ENDPOINTS } from '@/shared/api/endpoints';
 import { AuthResponse } from '@/features/auth/model/auth.types';
 import { refreshClient } from './refreshClient';
 

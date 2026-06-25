@@ -1,5 +1,5 @@
 import { apiCLient } from '@/shared/api/http-client';
-import { API_ENDPOINTS } from '@/constants/endpoints';
+import { API_ENDPOINTS } from '@/shared/api/endpoints';
 import { UserResponse } from '../model/user.model';
 
 const { USERS } = API_ENDPOINTS;

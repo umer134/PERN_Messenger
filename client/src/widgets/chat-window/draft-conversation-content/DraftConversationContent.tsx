@@ -1,4 +1,4 @@
-import { useSendFirstMessage } from '@/entities/messages/hooks/useSendFirstMessage';
+import { useSendFirstMessage } from '@/features/messages/hooks/crudHooks/useSendFirstMessage';
 import { UserPreview } from '@/entities/user/model/user.types';
 import { ConversationHeader } from '../conversation-header/ConversationHeader';
 import { MessageComposer } from '../message-composer/MessageComposer';

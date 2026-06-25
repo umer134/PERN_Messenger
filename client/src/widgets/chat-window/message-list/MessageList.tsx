@@ -5,7 +5,7 @@ import * as s from './message-list.css';
 import { MessageVM } from '@/entities/messages/model/message.types';
 
 import { groupMessages } from '@/entities/messages/lib/groupMessages';
-import { useReadMessages } from '@/entities/messages/hooks/useReadMessages';
+import { useReadMessages } from '@/features/messages/hooks/crudHooks/useReadMessages';
 import { MessageGroup } from './message-group/MessageGroup';
 import { MediaItem } from '@/features/media-viewer/model/media-viewer.types';
 import { useAppDispatch, useAppSelector } from '@/app/hooks';

@@ -1,4 +1,4 @@
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQueryClient } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import socket from '@/shared/socket/socket';
 
@@ -6,7 +6,7 @@ export const useConversationEvents = () => {
   const queryClient = useQueryClient();
 
   useEffect(() => {
-    const handler = ({ chatId }) => {
+    const handler = ({ chatId }: { chatId: string }) => {
       queryClient.invalidateQueries({
         queryKey: ['conversation', 'list'],
       });

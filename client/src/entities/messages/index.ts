@@ -1,5 +1,5 @@
 export * from './api';
-export * from './hooks';
+export * from '../../features/messages/hooks/crudHooks';
 export * from './lib';
 export * from './model';
 export * from './ui';

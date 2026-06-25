@@ -9,15 +9,14 @@ import { useAppSelector } from '@/app/hooks';
 import { AvatarPicker } from '@/shared/ui/avatar-picker/AvatarPicker';
 import { Field } from '@/shared/ui/field/Field';
 import { Input } from '@/shared/ui/input/Input';
-import { useUpdateProfile } from '@/features/update-profile/hooks/useUpdateProfile';
+import { useUpdateCurrentUser } from '@/features/current-user';
 
 type Props = {
   onBack: () => void;
 };
 
 export const ProfilePanel = ({ onBack }: Props) => {
-  const updateProfile = useUpdateProfile();
-
+  const { updateMe } = useUpdateCurrentUser();
   const { username, avatar, id } = useAppSelector((state) => state.currentUser);
 
   const [isEditing, setIsEditing] = useState(false);
@@ -25,7 +24,7 @@ export const ProfilePanel = ({ onBack }: Props) => {
   const [form, setForm] = useState({ username });
 
   const handleSave = async () => {
-    await updateProfile.mutateAsync({
+    await updateMe({
       username: form.username ?? '',
       avatar: avatarFile,
     });

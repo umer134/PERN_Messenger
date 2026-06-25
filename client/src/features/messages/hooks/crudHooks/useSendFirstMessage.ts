@@ -1,13 +1,13 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import { MessageApi } from '../api/message.api';
+import { MessageApi } from '@/entities/messages/api';
 
-import { SendMessageDto } from '../model/send-message.types';
+import { SendMessageDto } from '@/entities/messages/model';
 import {
   DirectMessageSendResponse,
   MessageResponse,
-} from '../model/message.model';
-import { MessageAdapter } from '../model/message.adapter';
+} from '@/entities/messages/model';
+import { MessageAdapter } from '@/entities/messages/model';
 
 export const useSendFirstMessage = () => {
   const queryClient = useQueryClient();

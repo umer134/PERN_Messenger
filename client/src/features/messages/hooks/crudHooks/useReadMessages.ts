@@ -1,5 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
-import { MessageApi } from '../api/message.api';
+import { MessageApi } from '@/entities/messages/api';
 
 export const useReadMessages = () => {
   return useMutation({

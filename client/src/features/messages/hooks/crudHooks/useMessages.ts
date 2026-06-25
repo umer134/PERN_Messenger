@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
-import { MessageApi } from '../api/message.api';
-import { MessageAdapter } from '../model/message.adapter';
+import { MessageApi } from '@/entities/messages/api';
+import { MessageAdapter } from '@/entities/messages/model';
 
 export const useMessages = (chatId: string) => {
   return useQuery({

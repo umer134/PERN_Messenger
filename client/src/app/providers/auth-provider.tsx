@@ -1,13 +1,15 @@
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { AuthService } from '@/features/auth';
-import { CurrentUserService } from '@/entities/current-user';
+import { useFetchCurrentUser } from '@/features/current-user';
 
-export function AuthProvider({ children }) {
+export function AuthProvider({ children }: { children?: React.ReactNode }) {
+  const { fetchMe } = useFetchCurrentUser();
+
   useEffect(() => {
     const init = async () => {
       try {
         await AuthService.init();
-        await CurrentUserService.fetchMe();
+        await fetchMe();
       } catch (e) {
         console.error(e);
       }
