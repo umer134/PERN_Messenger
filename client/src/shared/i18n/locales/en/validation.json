@@ -1,0 +1,9 @@
+{
+  "usernameShort": "Username too short",
+  "usernameLong": "Username too long",
+  "invalidEmail": "Invalid email",
+  "passwordShort": "password too short",
+  "confirmPassword": "Passwords do not match",
+  "avatarSize": "Avatar must be under 5 mb",
+  "avatarFormat": "Only image files allowed"
+}

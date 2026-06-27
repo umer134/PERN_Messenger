@@ -107,7 +107,13 @@ class UserService {
         where: {
           username: { [Op.iLike]: `%${query}%` },
         },
-        attributes: ["id", "username", ["avatar_url", "avatar"]],
+        attributes: [
+          "id",
+          "username",
+          ["avatar_url", "avatar"],
+          ["last_seen", "lastSeen"],
+        ],
+        raw: true,
         limit: 10,
       });
 
@@ -119,7 +125,6 @@ class UserService {
   }
 
   async updateMe(userId, updateFields) {
-    // Нельзя обновлять ничего, если updateFields пустой
     if (!Object.keys(updateFields).length) {
       throw ApiError.BadRequest("No fields provided for update");
     }

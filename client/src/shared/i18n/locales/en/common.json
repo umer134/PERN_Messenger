@@ -1,3 +1,25 @@
 {
-  "search.placeholder.user": "Find user"
+  "app": {
+    "name": "Messenger"
+  },
+
+  "actions": {
+    "change": "Change",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "close": "Close",
+    "back": "Back"
+  },
+
+  "menu": {
+    "profile": "Profile",
+    "settings": "Settings",
+    "logout": "Logout"
+  },
+
+  "date": {
+    "today": "Today",
+    "yesterday": "Yesterday"
+  }
 }

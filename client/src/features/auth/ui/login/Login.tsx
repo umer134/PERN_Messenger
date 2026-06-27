@@ -1,8 +1,13 @@
+import { SetStateAction } from 'react';
 import { useLogin } from '../../hooks/useLogin';
 import { LoginFormData } from '../../model/validation/login.schema';
 import { LoginForm } from './LoginForm';
 
-export function Login({ onSwitch }) {
+export function Login({
+  onSwitch,
+}: {
+  onSwitch: () => SetStateAction<string>;
+}) {
   const { mutateAsync, isPending, error } = useLogin();
 
   const handleSubmit = async (values: LoginFormData) => {

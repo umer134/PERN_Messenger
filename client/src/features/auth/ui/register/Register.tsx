@@ -1,8 +1,13 @@
+import { SetStateAction } from 'react';
 import { useRegister } from '../../hooks/useRegister';
 import { RegisterFormData } from '../../model/validation/register.schema';
 import { RegForm } from './RegForm';
 
-export function Register({ onSwitch }) {
+export function Register({
+  onSwitch,
+}: {
+  onSwitch: () => SetStateAction<string>;
+}) {
   const { mutateAsync, isPending, error } = useRegister();
 
   const handleSubmit = async (values: RegisterFormData) => {

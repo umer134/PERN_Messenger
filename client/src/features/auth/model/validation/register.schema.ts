@@ -1,30 +1,32 @@
+import { TFunction } from 'i18next';
 import { z } from 'zod';
 
-export const RegisterSchema = z
-  .object({
-    username: z
-      .string()
-      .trim()
-      .min(5, 'username too short')
-      .max(20, 'Username too long'),
-    email: z.string().trim().email('Invalid email'),
-    password: z.string().min(8, 'password too short').max(128),
-    confirmPassword: z.string(),
-    avatar: z
-      .any()
-      .optional()
-      .refine(
-        (file) => !file || file.size <= 5 * 1024 * 1024,
-        'Avatar must be under 5',
-      )
-      .refine(
-        (file) => !file || file.type.startsWith('image/'),
-        'Only image files allowed',
-      ),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    path: ['confirmPassword'],
-    message: 'Passwords do not match',
-  });
+export const CreateRegisterSchema = (t: TFunction<['auth', 'validation']>) =>
+  z
+    .object({
+      username: z
+        .string()
+        .trim()
+        .min(5, t('validation:usernameShort'))
+        .max(20, t('validation:usernameLong')),
+      email: z.string().trim().email(t('validation:invalidEmail')),
+      password: z.string().min(8, t('validation:passwordShort')).max(128),
+      confirmPassword: z.string(),
+      avatar: z
+        .any()
+        .optional()
+        .refine(
+          (file) => !file || file.size <= 5 * 1024 * 1024,
+          t('validation:avatarSize'),
+        )
+        .refine(
+          (file) => !file || file.type.startsWith('image/'),
+          t('validation:avatarFormat'),
+        ),
+    })
+    .refine((data) => data.password === data.confirmPassword, {
+      path: ['confirmPassword'],
+      message: t('validation:confirmPassword'),
+    });
 
-export type RegisterFormData = z.infer<typeof RegisterSchema>;
+export type RegisterFormData = z.infer<ReturnType<typeof CreateRegisterSchema>>;

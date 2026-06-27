@@ -6,6 +6,7 @@ import { AuthResponse, LoginDto } from '../model/auth.types';
 import { useFetchCurrentUser } from '@/features/current-user/';
 
 export function useLogin() {
+  const { fetchMe } = useFetchCurrentUser();
   return useMutation<AuthResponse, Error, LoginDto>({
     mutationFn: async (dto) => {
       const response = await AuthApi.login(dto);
@@ -14,7 +15,6 @@ export function useLogin() {
     },
 
     onSuccess(response) {
-      const { fetchMe } = useFetchCurrentUser();
       AuthService.bootstrap(response);
       fetchMe();
     },

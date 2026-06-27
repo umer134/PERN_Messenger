@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 
+import { useTranslation } from 'react-i18next';
+
 import { useAppDispatch, useAppSelector } from '@/app/hooks';
 
 import {
@@ -31,6 +33,8 @@ type Props = {
 };
 
 export const MessageComposer = ({ conversationId, onSend, onEdit }: Props) => {
+  const { t } = useTranslation('chat');
+
   const dispatch = useAppDispatch();
 
   const actionType = useAppSelector(selectMessageAction);
@@ -185,7 +189,7 @@ export const MessageComposer = ({ conversationId, onSend, onEdit }: Props) => {
 
             <span className={s.recordingDot} />
 
-            <span>Recording</span>
+            <span>{t('composer.recording')}</span>
 
             <span>{formatDuration(duration)}</span>
           </div>
@@ -194,7 +198,7 @@ export const MessageComposer = ({ conversationId, onSend, onEdit }: Props) => {
             ref={textareaRef}
             className={s.textarea}
             value={message}
-            placeholder="Type a message..."
+            placeholder={t('composer.placeholder')}
             onChange={(e) => {
               const value = e.target.value;
 

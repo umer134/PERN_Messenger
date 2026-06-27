@@ -10,6 +10,6 @@ export class UserApi {
   }
 
   static searchUsers(query: string) {
-    return apiCLient.get(USERS.GET_BY_USERNAME(query));
+    return apiCLient.get<UserResponse[]>(USERS.GET_BY_USERNAME(query));
   }
 }

@@ -1,6 +1,8 @@
 import { Settings, User, LogOut, Menu } from 'lucide-react';
 import { useState } from 'react';
 
+import { useTranslation } from 'react-i18next';
+
 import * as s from './current-user-panel.css';
 import { Avatar } from '@/shared/ui/Avatar';
 import { useAppSelector } from '@/app/hooks';
@@ -12,6 +14,8 @@ type Props = {
 };
 
 export const CurrentUserPanel = ({ onOpenProfile, onOpenSettings }: Props) => {
+  const { t } = useTranslation(['chat', 'common']);
+
   const [isOpen, setIsOpen] = useState(false);
 
   const { username, avatar } = useAppSelector((state) => state.currentUser);
@@ -32,7 +36,7 @@ export const CurrentUserPanel = ({ onOpenProfile, onOpenSettings }: Props) => {
         <div className={s.info}>
           <span className={s.username}>{username}</span>
 
-          <span className={s.status}>online</span>
+          <span className={s.status}>{t('status.online')}</span>
         </div>
       </div>
 
@@ -53,12 +57,12 @@ export const CurrentUserPanel = ({ onOpenProfile, onOpenSettings }: Props) => {
 
             <button className={s.menuItem} onClick={onOpenSettings}>
               <Settings size={16} />
-              Настройки
+              {t('common:menu.settings')}
             </button>
 
             <button className={s.menuItem} onClick={handleLogout}>
               <LogOut size={16} />
-              Выйти
+              {t('common:menu.logout')}
             </button>
           </div>
         )}

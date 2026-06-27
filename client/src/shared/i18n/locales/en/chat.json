@@ -1,0 +1,22 @@
+{
+  "search": {
+    "placeholder": "Search conversations..."
+  },
+
+  "composer": {
+    "placeholder": "Type a message...",
+    "recording": "Recording"
+  },
+
+  "empty": {
+    "title": "Welcome back!",
+    "subtitle": "Select a conversation to start messaging",
+    "list": "No chats yet"
+  },
+
+  "status": {
+    "online": "Online",
+    "offline": "Offline",
+    "typing": "Typing"
+  }
+}

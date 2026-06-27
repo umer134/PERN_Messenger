@@ -6,6 +6,7 @@ import { AuthResponse, RegisterDto } from '../model/auth.types';
 import { useFetchCurrentUser } from '@/features/current-user';
 
 export function useRegister() {
+  const { fetchMe } = useFetchCurrentUser();
   return useMutation<AuthResponse, Error, RegisterDto>({
     mutationFn: async (dto) => {
       const adaptedDto = AuthAdapter.registerDtoToFormData(dto);
@@ -16,7 +17,6 @@ export function useRegister() {
     },
 
     onSuccess(response) {
-      const { fetchMe } = useFetchCurrentUser();
       AuthService.bootstrap(response);
       fetchMe();
     },

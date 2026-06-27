@@ -1,14 +1,14 @@
 import { User, Users } from 'lucide-react';
 
+import { useLocalizedDateFormatter } from '@/shared/i18n/hooks/useLocalizedDateFormatter';
+
 import * as s from './conversation-header.css';
 
-import { ConversationDetails } from '@/entities/conversation';
 import { Avatar } from '@/shared/ui/Avatar';
 import { useAppSelector } from '@/app/hooks';
 import { selectTypingUsers } from '@/features/typing';
 import { TypingIndicator } from '@/shared/ui/typing-indicator';
 import { selectPresence } from '@/features/presence/';
-import { formatDate } from '@/shared/lib/format';
 
 // type Props = {
 //   conversation: ConversationDetails;
@@ -29,6 +29,8 @@ export const ConversationHeader = ({
 }: {
   conversation: Conversation;
 }) => {
+  const formatDate = useLocalizedDateFormatter();
+
   const typingUsers = useAppSelector(selectTypingUsers(conversation.id));
 
   const presence = useAppSelector(selectPresence(conversation.participantId));

@@ -1,10 +1,12 @@
 import { useForm, useWatch } from 'react-hook-form';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
+
+import { useTranslation } from 'react-i18next';
 
 import {
   RegisterFormData,
-  RegisterSchema,
+  CreateRegisterSchema,
 } from '../../model/validation/register.schema';
 
 import { Field } from '@/shared/ui/field/Field';
@@ -13,6 +15,7 @@ import { PasswordInput } from '@/shared/ui/password-input/PasswordInput';
 import { Button } from '@/shared/ui/button/Button';
 import { AuthHeader } from '@/shared/ui/auth-header/AuthHeader';
 import { AvatarPicker } from '@/shared/ui/avatar-picker/AvatarPicker';
+import { NAMESPACE } from '@/shared/i18n/namespaces';
 
 type Props = {
   onSubmit: (values: RegisterFormData) => Promise<unknown>;
@@ -22,6 +25,10 @@ type Props = {
 };
 
 export const RegForm = ({ onSubmit, isLoading, error, onSwitch }: Props) => {
+  const { t } = useTranslation([NAMESPACE.AUTH, NAMESPACE.VALIDATION]);
+
+  const registerSchema = useMemo(() => CreateRegisterSchema(t), [t]);
+
   const {
     register,
     control,
@@ -29,7 +36,7 @@ export const RegForm = ({ onSubmit, isLoading, error, onSwitch }: Props) => {
     setValue,
     formState: { errors },
   } = useForm<RegisterFormData>({
-    resolver: zodResolver(RegisterSchema),
+    resolver: zodResolver(registerSchema),
     mode: 'onBlur',
     reValidateMode: 'onChange',
     defaultValues: {
@@ -60,7 +67,7 @@ export const RegForm = ({ onSubmit, isLoading, error, onSwitch }: Props) => {
           marginBottom: 20,
         }}
       >
-        <AuthHeader title="Create account" subtitle="Start your journey" />
+        <AuthHeader title={t('signUp.title')} subtitle={t('signUp.subtitle')} />
 
         <AvatarPicker
           value={avatar}
@@ -74,29 +81,38 @@ export const RegForm = ({ onSubmit, isLoading, error, onSwitch }: Props) => {
       </div>
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-        <Field label="Username" error={errors.username?.message}>
+        <Field
+          label={t('signUp.form.username')}
+          error={errors.username?.message}
+        >
           <Input {...register('username')} />
         </Field>
 
-        <Field label="Email" error={errors.email?.message}>
+        <Field label={t('signUp.form.email')} error={errors.email?.message}>
           <Input {...register('email')} />
         </Field>
-        <Field label="Password" error={errors.password?.message}>
+        <Field
+          label={t('signUp.form.password')}
+          error={errors.password?.message}
+        >
           <PasswordInput {...register('password')} />
         </Field>
 
-        <Field label="Confirm password" error={errors.confirmPassword?.message}>
+        <Field
+          label={t('signUp.form.confirmPassword')}
+          error={errors.confirmPassword?.message}
+        >
           <PasswordInput {...register('confirmPassword')} />
         </Field>
 
         {error && <div style={{ color: '#EF4444', fontSize: 13 }}>{error}</div>}
 
         <Button type="submit" loading={isLoading} variant="primary">
-          Create account
+          {t('signUp.form.submit')}
         </Button>
 
         <Button type="button" variant="ghost" onClick={onSwitch}>
-          I already have an account
+          {t('signUp.form.switch')}
         </Button>
       </div>
     </form>

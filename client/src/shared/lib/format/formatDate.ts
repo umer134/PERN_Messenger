@@ -2,11 +2,18 @@ type DateFormat = 'time' | 'date' | 'datetime' | 'dateMonth' | 'full' | 'smart';
 
 type FormatDateOptions = {
   locale?: string;
+
   format?: DateFormat;
+
   showYear?: boolean;
+
+  translations?: {
+    today: string;
+    yesterday: string;
+  };
 };
 
-const DEFAULT_LOCALE = 'ru-RU';
+const DEFAULT_LOCALE = 'en-US';
 
 export function formatDate(
   input: string | number | Date,
@@ -16,6 +23,7 @@ export function formatDate(
     locale = DEFAULT_LOCALE,
     format = 'datetime',
     showYear = true,
+    translations,
   } = options;
 
   const date = new Date(input);
@@ -71,11 +79,11 @@ export function formatDate(
 
     case 'smart':
       if (isToday) {
-        return `Сегодня ${timeFormatter.format(date)}`;
+        return `${translations?.today ?? 'Today'} ${timeFormatter.format(date)}`;
       }
 
       if (isYesterday) {
-        return `Вчера ${timeFormatter.format(date)}`;
+        return `${translations?.yesterday ?? 'Yesterday'} ${timeFormatter.format(date)}`;
       }
 
       return dateFormatter.format(date);

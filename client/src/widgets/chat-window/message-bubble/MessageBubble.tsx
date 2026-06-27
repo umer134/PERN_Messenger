@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+
 import { MessageContextMenu } from '@/features/message-actions/ui/MessageContextMenu';
 
 import { useAppDispatch } from '@/app/hooks';
@@ -17,8 +18,8 @@ import { MessageStatus } from '@/entities/messages/ui/message-status/MessageStat
 import { AttachmentRenderer } from '@/entities/messages/ui/attachment-renderer/AttachmentRenderer';
 import { MediaItem } from '@/features/media-viewer/model/media-viewer.types';
 import { ReplySnippet } from '@/entities/messages/ui/reply-snippet/ReplySnippet';
-import { formatDate } from '@/shared/lib/format/formatDate';
 import { useDeleteMessage } from '@/features/message-actions/hooks/useMessageActions';
+import { useLocalizedDateFormatter } from '@/shared/i18n/hooks/useLocalizedDateFormatter';
 
 type Props = {
   message: MessageVM;
@@ -33,6 +34,8 @@ export const MessageBubble = ({
   isMine,
   mediaItems,
 }: Props) => {
+  const formatDate = useLocalizedDateFormatter();
+
   const [menu, setMenu] = useState<{ x: number; y: number } | null>(null);
 
   const deleteMessage = useDeleteMessage(message.chatId);

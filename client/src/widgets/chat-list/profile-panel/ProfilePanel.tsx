@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 
 import { ArrowLeft, User, Pencil, Check, X } from 'lucide-react';
 
+import { useTranslation } from 'react-i18next';
+
 import * as s from './profile-panel.css';
 
 import { Avatar } from '@/shared/ui/Avatar';
@@ -16,6 +18,8 @@ type Props = {
 };
 
 export const ProfilePanel = ({ onBack }: Props) => {
+  const { t } = useTranslation(['profile']);
+
   const { updateMe } = useUpdateCurrentUser();
   const { username, avatar, id } = useAppSelector((state) => state.currentUser);
 
@@ -41,7 +45,7 @@ export const ProfilePanel = ({ onBack }: Props) => {
           <ArrowLeft size={20} />
         </button>
 
-        <span className={s.title}>Профиль</span>
+        <span className={s.title}>{t('profile:title')}</span>
 
         <div className={s.headerActions}>
           {!isEditing ? (
@@ -84,7 +88,7 @@ export const ProfilePanel = ({ onBack }: Props) => {
           )}
         </div>
 
-        <Field label="username">
+        <Field label={t('profile:actions.username')}>
           <Input
             value={form.username ?? ''}
             disabled={!isEditing}

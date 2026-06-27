@@ -10,6 +10,8 @@ type Props = {
 };
 
 export const UserCard = ({ user, onClick }: Props) => {
+  console.log(user);
+
   return (
     <button className={s.root} onClick={() => onClick(user)}>
       <Avatar size="md" src={user.avatar ?? ''} />

@@ -6,10 +6,10 @@ import * as s from './conversation-item.css';
 import { useMediaViewer } from '@/features/media-viewer/lib/useMediaViewer';
 import { Avatar } from '@/shared/ui/Avatar';
 import { resolveMediaUrl } from '@/shared/lib/media/resolveMediaUrl';
-import { formatDate } from '@/shared/lib/format/formatDate';
 import { useAppSelector } from '@/app/hooks';
 import { selectTypingUsers } from '@/features/typing/model/typing.selectors';
 import { TypingIndicator } from '@/shared/ui/typing-indicator/TypingIndicator';
+import { useLocalizedDateFormatter } from '@/shared/i18n/hooks/useLocalizedDateFormatter';
 
 type Props = {
   conversation: ConversationPreview;
@@ -24,6 +24,8 @@ export const ConversationItem = ({
   selected,
   onClick,
 }: Props) => {
+  const formatDate = useLocalizedDateFormatter();
+
   const typingUsers = useAppSelector(selectTypingUsers(conversation.id));
 
   const isTyping = typingUsers.length > 0;
@@ -69,7 +71,9 @@ export const ConversationItem = ({
           <span className={s.title}>{conversation.title}</span>
 
           <span className={s.time}>
-            {formatDate(conversation.updatedAt, { format: 'smart' })}
+            {formatDate(conversation.updatedAt, {
+              format: 'smart',
+            })}
           </span>
         </div>
 

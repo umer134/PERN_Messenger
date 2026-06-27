@@ -1,6 +1,8 @@
 import { Camera, User } from 'lucide-react';
 import { useRef, useState, useEffect } from 'react';
 
+import { useTranslation } from 'react-i18next';
+
 import * as styles from './avatar-picker.css';
 
 import { AvatarCropModal } from '@/shared/ui/avatar-crop-modal';
@@ -13,6 +15,8 @@ type Props = {
 };
 
 export const AvatarPicker = ({ value, initialAvatar, onChange }: Props) => {
+  const { t } = useTranslation('common');
+
   const inputRef = useRef<HTMLInputElement>(null);
   const previewRef = useRef<string | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
@@ -78,7 +82,7 @@ export const AvatarPicker = ({ value, initialAvatar, onChange }: Props) => {
 
         <div className={`${styles.overlay} overlay`}>
           <Camera size={16} />
-          <span>Change</span>
+          <span>{t('actions.change')}</span>
         </div>
 
         <input

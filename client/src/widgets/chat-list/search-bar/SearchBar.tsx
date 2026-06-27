@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next';
+
 import { Search } from 'lucide-react';
 
 import * as s from './search-bar.css';
@@ -9,6 +11,8 @@ type Props = {
 };
 
 export const SearchBar = ({ value, onChange }: Props) => {
+  const { t } = useTranslation('chat');
+
   return (
     <div className={s.wrapper}>
       <div className={s.container}>
@@ -17,7 +21,7 @@ export const SearchBar = ({ value, onChange }: Props) => {
         <input
           value={value}
           className={s.input}
-          placeholder="Search conversations..."
+          placeholder={t('search.placeholder')}
           onChange={(e) => onChange(e.target.value)}
         />
       </div>

@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next';
+
 import * as s from './conversation-items.css';
 import { ConversationPreview } from '@/entities/conversation/model/conversation.types';
 import { ConversationItem } from '../conversation-item/ConversationItem';
@@ -15,8 +17,11 @@ export const ConversationItems = ({
   selectedConversation,
   onSelect,
 }: Props) => {
+  const { t } = useTranslation('chat');
+
   return (
     <div className={s.root}>
+      {conversations.length <= 0 && <h3>{t('empty.list')}</h3>}
       {conversations.map((conversation) => (
         <ConversationItem
           key={conversation.id}
