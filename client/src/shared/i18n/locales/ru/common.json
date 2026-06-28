@@ -21,5 +21,9 @@
   "date": {
     "today": "Сегодня",
     "yesterday": "Вчера"
+  },
+
+  "error": {
+    "undefined": "Ничего не найдено"
   }
 }

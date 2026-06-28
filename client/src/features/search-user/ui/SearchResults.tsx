@@ -2,6 +2,7 @@ import * as s from './search-results.css';
 
 import { UserPreview } from '@/entities/user/';
 import { UserCard } from '@/entities/user/';
+import { useTranslation } from 'react-i18next';
 
 type Props = {
   users: UserPreview[];
@@ -10,8 +11,10 @@ type Props = {
 };
 
 export const SearchResults = ({ users, onSelectUser }: Props) => {
+  const { t } = useTranslation('common');
+
   if (!users.length) {
-    return <div className={s.empty}>Nothing found</div>;
+    return <div className={s.empty}>{t('error.undefined')}</div>;
   }
 
   return (

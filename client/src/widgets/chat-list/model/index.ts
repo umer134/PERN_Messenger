@@ -1,1 +1,1 @@
-export * from './conversation-list.types';
+export * from './chat-list.types';

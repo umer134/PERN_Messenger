@@ -21,5 +21,9 @@
   "date": {
     "today": "Today",
     "yesterday": "Yesterday"
+  },
+
+  "error": {
+    "undefined": "Noting found"
   }
 }

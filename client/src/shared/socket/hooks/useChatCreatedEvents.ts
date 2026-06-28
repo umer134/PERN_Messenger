@@ -1,47 +1,44 @@
 import { useQueryClient } from '@tanstack/react-query';
-import { useEffect, useRef } from 'react';
+import { Dispatch, SetStateAction, useEffect, useRef } from 'react';
 import { subscribeChatCreated } from '../listeners/chat.listeners';
-import { ConversationPreview, ConversationResponse } from '@/entities';
+import { ChatPreview, ChatResponse, SelectedChat } from '@/entities';
 
 export const useChatCreatedEvents = (
-  pendingChatId,
-  setPendingChatId,
-  setSelectedConversation,
-  pendingConversation,
-  setPendingConversation,
+  setPendingChatId: Dispatch<SetStateAction<string | null>>,
+  setSelectedChat: Dispatch<SetStateAction<SelectedChat | null>>,
+  pendingChat: ChatPreview | null,
+  setPendingChat: Dispatch<SetStateAction<ChatPreview | null>>,
+  pendingChatId?: string | null,
 ) => {
   const queryClient = useQueryClient();
 
-  const pendingChatIdRef = useRef(null);
+  const pendingChatIdRef = useRef<string | null | undefined>(null);
 
   useEffect(() => {
     pendingChatIdRef.current = pendingChatId;
   }, [pendingChatId]);
 
   useEffect(() => {
-    const handler = (conversation) => {
-      console.log('chatCreated', conversation);
+    const handler = (chat: ChatPreview) => {
+      console.log('chatCreated', chat);
 
-      queryClient.setQueryData(
-        ['conversation', 'list'],
-        (old: ConversationPreview[] = []) => {
-          if (old.some((c) => c.id === conversation.id)) {
-            return old;
-          }
+      queryClient.setQueryData(['chat', 'list'], (old: ChatPreview[] = []) => {
+        if (old.some((c) => c.id === chat.id)) {
+          return old;
+        }
 
-          return [conversation, ...old];
-        },
-      );
+        return [chat, ...old];
+      });
 
-      if (pendingChatIdRef.current === conversation.id) {
-        setSelectedConversation({
-          type: 'conversation',
-          data: conversation,
+      if (pendingChatIdRef.current === chat.id) {
+        setSelectedChat({
+          type: 'chat',
+          data: chat,
         });
 
         setPendingChatId(null);
       } else {
-        setPendingConversation(conversation);
+        setPendingChat(chat);
       }
     };
 
@@ -49,18 +46,14 @@ export const useChatCreatedEvents = (
   }, []);
 
   useEffect(() => {
-    if (
-      pendingChatId &&
-      pendingConversation &&
-      pendingChatId === pendingConversation.id
-    ) {
-      setSelectedConversation({
-        type: 'conversation',
-        data: pendingConversation,
+    if (pendingChatId && pendingChat && pendingChatId === pendingChat.id) {
+      setSelectedChat({
+        type: 'chat',
+        data: pendingChat,
       });
 
       setPendingChatId(null);
-      setPendingConversation(null);
+      setPendingChat(null);
     }
-  }, [pendingChatId, pendingConversation]);
+  }, [pendingChatId, pendingChat]);
 };

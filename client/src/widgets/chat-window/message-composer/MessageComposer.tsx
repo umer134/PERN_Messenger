@@ -25,14 +25,14 @@ import {
 } from '@/shared/socket/emitters/typing.emitters';
 
 type Props = {
-  conversationId: string;
+  chatId: string;
 
   onSend: (content: string, files: File[]) => void;
 
   onEdit: (messageId: string, content: string) => void;
 };
 
-export const MessageComposer = ({ conversationId, onSend, onEdit }: Props) => {
+export const MessageComposer = ({ chatId, onSend, onEdit }: Props) => {
   const { t } = useTranslation('chat');
 
   const dispatch = useAppDispatch();
@@ -61,7 +61,7 @@ export const MessageComposer = ({ conversationId, onSend, onEdit }: Props) => {
 
   const handleSend = () => {
     if (typingRef.current) {
-      emitTypingStop(conversationId);
+      emitTypingStop(chatId);
 
       typingRef.current = false;
     }
@@ -122,9 +122,9 @@ export const MessageComposer = ({ conversationId, onSend, onEdit }: Props) => {
 
   useEffect(() => {
     return () => {
-      emitTypingStop(conversationId);
+      emitTypingStop(chatId);
     };
-  }, [conversationId]);
+  }, [chatId]);
 
   return (
     <div className={s.root}>
@@ -205,7 +205,7 @@ export const MessageComposer = ({ conversationId, onSend, onEdit }: Props) => {
               setMessage(value);
 
               if (!typingRef.current) {
-                emitTypingStart(conversationId);
+                emitTypingStart(chatId);
 
                 typingRef.current = true;
               }
@@ -215,7 +215,7 @@ export const MessageComposer = ({ conversationId, onSend, onEdit }: Props) => {
               }
 
               stopTimeRef.current = setTimeout(() => {
-                emitTypingStop(conversationId);
+                emitTypingStop(chatId);
 
                 typingRef.current = false;
               }, 1500);

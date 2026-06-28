@@ -17,7 +17,7 @@ import { clearScrollTarget } from '@/features/navigation/message-navigation/mode
 type Props = {
   messages: MessageVM[];
   mediaItems: MediaItem[];
-  conversationId: string;
+  chatId: string;
 
   onBottomChange: (value: boolean) => void;
 };
@@ -25,7 +25,7 @@ type Props = {
 export const MessagesList = ({
   messages,
   mediaItems,
-  conversationId,
+  chatId,
   onBottomChange,
 }: Props) => {
   const dispatch = useAppDispatch();
@@ -47,7 +47,7 @@ export const MessagesList = ({
     bottomRef.current?.scrollIntoView({
       behavior: 'smooth',
     });
-    readMessages.mutate(conversationId);
+    readMessages.mutate(chatId);
 
     setShowScrollButton(false);
   };
@@ -79,7 +79,7 @@ export const MessagesList = ({
     bottomRef.current?.scrollIntoView({
       behavior: 'auto',
     });
-  }, [conversationId]);
+  }, [chatId]);
 
   useEffect(() => {
     if (!showScrollButton) {

@@ -6,51 +6,46 @@ import { CurrentUserPanel } from './current-user-panel/CurrentUserPanel';
 
 import { SearchBar } from './search-bar/SearchBar';
 
-import { ConversationItems } from './conversation-items/ConversationItems';
+import { ChatItems } from './chat-items/ChatItems';
 
 import { useSearchUser } from '../../features/search-user/hooks/useSearchUser';
 import { SearchResults } from '../../features/search-user/ui/SearchResults';
-import { SelectedConversation } from '../../entities/conversation/model/selected-conversation.types';
-import { useLoadChats } from '@/features/conversations/hooks';
-import { useConversationEvents } from '@/features/conversations/hooks';
-import { LeftPanelView } from './model/conversation-list.types';
+import { SelectedChat } from '../../entities/chat/model/selected-chat.types';
+import { useLoadChats } from '@/features/chat/hooks';
+import { useChatEvents } from '@/features/chat/hooks';
+import { LeftPanelView } from './model/chat-list.types';
 import { ProfilePanel } from './profile-panel/ProfilePanel';
 import { SettingsPanel } from './settings-panel/SettingsPanel';
 import { UserPreview } from '@/entities';
 
 type Props = {
-  selectedConversation: SelectedConversation | null;
-  onSelectedConversation: (conversation: SelectedConversation) => void;
+  selectedChat: SelectedChat | null;
+  onSelectedChat: (chat: SelectedChat) => void;
 };
 
-export const ConversationList = ({
-  selectedConversation,
-  onSelectedConversation,
-}: Props) => {
+export const ChatList = ({ selectedChat, onSelectedChat }: Props) => {
   const [view, setView] = useState<LeftPanelView>('dialogs');
 
   const [query, setQuery] = useState('');
 
-  const { data: conversations = [], isLoading } = useLoadChats();
+  const { data: chats = [], isLoading } = useLoadChats();
   const { data: users = [] } = useSearchUser(query);
 
-  useConversationEvents();
+  useChatEvents();
 
   const handleSelectUser = (user: UserPreview) => {
-    const existingConversation = conversations.find(
-      (conversation) => conversation.participantId === user.id,
-    );
+    const existingChat = chats.find((chat) => chat.participantId === user.id);
 
-    if (existingConversation) {
-      onSelectedConversation({
-        type: 'conversation',
-        data: existingConversation,
+    if (existingChat) {
+      onSelectedChat({
+        type: 'chat',
+        data: existingChat,
       });
 
       return;
     }
 
-    onSelectedConversation({
+    onSelectedChat({
       type: 'draft',
 
       draft: {
@@ -75,17 +70,15 @@ export const ConversationList = ({
           {query.length > 0 ? (
             <SearchResults users={users} onSelectUser={handleSelectUser} />
           ) : (
-            <ConversationItems
-              conversations={conversations}
-              selectedConversation={
-                selectedConversation?.type === 'conversation'
-                  ? selectedConversation.data
-                  : null
+            <ChatItems
+              chats={chats}
+              selectedChat={
+                selectedChat?.type === 'chat' ? selectedChat.data : null
               }
-              onSelect={(conversation) =>
-                onSelectedConversation({
-                  type: 'conversation',
-                  data: conversation,
+              onSelect={(chat) =>
+                onSelectedChat({
+                  type: 'chat',
+                  data: chat,
                 })
               }
             />

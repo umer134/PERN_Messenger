@@ -1,6 +1,6 @@
 {
   "search": {
-    "placeholder": "Search conversations..."
+    "placeholder": "Search chats..."
   },
 
   "composer": {
@@ -10,7 +10,7 @@
 
   "empty": {
     "title": "Welcome back!",
-    "subtitle": "Select a conversation to start messaging",
+    "subtitle": "Select a chat to start messaging",
     "list": "No chats yet"
   },
 
