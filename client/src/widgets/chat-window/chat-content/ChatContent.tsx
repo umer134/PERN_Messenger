@@ -8,7 +8,7 @@ import { useChatSocket } from '@/shared/socket/hooks/useChatSocket';
 import { useMessageEvents } from '@/features/messages/lib/useMessageEvents';
 
 import * as s from '../chat-view.css';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useReadMessages } from '@/features/messages/hooks/crudHooks/useReadMessages';
 import { useEditMessage } from '@/features/message-actions/hooks/useMessageActions';
 import { useAppSelector } from '@/app/hooks';
@@ -26,7 +26,7 @@ export const ChatContent = ({ chat }: Props) => {
 
   const activeMessage = useAppSelector(selectActiveMessage);
 
-  const readMessage = useReadMessages();
+  const { mutate: readMessages } = useReadMessages();
   const sendMessage = useSendMessage(chat.id);
   const editMessage = useEditMessage(chat.id);
 
@@ -34,23 +34,24 @@ export const ChatContent = ({ chat }: Props) => {
 
   const messages = data?.messages ?? [];
 
-  const mediaItems = messages
-    ?.flatMap((message) =>
-      message.attachments
-        ?.filter(
-          (attachment) =>
-            attachment.type === 'image' ||
-            attachment.type === 'video' ||
-            attachment.type === 'audio',
-        )
-        .map((attachment) => ({
-          id: attachment.id,
-          type: attachment.type as 'image' | 'video' | 'audio',
-          url: attachment.url ?? '',
-          name: attachment.name,
-        })),
-    )
-    .filter(Boolean);
+  const mediaItems = useMemo(() => {
+    return messages.flatMap(
+      (message) =>
+        message.attachments
+          ?.filter(
+            (attachment) =>
+              attachment.type === 'image' ||
+              attachment.type === 'video' ||
+              attachment.type === 'audio',
+          )
+          .map((attachment) => ({
+            id: attachment.id,
+            type: attachment.type as 'image' | 'video' | 'audio',
+            url: attachment.url ?? '',
+            name: attachment.name,
+          })) ?? [],
+    );
+  }, [messages]);
 
   const handleSend = async (content: string, files: File[]) => {
     await sendMessage.mutateAsync({
@@ -71,8 +72,8 @@ export const ChatContent = ({ chat }: Props) => {
   useEffect(() => {
     if (!isAtBottom) return;
 
-    readMessage.mutate(chat.id);
-  }, [isAtBottom]);
+    readMessages(chat.id);
+  }, [isAtBottom, chat.id, readMessages]);
 
   return (
     <div className={s.chatContent}>

@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState } from 'react';
+import { useRef, useEffect, useState, useMemo, useCallback } from 'react';
 
 import * as s from './message-list.css';
 
@@ -36,21 +36,22 @@ export const MessagesList = ({
 
   const readMessages = useReadMessages();
 
-  const groups = groupMessages(messages);
+  const groups = useMemo(() => groupMessages(messages), [messages]);
 
   const [showScrollButton, setShowScrollButton] = useState(false);
 
   const listRef = useRef<HTMLDivElement>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
 
-  const scrollToBottom = () => {
+  const scrollToBottom = useCallback(() => {
     bottomRef.current?.scrollIntoView({
       behavior: 'smooth',
     });
+
     readMessages.mutate(chatId);
 
     setShowScrollButton(false);
-  };
+  }, [chatId, readMessages]);
 
   useEffect(() => {
     if (!targetMessageId) {
@@ -112,7 +113,7 @@ export const MessagesList = ({
     return () => {
       container.removeEventListener('scroll', handleScroll);
     };
-  }, [messages]);
+  }, [messages.length]);
 
   return (
     <div className={s.wrapper}>

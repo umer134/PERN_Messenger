@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { useAppSelector } from '@/app/hooks';
 
 import * as s from './MainPage.css';
 import { ChatList } from '@/widgets/chat-list/ChatList';
@@ -15,7 +14,6 @@ const MainPage = () => {
   const [selectedChat, setSelectedChat] = useState<SelectedChat | null>(null);
   const [pendingChat, setPendingChat] = useState<ChatPreview | null>(null);
   const [pendingChatId, setPendingChatId] = useState<string | null>(null);
-  const { id } = useAppSelector((state) => state.currentUser);
 
   usePresenceEvents();
   useTypingEvents();
@@ -28,8 +26,6 @@ const MainPage = () => {
     setPendingChat,
     pendingChatId,
   );
-
-  if (!id) return <div>Loading...</div>;
 
   return (
     <div className={s.root}>

@@ -10,16 +10,17 @@ import { useAppSelector } from '@/app/hooks';
 import { selectTypingUsers } from '@/features/typing/model/typing.selectors';
 import { TypingIndicator } from '@/shared/ui/typing-indicator/TypingIndicator';
 import { useLocalizedDateFormatter } from '@/shared/i18n/hooks/useLocalizedDateFormatter';
+import React from 'react';
 
 type Props = {
   chat: ChatPreview;
 
   selected?: boolean;
 
-  onClick?: () => void;
+  onSelect(chat: ChatPreview): void;
 };
 
-export const ChatItem = ({ chat, selected, onClick }: Props) => {
+export const ChatItem = React.memo(({ chat, selected, onSelect }: Props) => {
   const formatDate = useLocalizedDateFormatter();
 
   const typingUsers = useAppSelector(selectTypingUsers(chat.id));
@@ -31,7 +32,7 @@ export const ChatItem = ({ chat, selected, onClick }: Props) => {
   return (
     <div
       className={`${s.root} ${selected ? s.selected : ''}`}
-      onClick={onClick}
+      onClick={() => onSelect(chat)}
     >
       {chat.avatar ? (
         <Avatar
@@ -87,4 +88,4 @@ export const ChatItem = ({ chat, selected, onClick }: Props) => {
       </div>
     </div>
   );
-};
+});

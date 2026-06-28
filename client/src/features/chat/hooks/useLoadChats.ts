@@ -9,4 +9,8 @@ export const useLoadChats = () =>
 
       return response.data;
     },
+    select: (chats) =>
+      [...chats].sort(
+        (a, b) => Date.parse(b.updatedAt) - Date.parse(a.updatedAt),
+      ),
   });

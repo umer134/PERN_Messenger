@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 
 import * as s from './chat-list.css';
 
@@ -28,11 +28,10 @@ export const ChatList = ({ selectedChat, onSelectedChat }: Props) => {
 
   const [query, setQuery] = useState('');
 
-  const { data: chats = [], isLoading } = useLoadChats();
-  const { data: users = [] } = useSearchUser(query);
+  const { data: chats = [], isLoading: chatsLoading } = useLoadChats();
+  const { data: users = [], isLoading: usersLoading } = useSearchUser(query);
 
   useChatEvents();
-
   const handleSelectUser = (user: UserPreview) => {
     const existingChat = chats.find((chat) => chat.participantId === user.id);
 
@@ -68,10 +67,15 @@ export const ChatList = ({ selectedChat, onSelectedChat }: Props) => {
           <SearchBar value={query} onChange={setQuery} />
 
           {query.length > 0 ? (
-            <SearchResults users={users} onSelectUser={handleSelectUser} />
+            <SearchResults
+              users={users}
+              isLoading={usersLoading}
+              onSelectUser={handleSelectUser}
+            />
           ) : (
             <ChatItems
               chats={chats}
+              isLoading={chatsLoading}
               selectedChat={
                 selectedChat?.type === 'chat' ? selectedChat.data : null
               }
