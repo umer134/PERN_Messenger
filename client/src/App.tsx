@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Navigate } from 'react-router-dom';
-import MainPage from '@/pages/main/ui/mainPage';
+import MainPage from '@/pages/main/ui/MainPage';
 import { SignPage } from '@/pages/sign_page/signPage';
 import ProtectedRoute from '@/app/protected-route';
 

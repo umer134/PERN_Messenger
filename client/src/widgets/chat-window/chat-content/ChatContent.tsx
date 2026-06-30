@@ -16,9 +16,10 @@ import { selectActiveMessage } from '@/features/message-actions/model/message-ac
 
 type Props = {
   chat: ChatPreview;
+  onBack?: () => void;
 };
 
-export const ChatContent = ({ chat }: Props) => {
+export const ChatContent = ({ chat, onBack }: Props) => {
   const [isAtBottom, setIsAtBottom] = useState(true);
 
   useChatSocket(chat.id);
@@ -77,7 +78,7 @@ export const ChatContent = ({ chat }: Props) => {
 
   return (
     <div className={s.chatContent}>
-      <ChatHeader chat={chat} />
+      <ChatHeader chat={chat} onBack={onBack} />
 
       <MessagesList
         messages={messages}

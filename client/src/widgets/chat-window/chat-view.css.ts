@@ -1,7 +1,8 @@
+import { media } from '@/shared/styles/media';
 import { style } from '@vanilla-extract/css';
 
 export const root = style({
-  height: '100%',
+  height: '100dvh',
 
   display: 'flex',
   flexDirection: 'column',
@@ -9,10 +10,18 @@ export const root = style({
 });
 
 export const chatContent = style({
-  height: '100%',
+  flex: 1,
 
   display: 'flex',
   flexDirection: 'column',
   minHeight: 0,
-  //overflow: "hidden",
+  overflow: 'hidden',
+});
+
+export const hiddenMobile = style({
+  '@media': {
+    [media.mobile]: {
+      display: 'none',
+    },
+  },
 });

@@ -7,8 +7,11 @@ import {
   setTokenRefreshHandler,
 } from '@/shared/api/http-client';
 import { SocketService } from '@/shared/socket';
+import { useAppDispatch } from '../hooks';
+import { setInitialized, setSession } from '@/features/auth/model/authSlice';
 
 export function AuthProvider({ children }: { children?: React.ReactNode }) {
+  const dispatch = useAppDispatch();
   const { fetchMe } = useFetchCurrentUser();
 
   useEffect(() => {
@@ -22,11 +25,16 @@ export function AuthProvider({ children }: { children?: React.ReactNode }) {
 
     const init = async () => {
       try {
-        await AuthService.init();
+        const success = await AuthService.init();
 
-        await fetchMe();
+        if (success) {
+          await fetchMe();
+          dispatch(setSession());
+        }
       } catch (e) {
         console.error(e);
+      } finally {
+        dispatch(setInitialized());
       }
     };
 

@@ -1,4 +1,4 @@
-import { User, Users } from 'lucide-react';
+import { ArrowLeft, User, Users } from 'lucide-react';
 
 import { useLocalizedDateFormatter } from '@/shared/i18n/hooks/useLocalizedDateFormatter';
 
@@ -20,7 +20,12 @@ type chat = {
   lastSeen?: string | null;
 };
 
-export const ChatHeader = ({ chat }: { chat: chat }) => {
+interface Props {
+  chat: chat;
+  onBack?: () => void;
+}
+
+export const ChatHeader = ({ chat, onBack }: Props) => {
   const formatDate = useLocalizedDateFormatter();
 
   const typingUsers = useAppSelector(selectTypingUsers(chat.id));
@@ -29,6 +34,11 @@ export const ChatHeader = ({ chat }: { chat: chat }) => {
 
   return (
     <header className={s.root}>
+      {onBack && (
+        <button className={s.backButton} onClick={onBack}>
+          <ArrowLeft color="#fff" size={20} />
+        </button>
+      )}
       <div className={s.avatar}>
         {chat.avatar ? (
           <Avatar src={chat.avatar} />

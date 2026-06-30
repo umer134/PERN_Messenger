@@ -4,8 +4,11 @@ import { AuthService } from '../services/auth.service';
 import { AuthAdapter } from '../model/auth.adapter';
 import { AuthResponse, RegisterDto } from '../model/auth.types';
 import { useFetchCurrentUser } from '@/features/current-user';
+import { useAppDispatch } from '@/app/hooks';
+import { setSession } from '../model/authSlice';
 
 export function useRegister() {
+  const dispatch = useAppDispatch();
   const { fetchMe } = useFetchCurrentUser();
   return useMutation<AuthResponse, Error, RegisterDto>({
     mutationFn: async (dto) => {
@@ -17,8 +20,9 @@ export function useRegister() {
     },
 
     onSuccess(response) {
-      AuthService.bootstrap(response);
+      AuthService.bootstrap(response.accessToken);
       fetchMe();
+      dispatch(setSession());
     },
   });
 }

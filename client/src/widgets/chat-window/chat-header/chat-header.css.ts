@@ -1,17 +1,45 @@
 import { style } from '@vanilla-extract/css';
 import { vars } from '@/shared/styles/theme/theme.css';
+import { media } from '@/shared/styles/media';
 
 export const root = style({
-  height: 72,
+  height: 56,
+
+  flexShrink: 0,
 
   display: 'flex',
+
   alignItems: 'center',
 
   gap: 12,
 
-  padding: '0 20px',
+  padding: '0 12px',
 
   borderBottom: `1px solid ${vars.color.border}`,
+
+  '@media': {
+    [media.desktop]: {
+      height: 72,
+
+      padding: '0 20px',
+    },
+  },
+});
+
+export const backButton = style({
+  display: 'none',
+
+  '@media': {
+    [media.mobile]: {
+      display: 'flex',
+
+      width: 36,
+      height: 36,
+
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+  },
 });
 
 export const avatar = style({

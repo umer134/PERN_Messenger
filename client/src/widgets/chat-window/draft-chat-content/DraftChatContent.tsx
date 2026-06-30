@@ -8,9 +8,11 @@ type Props = {
   user: UserPreview;
 
   onChatCreated: (chatId: string) => void;
+
+  onBack?: () => void;
 };
 
-export const DraftChatContent = ({ user, onChatCreated }: Props) => {
+export const DraftChatContent = ({ user, onChatCreated, onBack }: Props) => {
   const sendFirstMessage = useSendFirstMessage();
 
   const handleSend = async (content: string, files: File[]) => {
@@ -35,6 +37,7 @@ export const DraftChatContent = ({ user, onChatCreated }: Props) => {
           membersCount: 2,
           lastSeen: user.lastSeen || '',
         }}
+        onBack={onBack}
       />
 
       <MessagesList

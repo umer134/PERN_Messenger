@@ -1,5 +1,6 @@
 import { style } from '@vanilla-extract/css';
 import { vars } from '@/shared/styles/theme/theme.css';
+import { media } from '@/shared/styles/media';
 
 export const root = style({
   height: '100%',
@@ -68,3 +69,11 @@ export const settingsHidden = style([
     transform: 'translateX(100%)',
   },
 ]);
+
+export const hiddenMobile = style({
+  '@media': {
+    [media.mobile]: {
+      display: 'none',
+    },
+  },
+});

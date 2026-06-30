@@ -1,14 +1,27 @@
 import { style } from '@vanilla-extract/css';
 import { vars } from '@/shared/styles/theme/theme.css';
+import { media } from '@/shared/styles/media';
 
 export const root = style({
-  padding: 16,
+  padding: 12,
+
+  flexShrink: 0,
 
   borderTop: `1px solid ${vars.color.border}`,
 
   display: 'flex',
+
   flexDirection: 'column',
-  gap: 12,
+
+  gap: 8,
+
+  '@media': {
+    [media.desktop]: {
+      padding: 16,
+
+      gap: 12,
+    },
+  },
 });
 
 export const inputRow = style({
@@ -19,6 +32,7 @@ export const inputRow = style({
 
 export const textarea = style({
   flex: 1,
+  minWidth: 0,
 
   minHeight: 44,
   maxHeight: 180,

@@ -31,7 +31,7 @@ const layoutProperties = defineProperties({
 
     width: ['100%', 'fit-content'],
 
-    height: ['100%', '100vh'],
+    height: ['100%', '100dvh'],
   },
 });
 

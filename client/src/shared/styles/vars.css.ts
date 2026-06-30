@@ -19,6 +19,11 @@ export const tokens = {
     inputFocus: '#3B82F6',
   },
 
+  layout: {
+    sidebar: '320px',
+    mobileHeader: '56px',
+  },
+
   spacing: {
     xs: '4px',
     sm: '8px',

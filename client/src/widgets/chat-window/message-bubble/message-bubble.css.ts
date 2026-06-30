@@ -1,5 +1,6 @@
 import { style } from '@vanilla-extract/css';
 import { vars } from '@/shared/styles/theme/theme.css';
+import { media } from '@/shared/styles/media';
 
 export const row = style({
   display: 'flex',
@@ -10,7 +11,8 @@ export const mine = style({
 });
 
 export const bubble = style({
-  maxWidth: '70%',
+  maxWidth: '85%',
+  minWidth: 0,
 
   padding: '10px 14px',
 
@@ -21,6 +23,12 @@ export const bubble = style({
   border: `1px solid ${vars.color.border}`,
 
   margin: 5,
+
+  '@media': {
+    [media.desktop]: {
+      maxWidth: '70%',
+    },
+  },
 });
 
 export const myBubble = style({
@@ -30,6 +38,8 @@ export const myBubble = style({
 
 export const text = style({
   wordBreak: 'break-word',
+
+  overflowWrap: 'anywhere',
 });
 
 export const footer = style({
@@ -42,7 +52,7 @@ export const footer = style({
 
   gap: 4,
 
-  fontSize: '11px',
+  fontSize: vars.fontSize.xs,
 
   opacity: 0.7,
 });

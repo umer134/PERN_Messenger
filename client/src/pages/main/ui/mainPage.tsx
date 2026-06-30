@@ -10,10 +10,19 @@ import { usePresenceEvents } from '@/features/presence/hooks/usePresenceEvents';
 import { useChatCreatedEvents } from '@/shared/socket/hooks/useChatCreatedEvents';
 import { ChatPreview } from '@/entities/chat';
 
+type MobileView = 'list' | 'chat';
+
 const MainPage = () => {
+  const [mobileView, setMobileView] = useState<MobileView>('list');
   const [selectedChat, setSelectedChat] = useState<SelectedChat | null>(null);
   const [pendingChat, setPendingChat] = useState<ChatPreview | null>(null);
   const [pendingChatId, setPendingChatId] = useState<string | null>(null);
+
+  const handleSelectChat = (chat: SelectedChat) => {
+    setSelectedChat(chat);
+
+    setMobileView('chat');
+  };
 
   usePresenceEvents();
   useTypingEvents();
@@ -29,9 +38,15 @@ const MainPage = () => {
 
   return (
     <div className={s.root}>
-      <ChatList selectedChat={selectedChat} onSelectedChat={setSelectedChat} />
+      <ChatList
+        selectedChat={selectedChat}
+        onSelectedChat={handleSelectChat}
+        mobileView={mobileView}
+      />
       <ChatView
         selectedChat={selectedChat}
+        onBack={() => setMobileView('list')}
+        mobileView={mobileView}
         onDraftChatCreated={setPendingChatId}
       />
     </div>

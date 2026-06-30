@@ -17,13 +17,20 @@ import { LeftPanelView } from './model/chat-list.types';
 import { ProfilePanel } from './profile-panel/ProfilePanel';
 import { SettingsPanel } from './settings-panel/SettingsPanel';
 import { UserPreview } from '@/entities';
+import clsx from 'clsx';
 
 type Props = {
   selectedChat: SelectedChat | null;
   onSelectedChat: (chat: SelectedChat) => void;
+
+  mobileView: 'list' | 'chat';
 };
 
-export const ChatList = ({ selectedChat, onSelectedChat }: Props) => {
+export const ChatList = ({
+  selectedChat,
+  onSelectedChat,
+  mobileView,
+}: Props) => {
   const [view, setView] = useState<LeftPanelView>('dialogs');
 
   const [query, setQuery] = useState('');
@@ -56,7 +63,7 @@ export const ChatList = ({ selectedChat, onSelectedChat }: Props) => {
   };
 
   return (
-    <aside className={s.root}>
+    <aside className={clsx(s.root, mobileView === 'chat' && s.hiddenMobile)}>
       <div className={s.pages}>
         <div className={view === 'dialogs' ? s.dialogsActive : s.dialogsHidden}>
           <CurrentUserPanel

@@ -1,3 +1,4 @@
+import { media } from '@/shared/styles/media';
 import { globalKeyframes, style } from '@vanilla-extract/css';
 
 export const wrapper = style({
@@ -15,7 +16,7 @@ export const root = style({
 
   overflowY: 'auto',
 
-  padding: '20px',
+  padding: 12,
 
   display: 'flex',
   flexDirection: 'column',
@@ -39,6 +40,12 @@ export const root = style({
 
     '&::-webkit-scrollbar-thumb:hover': {
       background: 'rgba(255,255,255,.35)',
+    },
+  },
+
+  '@media': {
+    [media.desktop]: {
+      padding: 20,
     },
   },
 });
@@ -67,8 +74,8 @@ export const showButton = keyframes({
 export const scrollButton = style({
   position: 'absolute',
 
-  right: 24,
-  bottom: 24,
+  right: 16,
+  bottom: 90,
 
   width: 42,
   height: 42,

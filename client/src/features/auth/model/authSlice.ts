@@ -19,8 +19,7 @@ const authSlice = createSlice({
   initialState,
 
   reducers: {
-    setSession(state, action: PayloadAction<AuthMeResponse>) {
-      state.me = action.payload;
+    setSession(state) {
       state.isAuth = true;
     },
     clearSession(state) {
