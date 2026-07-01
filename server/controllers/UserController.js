@@ -1,138 +1,140 @@
-const userService = require('../service/user-service');
-const {validationResult} = require('express-validator');
-const ApiError = require('../exceptions/api-error');
-
+const userService = require("../service/user-service");
+const { validationResult } = require("express-validator");
+const ApiError = require("../exceptions/api-error");
 
 class UserController {
-
-    async registration (req, res, next) {
-        try{
-            const errors = validationResult(req);
-            if(!errors.isEmpty()) {
-                return next(ApiError.BadRequest('validation error', errors.array()));
-            }
-            const {name, email, password} = req.body;
-            const avatarPath = req.file ? `/uploads/avatars/${req.file.filename}` : null;
-            console.log('avatarPath', avatarPath)
-            const userData = await userService.registration(name, email, password, avatarPath);
-            res.cookie('refreshToken', userData.refreshToken, {
-                maxAge: 30 * 24 * 60 * 60 * 1000,
-                httpOnly: true,
-                secure: false, 
-                sameSite: 'lax', 
-              });
-            return res.json(userData);
-        }
-        catch (e) {
-            next(e);
-        }
-    }
-
-    async login (req, res, next) {
-        try {
-            const {email, password} = req.body;
-            const userData = await userService.login(email, password);
-            res.cookie('refreshToken', userData.refreshToken, {
-                maxAge: 30 * 24 * 60 * 60 * 1000,
-                httpOnly: true,
-                secure: false, 
-                sameSite: 'lax', 
-              });
-            return res.json(userData)
-        } catch (e) {
-            next(e);
-        }
-    }
-
-    async logout (req, res, next) {
-        try {
-            const {refreshToken} = req.cookies;
-
-            const token = await userService.logout(refreshToken);
-            res.clearCookie('refreshToken');
-            return res.json(token);
-        } catch (e) {
-            next(e);
-        }
-    }
-
-    async activate (req, res, next) {
-        try {
-            const activationLink = req.params.link;
-            await userService.activate(activationLink);
-            return res.redirect(process.env.CLIENT_URL);
-        } catch (e) {
-            next(e);
-        }
-    }
-
-    async refresh (req, res, next) {
-        try {  
-            const {refreshToken} = req.cookies;
-            //if(!refreshToken) return next(ApiError.UnauthorizedError())
-            const userData = await userService.refresh(refreshToken);
-            res.cookie('refreshToken', userData.refreshToken, {
-                maxAge: 30 * 24 * 60 * 60 * 1000,
-                httpOnly: true,
-                secure: false, 
-                sameSite: 'lax', 
-              });
-            return res.json(userData);
-        } catch (e) {
-            next(e);
-        }
-    }
-
-    async getUsers (req, res, next) {
-        try {
-            const users = await userService.getUsers();
-            return res.json(users);
-        } catch (e) {
-            next(e);
-        }
-    }
-
-    async getUser (req, res, next) {
-        try {
-            const { userId } = req.params;
-            const user = await userService.getUser(userId);
-            return res.json(user);
-        } catch(e) {
-            next(e)
-        }
-    }
-
-    async searchUsers (req, res, next) {
-        try {
-            const { query } = req.query;
-            if(!query) return res.json([]);
-            
-            const user = await userService.searchUsers(query);
-            return res.json(user);
-        } catch(e) {
-            next(e)
-        }
-    }
-
-    async updateUser(req, res, next) {
+  async registration(req, res, next) {
     try {
-        const userId = req.user.id;
-        const { name } = req.body;
-        const avatarFile = req.file; // <-- вот он, файл
-        console.log('reFileName', req.file.filename)
-        const updateFields = {};
-        if (name) updateFields.username = name;
-        if (avatarFile) updateFields.avatar_url = `/uploads/avatars/${avatarFile.filename}`;
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        return next(ApiError.BadRequest("validation error", errors.array()));
+      }
+      const { name, email, password } = req.body;
+      const avatarPath = req.file
+        ? `/uploads/avatars/${req.file.filename}`
+        : null;
 
-        console.log('fields', name);
-        console.log('fieldsFile', avatarFile); // <-- тут будет информация о файле
-
-        const updatedUser = await userService.updateUser(userId, updateFields);
-        return res.json(updatedUser);
+      const userData = await userService.registration(
+        name,
+        email,
+        password,
+        avatarPath,
+      );
+      res.cookie("refreshToken", userData.refreshToken, {
+        maxAge: 30 * 24 * 60 * 60 * 1000,
+        httpOnly: true,
+        secure: false,
+        sameSite: "lax",
+      });
+      return res.json(userData);
     } catch (e) {
-        next(e);
+      next(e);
     }
-}
+  }
+
+  async login(req, res, next) {
+    try {
+      const { email, password } = req.body;
+      const userData = await userService.login(email, password);
+      res.cookie("refreshToken", userData.refreshToken, {
+        maxAge: 30 * 24 * 60 * 60 * 1000,
+        httpOnly: true,
+        secure: false,
+        sameSite: "lax",
+      });
+      return res.json(userData);
+    } catch (e) {
+      next(e);
+    }
+  }
+
+  async logout(req, res, next) {
+    try {
+      const { refreshToken } = req.cookies;
+
+      const token = await userService.logout(refreshToken);
+      res.clearCookie("refreshToken");
+      return res.json(token);
+    } catch (e) {
+      next(e);
+    }
+  }
+
+  async activate(req, res, next) {
+    try {
+      const activationLink = req.params.link;
+      await userService.activate(activationLink);
+      return res.redirect(process.env.CLIENT_URL);
+    } catch (e) {
+      next(e);
+    }
+  }
+
+  async refresh(req, res, next) {
+    try {
+      const { refreshToken } = req.cookies;
+      //if(!refreshToken) return next(ApiError.UnauthorizedError())
+      const userData = await userService.refresh(refreshToken);
+      res.cookie("refreshToken", userData.refreshToken, {
+        maxAge: 30 * 24 * 60 * 60 * 1000,
+        httpOnly: true,
+        secure: false,
+        sameSite: "lax",
+      });
+      return res.json(userData);
+    } catch (e) {
+      next(e);
+    }
+  }
+
+  async getUsers(req, res, next) {
+    try {
+      const users = await userService.getUsers();
+      return res.json(users);
+    } catch (e) {
+      next(e);
+    }
+  }
+
+  async getMe(req, res, next) {
+    try {
+      const userId = req.user.id;
+      const user = await userService.getMe(userId);
+      return res.json(user);
+    } catch (e) {
+      next(e);
+    }
+  }
+
+  async searchUsers(req, res, next) {
+    try {
+      const { username } = req.query;
+      if (!username) return res.json([]);
+
+      const user = await userService.searchUsers(username);
+      return res.json(user);
+    } catch (e) {
+      next(e);
+    }
+  }
+
+  async updateMe(req, res, next) {
+    try {
+      const userId = req.user.id;
+      const { name } = req.body;
+      const avatarFile = req.file; // <-- вот он, файл
+
+      const updateFields = {};
+      if (name) updateFields.username = name;
+      if (avatarFile)
+        updateFields.avatar_url = `/uploads/avatars/${avatarFile.filename}`;
+
+      const updatedMe = await userService.updateMe(userId, updateFields);
+      return res.json(updatedMe);
+    } catch (e) {
+      next(e);
+    }
+  }
 }
 
 module.exports = new UserController();

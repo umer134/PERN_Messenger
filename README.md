@@ -1,130 +1,193 @@
+# PERN Messenger
 
-# 💬 Chat Messenger App
+A full-stack real-time messenger built with React, Express, PostgreSQL and Socket.IO.
 
-Мессенджер с авторизацией, реализованный на стеке **PERN (PostgreSQL, Express, React, Node.js)**. Позволяет регистрироваться, входить в аккаунт, искать пользователей и переписываться в реальном времени.
+## Preview
 
-## 🚀 Функциональность
+### Main
 
-- 🔐 Регистрация и вход
-- 👤 Поиск пользователей
-- 💬 Переписка (REST или WebSocket)
-- 🖼️ Поддержка аватарок
+![mainPage](./photos/main.png)
 
----
+### Mobile adaptive
 
-## 📸 Скриншоты
+![adaptiveList](./photos/mobile-adaptive-list.png)
 
-### 1. Авторизация
+![adaptiveChat](./photos/mobile-adaptive-chat.png)
 
-![AuthUI](./manual_photos/chatScreenSignUp.png)  
-🔐 Регистрация с добавлением аватарки (необязательно), заполнением username, email и пароля.
+### Message actions
 
----
+![messageActions](./photos/message-actions.png)
 
-### 2. Главная страница
+### Recording voice
 
-![MainUi](./manual_photos/mainPageScreen.png)  
-👤 Поиск пользователей для общения справа. В верхнем левом углу — кнопка выхода из аккаунта, можно выйти на нее через бургер меню.
+![recordingVoice](./photos/recordingVoice.png)
 
----
+### AttachmentPreview
 
-### 3. Отправка первого сообщения и открытие нового чата
-
-![SearchAndCreateChatUI](./manual_photos/sendFirstMess.png)  
-💬 Нажмите по найденному пользователю, затем на иконку сообщения. Если с этим пользователем ещё не было чата, откроется модальное окно для первого сообщения.
+![attachmentPreview](./photos/attachmentPreview.png)
 
 ---
 
-### 4. Список чатов и непрочитанные сообщения + уведомления и отправка фото в сообщениях
+## Features
 
-![ChatListUI](./manual_photos/chatUI.png)  
-
----
-
-### 5. Замена фотографии профиля в 3 шага.
-
-1. Открыть бургер меню.
-![SetProfilePhotoUI](./manual_photos/setProfilePhoto.png)
-2. Нажать на аватарку.  
-![SetProfilePhotoUI](./manual_photos/setProfilePhotoStepTwo.png)
-3. Нажать на кнопку меню и выбрать "set" - откроется проводник для выбора файла, после выбора - превью для настройки вида аватарки.
-![SetProfilePhotoUI](./manual_photos/setProfilePhotoStepThree.png)  
-
-!Для редактирования юзернейма достаточно нажать на имя профиля в бургер меню, ввести текст и нажать на кнопку ручки.
+- Authentication & Authorization
+- Real-time messaging
+- Private conversations
+- Online users
+- Typing indicators
+- Voice messages
+- Image & file attachments
+- Responsive UI
+- JWT authentication
+- Persistent chat history
 
 ---
 
-### 6. Темная тема.
+## Tech Stack
 
-![darkModeUI](./manual_photos/darkTheme.png)
+### Frontend
 
-## 🛠️ Технологии
-
-### Клиент:
-- React + Vite
-- React Router DOM
-- Redux Toolkit + RTK Query
-- CSS
+- React
+- TypeScript
+- Vite
+- Redux Toolkit
+- React Query
+- React Router
 - Axios
+- SCSS
 
-### Сервер:
-- Node.js + Express
-- PostgreSQL + Sequelize
-- Multer (загрузка аватарок)
-- JWT (JSON Web Tokens)
+### Backend
+
+- Node.js
+- Express
+- Socket.IO
+- PostgreSQL
+- JWT
+- bcrypt
+- Multer
+- Cookie Parser
 
 ---
 
-## 📦 Установка и запуск
+## Architecture
 
-### 1. Клонируй проект
-
-```bash
-git clone https://github.com/umer134/PERN_Messenger.git
-cd PERN_Messenger
+```
+Client (React)
+        │
+ REST API + Socket.IO
+        │
+Express Server
+        │
+ PostgreSQL
 ```
 
-### 2. Добавь файл для переменных окружения(env) и вставь свои значения в следующих полях
-
-### Сервер:
-PORT=
-DB_USERNAME=
-DB_NAME=
-DB_PASSWORD=
-DB_PORT=
-LOCALHOST=
-DIALECT=
-JWT_ACCESS_SECRET=
-JWT_REFRESH_SECRET=
-SMTP_HOST=
-SMTP_PORT=
-SMTP_USER=
-SMTP_PASSWORD=
-API_URL=
-CLIENT_URL=
-
-### Клиент:
-VITE_API_URL=(при загрузках аватарок с сервера приходит относительный путь, поэтому нужно хранить API_URL, для использования в разных частях приложения)
-
-### 3. Установите зависимости и запустет проек:
-project/server
-npm install
-npm run dev
-
-project/client
-npm install
-npm run dev
+The REST API handles authentication, user management, file uploads and chat history, while Socket.IO provides real-time communication between connected clients.
 
 ---
 
-📌 TODO на ближайшие месяцы:
+## Project Structure
 
-1. Отправка уведомлений. ✅
-2. Расширить разнообразие отправляемого контента в чате(эмодзи, файлы). ✅
-3. Темная тема. ✅
-4. Вкладка настроек.
-5. Функицонал редактирования профиля.✅
-6. Добавление контактов/друзей
+```
+client/
+    src/
+    public/
 
+server/
+    controllers/
+    middleware/
+    routes/
+    sockets/
+    database/
+```
 
 ---
+
+## Getting Started
+
+### Clone repository
+
+```bash
+git clone <repository-url>
+```
+
+### Install dependencies
+
+Client
+
+```bash
+cd client
+npm install
+```
+
+Server
+
+```bash
+cd server
+npm install
+```
+
+### Configure environment
+
+Create a `.env` file inside the server directory.
+
+Example:
+
+```env
+PORT=5000
+
+DATABASE_URL=
+
+JWT_SECRET=
+
+CLIENT_URL=http://localhost:5173
+```
+
+---
+
+### Run backend
+
+```bash
+cd server
+npm run dev
+```
+
+### Run frontend
+
+```bash
+cd client
+npm run dev
+```
+
+---
+
+## Main Challenges
+
+### Real-time synchronization
+
+Implemented Socket.IO event architecture for instant message delivery, typing indicators and online presence.
+
+### Authentication
+
+Built JWT authentication with protected routes and persistent sessions.
+
+### Media Support
+
+Implemented image uploads and voice messages while keeping the messaging experience responsive.
+
+---
+
+## Future Improvements
+
+- Group chats
+- Message reactions
+- Read receipts
+- Video calls
+- Push notifications
+- Message search
+- End-to-end encryption
+
+---
+
+## License
+
+This project is created for educational and portfolio purposes.

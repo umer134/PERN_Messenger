@@ -2,10 +2,59 @@
 const {Op} = require('sequelize');
 const { sequelize, ChatModel, ChatMemberModel, UserModel, MessageModel, MessageFilesModel } = require('../models');
 const ApiError = require("../exceptions/api-error");
+const { getID } = require('../socket/socket');
+const getPreviewText = require('../utils/getPreviewText');
+const { onlineUsers } = require('../socket/presence');
 
 class ChatService {
+
+  async findOrCreatePrivateChat(senderId, recipientId, transaction) {
+    const existingChat = await ChatModel.findOne({
+      subQuery: false,
+      include: [{
+        model: ChatMemberModel,
+        as: 'chatMembers',
+        attributes: [],
+        where: {
+          user_id: [senderId, recipientId]
+        }
+      }],
+      group: ['chats.id'],
+      having: sequelize.literal(
+        `COUNT(DISTINCT "chatMembers"."user_id") = 2`
+      ),
+      transaction
+    });
+
+    if (existingChat) {
+      return {
+        chat: existingChat,
+        isNew: false,
+      };
+    }
+
+    const newChat = await ChatModel.create({
+      is_group: false
+    }, { transaction });
+
+    await ChatMemberModel.bulkCreate([
+      {
+        chat_id: newChat.id,
+        user_id: senderId
+      },
+      {
+        chat_id: newChat.id,
+        user_id: recipientId
+      }
+    ], { transaction });
+
+    return {
+      chat: newChat,
+      isNew: true
+    };
+  }  
   
-  async createChat (userId, currentUser) {
+  async createChat (recipientId, senderId) {
     const existingChat = await ChatModel.findOne({
       subQuery: false, // ⬅️ ключевая строка
       include: [{
@@ -13,7 +62,7 @@ class ChatService {
         as: 'chatMembers',
         attributes: [],
         where: {
-          user_id: [currentUser, userId]
+          user_id: [senderId, recipientId]
         }
       }],
       group: ['chats.id'],
@@ -27,37 +76,36 @@ class ChatService {
     const newChat = await ChatModel.create({ is_group: false });
 
     await ChatMemberModel.bulkCreate([
-      { chat_id: newChat.id, user_id: currentUser },
-      { chat_id: newChat.id, user_id: userId }
+      { chat_id: newChat.id, user_id: senderId },
+      { chat_id: newChat.id, user_id: recipientId }
     ]);
   
-    return newChat;
+    return {
+      chat: newChat,
+      isNew: true,
+    };
   }
 
   async getUserChats(userId) {
-    return ChatModel.findAll({
+    const chats = await ChatModel.findAll({
       include: [
         {
           model: ChatMemberModel,
           as: 'chatMembers',
           where: { user_id: userId },
-          attributes: [] // мы не достаём info из связующей таблицы
-        },
-        {
-          model: MessageModel,
-          as: 'messages',
-          separate: true, // грузим отдельно, чтобы limit работал
-          order: [['sent_at', 'DESC']],
-          limit: 1,
-          attributes: ['sender_id','content', 'sent_at', 'is_read']
-        },
-        {
-          model: UserModel,
-          as: 'members',
-          attributes: ['id', 'username', ['avatar_url', 'avatar']] // если надо показать других участников
+          attributes: []
         }
       ]
     });
+
+    return Promise.all(
+      chats.map(chat =>
+        this.buildConversationPreview(
+          chat.id,
+          userId
+        )
+      )
+    );
   }
 
   async findUserChat(fromUserId, toUserId) {
@@ -86,44 +134,6 @@ class ChatService {
     return privateChat || null;
   }
 
-  async sendMessage (chatId, content, files, senderId) {
-    const transaction = await sequelize.transaction();
-    
-    const chatExists = await ChatModel.findByPk(chatId, { transaction });
-    if (!chatExists) {
-        throw ApiError.BadRequest("Chat not found");
-    }
-
-    // Проверка участия в чате
-    const isMember = await ChatMemberModel.findOne({
-        where: { chat_id: chatId, user_id: senderId },
-        transaction
-    });
-    if (!isMember) {
-        throw ApiError.Forbidden();
-    }
-
-    // Создание сообщения
-    const message = await MessageModel.create({
-        chat_id: chatId,
-        sender_id: senderId,
-        content: content || null,
-    }, { transaction });
-
-    if(files && files.length > 0) {
-      const fileRecords = files.map((file) => ({
-        message_id: message.id,
-        file_path: `/uploads/message_files/${file.filename}`,
-      }));
-
-      await MessageFilesModel.bulkCreate(fileRecords, {transaction});
-      
-    }
-
-    await transaction.commit(); // Фиксация транзакции
-    return message;
-  }
-  
   async getMessages (chatId, userId, cursor, limit) {
 
     const transaction = await sequelize.transaction();
@@ -152,6 +162,30 @@ class ChatService {
         attributes: ['id', 'username', 'avatar_url']
       },
       {
+        model: MessageModel,
+        as: "replyTo",
+        attributes: [
+          "id",
+          "content",
+          "sender_id",
+        ],
+        include: [
+          {
+            model: UserModel,
+            as: "sender",
+            attributes: [
+              "id", 
+              "username",
+            ]
+          },
+          {
+            model: MessageFilesModel,
+            as: "attachedFiles",
+            attributes: ["file_path", "type"],
+          }
+        ]
+      },
+      {
         model: MessageFilesModel,
         as: 'attachedFiles',
         attributes: ['file_path']
@@ -174,19 +208,96 @@ class ChatService {
       nextCursor 
     };
   }
-  async readMessage (chatId, senderId) {
-    const [updatedCount] = await MessageModel.update(
-      {is_read: true},
-      {
-        where: {
-        chat_id: chatId,
-          sender_id: { [Op.ne]: senderId },
-          is_read: false
+
+  async buildConversationPreview(chatId, currentUserId, transaction = null) {
+    const chat = await ChatModel.findByPk(chatId, {
+      include: [
+        {
+          model: UserModel,
+          as: 'members',
+          attributes: [
+            'id',
+            'username',
+            'last_seen',
+            ['avatar_url', 'avatar']
+          ]
+        },
+        {
+          model: MessageModel,
+          as: 'messages',
+          separate: true,
+          limit: 1,
+          order: [['sent_at', 'DESC']],
+          attributes: [
+            'content',
+            'sent_at'
+          ],
+          include: [
+            {
+              model: MessageFilesModel,
+              as: "attachedFiles",
+              attributes: ['file_path', 'type'],
+            }
+          ]
         }
-      }
+      ],
+      transaction
+    });
+
+    if (!chat) {
+      throw ApiError.BadRequest("Chat not found");
+    }
+
+    const otherMember = chat.members.find(
+      member => member.id !== currentUserId
     );
 
-    return {updated: updatedCount}
+    const otherMemberData = otherMember?.toJSON();
+
+    const lastMessage = chat.messages[0];
+
+    const unreadCount = await MessageModel.count({
+      where: {
+        chat_id: chatId,
+        sender_id: {
+          [Op.ne]: currentUserId,
+        },
+        is_read: false,
+      },
+      transaction,
+    });
+
+    const isOnline = onlineUsers.has(otherMember?.id);
+
+    return {
+      id: chat.id,
+
+      title: chat.is_group
+        ? chat.group_name
+        : otherMember?.username,
+
+      avatar: chat.is_group
+        ? chat.group_avatar
+        : otherMemberData?.avatar,
+
+      isGroup: chat.is_group,
+
+      unreadCount,
+
+      lastMessage:
+        getPreviewText(lastMessage),
+
+      updatedAt:
+        lastMessage?.sent_at ??
+        chat.created_at,
+
+      participantId:
+        otherMember?.id,
+
+      isOnline,
+
+      lastSeen: otherMemberData?.last_seen ?? null,
+    };
   }
 
 }

@@ -45,6 +45,10 @@ UserModel.belongsToMany(ChatModel, {
 MessageModel.hasMany(MessageFilesModel, { foreignKey: 'message_id', as: 'attachedFiles' });
 MessageFilesModel.belongsTo(MessageModel, { foreignKey: 'message_id', as: 'message' });
 
+//Message - Message(reply_to_id)
+MessageModel.belongsTo(MessageModel, { foreignKey: "reply_to_id", as: "replyTo"});
+MessageModel.hasMany(MessageModel, { foreignKey: "reply_to_id", as: "replies"});
+
 // Экспортируем всё
 module.exports = {
     sequelize,

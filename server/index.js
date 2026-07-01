@@ -3,52 +3,46 @@ const express = require('express');
 const cors = require('cors');
 const path = require('path');
 const cookieParser = require('cookie-parser');
+
+const swaggerUi = require('swagger-ui-express');
+const swaggerSpec = require('./swagger');
+
 const sequelize = require('./config/db');
+
 const http = require('http'); // добавляем http
 const { Server } = require('socket.io'); // импортируем socket.io
 
+const { initSocket } = require("./socket/socket");
+
 const userRouter = require('./routes/userRoutes');
 const chatRouter = require('./routes/chatRoutes');
+const messageRouter = require('./routes/messageRoutes');
 const errorMiddleware = require('./middlewares/error-middleware');
 
 const PORT = process.env.PORT || 5000;
+const CLIENT_URL = process.env.CLIENT_URL || 'http://localhost:5173';
+
 const app = express();
-const server = http.createServer(app); // создаём http-сервер вручную
 
-const io = new Server(server, {
-  pingTimeout: 30000,  // Ждём 30 сек перед разрывом "мертвого" соединения
-  pingInterval: 5000,  // Пинг каждые 5 сек для проверки активности
-  cors: {
-    origin: 'http://localhost:5173',
-    credentials: true
-  }
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
+app.get('/api-spec.json', (req, res) => {
+  res.setHeader('Content-Type', 'application/json');
+  res.send(swaggerSpec);
 });
 
-// Socket.IO логика
-io.on('connection', (socket) => {
-  console.log('Новое подключение:', socket.id);
+const server = http.createServer(app); 
 
-  socket.on('join_chat', (userId) => {
-    socket.join(userId);
-    console.log(`Пользователь ${userId} присоединился`);
-  });
-
-  socket.on('send_message', ({ toUserId, message }) => {
-    io.to(toUserId).emit('receive_message', message);
-  });
-
-  socket.on('disconnect', () => {
-    console.log('Отключение сокета:', socket.id);
-  });
-});
+const io = initSocket(server);
 
 // middlewares
 app.use(cors({
-  origin: 'http://localhost:5173',
+  origin: CLIENT_URL,
   credentials: true
 }));
 app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', 'http://localhost:5173');
+  res.header('Access-Control-Allow-Origin', CLIENT_URL);
   res.header('Access-Control-Allow-Credentials', 'true');
   next();
 });
@@ -60,6 +54,7 @@ app.use('/uploads', express.static(path.resolve(__dirname, 'uploads')));
 // роуты
 app.use('/api', userRouter);
 app.use('/api', chatRouter);
+app.use('/api', messageRouter);
 
 // ошибки
 app.use(errorMiddleware);
