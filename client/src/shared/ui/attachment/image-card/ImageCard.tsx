@@ -1,17 +1,14 @@
-import { X } from 'lucide-react';
-
-import * as s from './image-card.css';
 import { resolveMediaUrl } from '@/shared/lib';
+
+import { AttachmentCard } from '@/shared/ui/attachment/AttachmentCard';
+
+import * as s from '@/shared/ui/attachment/attachment-card.css';
 
 type Props = {
   src: string;
-
   alt?: string;
-
   onClick?: () => void;
-
   removable?: boolean;
-
   onRemove?: () => void;
 };
 
@@ -23,14 +20,13 @@ export const ImageCard = ({
   onRemove,
 }: Props) => {
   return (
-    <div className={s.root} onClick={onClick}>
-      <img src={resolveMediaUrl(src)} alt={alt} className={s.image} />
-
-      {removable && (
-        <button type="button" className={s.removeButton} onClick={onRemove}>
-          <X size={14} />
-        </button>
-      )}
-    </div>
+    <AttachmentCard removable={removable} onRemove={onRemove}>
+      <img
+        src={resolveMediaUrl(src)}
+        alt={alt}
+        className={s.media}
+        onClick={onClick}
+      />
+    </AttachmentCard>
   );
 };

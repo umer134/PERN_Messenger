@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import { MessageContextMenu } from '@/features/message-actions/ui/MessageContextMenu';
 
@@ -28,8 +28,12 @@ type Props = {
   mediaItems: MediaItem[];
 };
 
+const MENU_WIDTH = 180;
+const MENU_HEIGHT = 160;
+
 export const MessageBubble = React.memo(
   ({ message, isGrouped, isMine, mediaItems }: Props) => {
+    const menuRef = useRef<HTMLDivElement>(null);
     const formatDate = useLocalizedDateFormatter();
 
     const [menu, setMenu] = useState<{ x: number; y: number } | null>(null);
@@ -41,14 +45,41 @@ export const MessageBubble = React.memo(
     useEffect(() => {
       if (!menu) return;
 
-      const handleClick = () => {
+      const handleClick = (e: MouseEvent) => {
+        if (menuRef.current?.contains(e.target as Node)) return;
+
         setMenu(null);
       };
 
-      window.addEventListener('click', handleClick);
+      window.addEventListener('mousedown', handleClick);
 
       return () => {
-        window.removeEventListener('click', handleClick);
+        window.removeEventListener('mousedown', handleClick);
+      };
+    }, [menu]);
+    useEffect(() => {
+      if (!menu) return;
+
+      const handleScroll = () => {
+        setMenu(null);
+      };
+
+      window.addEventListener('scroll', handleScroll, true);
+
+      return () => {
+        window.removeEventListener('scroll', handleScroll, true);
+      };
+    }, [menu]);
+
+    useEffect(() => {
+      if (!menu) return;
+
+      const close = () => setMenu(null);
+
+      window.addEventListener('resize', close);
+
+      return () => {
+        window.removeEventListener('resize', close);
       };
     }, [menu]);
 
@@ -59,9 +90,29 @@ export const MessageBubble = React.memo(
           onContextMenu={(e) => {
             e.preventDefault();
 
+            const rect = e.currentTarget.getBoundingClientRect();
+
+            let x = rect.right + 8;
+
+            if (x + MENU_WIDTH > window.innerWidth) {
+              x = rect.left - MENU_WIDTH - 8;
+            }
+
+            // если даже слева не влазит — поверх сообщения
+            if (x < 8) {
+              x = rect.left + rect.width / 2 - MENU_WIDTH / 2;
+            }
+
+            let y = rect.top;
+
+            // если снизу не влазит
+            if (y + MENU_HEIGHT > window.innerHeight) {
+              y = window.innerHeight - MENU_HEIGHT - 8;
+            }
+
             setMenu({
-              x: e.clientX,
-              y: e.clientY,
+              x,
+              y,
             });
           }}
         >
@@ -94,42 +145,42 @@ export const MessageBubble = React.memo(
               <MessageStatus status={message.status} />
             )}
           </div>
-
-          {menu && (
-            <div
-              style={{
-                position: 'fixed',
-                left: menu.x,
-                top: menu.y,
-                zIndex: 9999,
-              }}
-            >
-              <MessageContextMenu
-                canEdit={!!isMine}
-                onAction={(action) => {
-                  switch (action) {
-                    case 'reply':
-                      dispatch(startReply(message));
-                      break;
-
-                    case 'edit':
-                      dispatch(startEdit(message));
-                      break;
-
-                    case 'delete':
-                      deleteMessage.mutateAsync(message.id);
-                      break;
-
-                    case 'copy':
-                      break;
-                  }
-
-                  setMenu(null);
-                }}
-              />
-            </div>
-          )}
         </div>
+        {menu && (
+          <div
+            ref={menuRef}
+            style={{
+              position: 'fixed',
+              left: menu.x,
+              top: menu.y,
+              zIndex: 9999,
+            }}
+          >
+            <MessageContextMenu
+              canEdit={!!isMine}
+              onAction={(action) => {
+                switch (action) {
+                  case 'reply':
+                    dispatch(startReply(message));
+                    break;
+
+                  case 'edit':
+                    dispatch(startEdit(message));
+                    break;
+
+                  case 'delete':
+                    deleteMessage.mutateAsync(message.id);
+                    break;
+
+                  case 'copy':
+                    break;
+                }
+
+                setMenu(null);
+              }}
+            />
+          </div>
+        )}
       </div>
     );
   },

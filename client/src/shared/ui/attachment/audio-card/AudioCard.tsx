@@ -1,19 +1,42 @@
+import { X, Mic } from 'lucide-react';
+
 import { resolveMediaUrl } from '@/shared/lib';
+
+import * as s from './audio-card.css';
 
 type Props = {
   src: string;
-
   name: string;
 
-  onClick: () => void;
+  removable?: boolean;
+
+  onRemove?: () => void;
+
+  onClick?: () => void;
 };
 
-export const AudioCard = ({ src, name, onClick }: Props) => {
+export const AudioCard = ({
+  src,
+  name,
+  removable,
+  onRemove,
+  onClick,
+}: Props) => {
   return (
-    <div>
-      <div onClick={onClick}>{name}</div>
+    <div className={s.root}>
+      {removable && (
+        <button type="button" className={s.removeButton} onClick={onRemove}>
+          <X size={14} color="#fff" />
+        </button>
+      )}
 
-      <audio controls src={resolveMediaUrl(src)} />
+      <div className={s.header} onClick={onClick}>
+        <Mic size={18} />
+
+        <span className={s.name}>{name}</span>
+      </div>
+
+      <audio controls className={s.audio} src={resolveMediaUrl(src)} />
     </div>
   );
 };

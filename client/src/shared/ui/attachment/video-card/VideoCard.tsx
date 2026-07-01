@@ -1,23 +1,28 @@
 import { resolveMediaUrl } from '@/shared/lib';
 
+import { AttachmentCard } from '@/shared/ui/attachment/AttachmentCard';
+
+import * as s from '@/shared/ui/attachment/attachment-card.css';
+
 type Props = {
   src: string;
   onClick: () => void;
+  removable?: boolean;
+  onRemove?: () => void;
 };
 
-export const VideoCard = ({ src, onClick }: Props) => {
+export const VideoCard = ({ src, onClick, removable, onRemove }: Props) => {
   return (
-    <video
-      muted
-      controls
-      preload="metadata"
-      style={{
-        maxWidth: 320,
-        borderRadius: 12,
-      }}
-      onClick={onClick}
-    >
-      <source src={resolveMediaUrl(src)} />
-    </video>
+    <AttachmentCard removable={removable} onRemove={onRemove}>
+      <video
+        src={resolveMediaUrl(src)}
+        className={s.media}
+        controls
+        muted
+        playsInline
+        preload="metadata"
+        onClick={onClick}
+      />
+    </AttachmentCard>
   );
 };

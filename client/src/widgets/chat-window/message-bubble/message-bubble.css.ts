@@ -32,7 +32,7 @@ export const bubble = style({
 });
 
 export const myBubble = style({
-  background: vars.color.surface,
+  background: '#60a5fa8a',
   color: vars.color.text,
 });
 

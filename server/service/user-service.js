@@ -25,10 +25,10 @@ class UserService {
       avatar_url,
       activationLink,
     });
-    await mailService.sendActivationMail(
-      email,
-      `${process.env.API_URL}/api/activate/${activationLink}`,
-    );
+    // await mailService.sendActivationMail(
+    //   email,
+    //   `${process.env.API_URL}/api/activate/${activationLink}`,
+    // );
     const meDto = new MeDTO(user);
     const tokens = tokenService.generateToken({ ...meDto });
     await tokenService.saveToken(meDto.id, tokens.refreshToken);

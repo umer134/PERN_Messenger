@@ -39,8 +39,13 @@ export const AttachmentPreview = React.memo(({ file, onRemove }: Props) => {
   if (attachmentType === 'video') {
     return (
       <div>
-        <VideoCard src={previewUrl} onClick={() => undefined} />
-        <FileCard name={file.name} removable onRemove={onRemove} />
+        <VideoCard
+          src={previewUrl}
+          onClick={() => undefined}
+          removable
+          onRemove={onRemove}
+        />
+        {/* <FileCard name={file.name} removable onRemove={onRemove} /> */}
       </div>
     );
   }
@@ -53,7 +58,7 @@ export const AttachmentPreview = React.memo(({ file, onRemove }: Props) => {
           name={file.name}
           onClick={() => undefined}
         />
-        <FileCard name={file.name} removable onRemove={onRemove} />
+        {/* <FileCard name={file.name} removable onRemove={onRemove} /> */}
       </div>
     );
   }

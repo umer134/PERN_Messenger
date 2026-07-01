@@ -30,7 +30,9 @@ export const ChatItems = ({
   if (chats.length === 0) {
     return (
       <div className={s.root}>
-        <h3>{t('empty.list')}</h3>
+        <div style={{ textAlign: 'center', marginTop: '20px' }}>
+          <span>{t('empty.list')}</span>
+        </div>
       </div>
     );
   }

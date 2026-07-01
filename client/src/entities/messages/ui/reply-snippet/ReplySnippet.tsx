@@ -1,6 +1,6 @@
 import { useAppDispatch } from '@/app/hooks';
 import { scrollToMessage } from '@/features/navigation/message-navigation/model/message-navigation.slice';
-import { MessageAttachmentVM } from '@/model/message.types';
+import { MessageAttachmentVM } from '../../model';
 import * as s from './reply-snippet.css';
 
 type Props = {

@@ -5,6 +5,9 @@
 
   "actions": {
     "change": "Change",
+    "edit": "Edit",
+    "reply": "Reply",
+    "copy": "Copy",
     "save": "Save",
     "cancel": "Cancel",
     "delete": "Delete",

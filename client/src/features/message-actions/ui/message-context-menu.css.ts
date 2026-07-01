@@ -36,6 +36,8 @@ export const item = style({
 
   cursor: 'pointer',
 
+  color: '#fff',
+
   selectors: {
     '&:hover': {
       background: 'rgba(255,255,255,.06)',

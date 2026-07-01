@@ -1,6 +1,7 @@
-import { FileText, Download, X } from 'lucide-react';
+import { Download, FileText, X } from 'lucide-react';
 
 import * as s from './file-card.css';
+
 import { resolveMediaUrl } from '@/shared/lib';
 
 type Props = {
@@ -19,7 +20,7 @@ export const FileCard = ({ name, url, removable, onRemove }: Props) => {
   return (
     <div className={s.root}>
       <div className={s.left}>
-        <FileText size={18} />
+        <FileText size={22} />
 
         {resolvedUrl ? (
           <a
@@ -36,23 +37,21 @@ export const FileCard = ({ name, url, removable, onRemove }: Props) => {
         )}
       </div>
 
-      {resolvedUrl && !removable && (
+      {removable ? (
+        <button className={s.iconButton} type="button" onClick={onRemove}>
+          <X size={16} />
+        </button>
+      ) : resolvedUrl ? (
         <a
+          className={s.iconButton}
           href={resolvedUrl}
           download={name}
           target="_blank"
           rel="noreferrer"
-          aria-label={`Download ${name}`}
         >
-          <Download size={14} />
+          <Download size={16} />
         </a>
-      )}
-
-      {removable && (
-        <button type="button" onClick={onRemove}>
-          <X size={14} />
-        </button>
-      )}
+      ) : null}
     </div>
   );
 };

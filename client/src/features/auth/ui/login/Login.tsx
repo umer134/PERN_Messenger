@@ -3,11 +3,7 @@ import { useLogin } from '../../hooks/useLogin';
 import { LoginFormData } from '../../model/validation/login.schema';
 import { LoginForm } from './LoginForm';
 
-export function Login({
-  onSwitch,
-}: {
-  onSwitch: () => SetStateAction<string>;
-}) {
+export function Login({ onSwitch }: { onSwitch: () => void }) {
   const { mutateAsync, isPending, error } = useLogin();
 
   const handleSubmit = async (values: LoginFormData) => {

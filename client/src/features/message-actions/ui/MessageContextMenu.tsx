@@ -1,5 +1,6 @@
 import * as s from './message-context-menu.css';
 import { MessageAction } from '../model/message-actions.types';
+import { useTranslation } from 'react-i18next';
 
 type Props = {
   canEdit: boolean;
@@ -8,24 +9,26 @@ type Props = {
 };
 
 export const MessageContextMenu = ({ canEdit, onAction }: Props) => {
+  const { t } = useTranslation('common');
+
   return (
     <div className={s.root}>
       <button className={s.item} onClick={() => onAction('reply')}>
-        Reply
+        {t('actions.reply')}
       </button>
       {canEdit && (
         <button className={s.item} onClick={() => onAction('edit')}>
-          Edit
+          {t('actions.edit')}
         </button>
       )}
 
       <button className={s.item} onClick={() => onAction('copy')}>
-        Copy
+        {t('actions.copy')}
       </button>
 
       {canEdit && (
         <button className={s.item} onClick={() => onAction('delete')}>
-          Delete
+          {t('actions.delete')}
         </button>
       )}
     </div>
