@@ -1,0 +1,23 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+
+  pull_request:
+
+jobs:
+  docker-build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Build Server
+        run: docker build -f server/Dockerfile.prod -t server ./server
+
+      - name: Build Nginx
+        run: docker build -f nginx/Dockerfile -t nginx .
