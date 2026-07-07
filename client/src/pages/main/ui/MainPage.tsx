@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import * as s from './mainPage.css';
+import * as s from './MainPage.css';
 import { ChatList } from '@/widgets/chat-list/ChatList';
 import { ChatView } from '@/widgets/chat-window/ChatView';
 import { SelectedChat } from '@/entities/chat/model/selected-chat.types';
