@@ -1,14 +1,35 @@
+# Dependencies
 node_modules/
+
+# Build
 dist/
+build/
+
+# Runtime data
 uploads/
-# Logs
-*.log
 
-# Env
+# Environment
 .env
+.env.*
+!.env.example
 
-# System
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+# IDE
+.vscode/
+.idea/
+
+# OS
 .DS_Store
+Thumbs.db
 
-#readme.md
-# README.md
+# Docker
+*.pid
+
+# Coverage
+coverage/
