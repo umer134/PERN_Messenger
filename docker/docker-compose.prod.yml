@@ -1,5 +1,7 @@
 version: "3.9"
 
+name: pern-messenger
+
 services:
   postgres:
     image: postgres:17
@@ -23,13 +25,13 @@ services:
 
   server:
     build:
-      context: ./server
+      context: ../server
       dockerfile: Dockerfile.prod
 
     restart: unless-stopped
 
     env_file:
-      - ./server/.env.production
+      - ../server/.env.production
 
     depends_on:
       postgres:
@@ -44,8 +46,8 @@ services:
 
   nginx:
     build:
-      context: .
-      dockerfile: nginx/Dockerfile
+      context: ..
+      dockerfile: docker/nginx/Dockerfile
 
     restart: unless-stopped
 

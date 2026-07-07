@@ -1,3 +1,4 @@
+name: pern-messenger
 services:
   postgres:
     image: postgres:17
@@ -21,7 +22,7 @@ services:
 
   server:
     build:
-      context: ./server
+      context: ../server
       dockerfile: Dockerfile.dev
     ports:
       - "5002:5002"
@@ -29,23 +30,23 @@ services:
       postgres:
         condition: service_healthy
     env_file:
-      - ./server/.env
+      - ../server/.env.development
     volumes:
-      - ./server:/app
+      - ../server:/app
       - /app/node_modules
 
   client:
     build:
-      context: ./client
-      dockerfile: Dockerfile
+      context: ../client
+      dockerfile: Dockerfile.dev
     ports:
       - "5173:5173"
     depends_on:
       - server
     env_file:
-      - ./client/.env.development
+      - ../client/.env.development
     volumes:
-      - ./client:/app
+      - ../client:/app
       - /app/node_modules
 
 volumes:
