@@ -5,7 +5,7 @@ module.exports = {
     database: process.env.DB_NAME,
     port: process.env.DB_PORT,
     host: process.env.DB_HOST,
-    dialect: process.env.DIALECT,
+    dialect: "postgres",
   },
   production: {
     username: process.env.DB_USERNAME,
@@ -13,7 +13,7 @@ module.exports = {
     database: process.env.DB_NAME,
     port: process.env.DB_PORT,
     host: process.env.DB_HOST,
-    dialect: process.env.DIALECT,
+    dialect: "postgres",
     dialectOptions: {
       ssl: { require: true, rejectUnauthorized: false },
     },
