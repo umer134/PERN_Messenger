@@ -26,6 +26,9 @@ services:
       context: ../server
       dockerfile: Dockerfile.prod
 
+    volumes:
+      - uploads_data:/app/uploads
+
     restart: unless-stopped
 
     env_file:
@@ -62,3 +65,4 @@ services:
 
 volumes:
   postgres_data:
+  uploads_data:
