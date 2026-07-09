@@ -1,5 +1,3 @@
-import { env } from '@/config/env.config';
-
 export const API_ENDPOINTS = {
   AUTH: {
     LOGIN: `/login`,
@@ -22,7 +20,7 @@ export const API_ENDPOINTS = {
   CHATS: {
     GET_ALL: `/chats`,
     GET_BY_ID: (id: string) => `/chats/${id}`,
-    CREATE: `${env.apiUrl}/chats`,
+    CREATE: `/chats`,
     UPDATE: (id: string) => `/chats/${id}`,
     DELETE: (id: string) => `/chats/${id}`,
   },
