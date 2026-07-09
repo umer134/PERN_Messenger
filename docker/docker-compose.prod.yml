@@ -54,6 +54,11 @@ services:
 
     ports:
       - "80:80"
+      - "443:443"
+
+    volumes:
+      - ${SSL_CERT_PATH}/fullchain.pem:/etc/nginx/ssl/fullchain.pem:ro
+      - ${SSL_KEY_PATH}/privkey.pem:/etc/nginx/ssl/privkey.pem:ro
 
 volumes:
   postgres_data:

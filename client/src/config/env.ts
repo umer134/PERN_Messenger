@@ -3,6 +3,7 @@ import { z } from 'zod';
 const envSchema = z.object({
   VITE_BASE_URL: z.string().default('/'),
   VITE_API_URL: z.string().min(1),
+  VITE_SOCKET_URL: z.string().default('/'),
   VITE_APP_TITLE: z.string().default('Scribora'),
   MODE: z.enum(['development', 'production', 'test']),
   PROD: z.boolean(),
@@ -19,6 +20,7 @@ if (!parsedEnv.success) {
 export const env = {
   BASE_URL: parsedEnv.data.VITE_BASE_URL,
   API_URL: parsedEnv.data.VITE_API_URL,
+  SOCKET_URL: parsedEnv.data.VITE_SOCKET_URL,
   MODE: parsedEnv.data.MODE,
   IS_PRODUCTION: parsedEnv.data.PROD,
   IS_DEVELOPMENT: parsedEnv.data.DEV,
