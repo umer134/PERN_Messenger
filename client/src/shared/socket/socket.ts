@@ -1,7 +1,7 @@
 import { io } from 'socket.io-client';
-import { env } from '@/config/env.config';
+import { env } from '@/config/env';
 
-const socket = io(env.apiUrl, {
+const socket = io(env.API_URL, {
   withCredentials: true,
 
   autoConnect: false,

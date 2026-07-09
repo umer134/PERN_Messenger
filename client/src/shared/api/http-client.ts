@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { env } from '@/config/env.config';
+import { env } from '@/config/env';
 import { TokenStore } from '../lib/token-store';
 import { refreshSession } from './refresh-manager';
 
@@ -17,7 +17,7 @@ export function setTokenRefreshHandler(handler: (token: string) => void) {
 }
 
 export const apiCLient = axios.create({
-  baseURL: env.apiUrl,
+  baseURL: env.API_URL,
 
   timeout: 10000,
 

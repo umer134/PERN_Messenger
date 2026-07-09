@@ -1,4 +1,4 @@
-import { env } from '@/config/env.config';
+import { env } from '@/config/env';
 
 export function resolveMediaUrl(path?: string | null): string {
   if (!path) return '';
@@ -13,5 +13,5 @@ export function resolveMediaUrl(path?: string | null): string {
 
   const normalized = path.startsWith('/') ? path : `/${path}`;
 
-  return `${env.apiUrl}${normalized}`;
+  return `${env.API_URL}${normalized}`;
 }
