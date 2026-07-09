@@ -54,7 +54,7 @@ app.get("/api/health", (_, res) => {
   res.status(200).json({ status: "ok" });
 });
 
-app.use("/api/uploads", express.static(path.resolve(__dirname, "uploads")));
+app.use("/uploads", express.static(path.resolve(__dirname, "uploads")));
 
 // роуты
 app.use("/api", userRouter);
