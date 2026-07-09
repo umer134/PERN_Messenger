@@ -13,5 +13,5 @@ export function resolveMediaUrl(path?: string | null): string {
 
   const normalized = path.startsWith('/') ? path : `/${path}`;
 
-  return `${env.API_URL}${normalized}`;
+  return normalized;
 }
