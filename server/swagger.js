@@ -339,13 +339,13 @@ const options = {
               },
             },
 
-            nextCursor: {
+            previousCursor: {
               type: "string",
               nullable: true,
             },
           },
 
-          required: ["messages", "nextCursor"],
+          required: ["messages", "previousCursor"],
         },
 
         SendMessageRequest: {

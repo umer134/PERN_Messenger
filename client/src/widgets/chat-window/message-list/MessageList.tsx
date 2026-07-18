@@ -13,6 +13,7 @@ import { selectCurrentUserId } from '@/entities/current-user/model/currentUser.s
 import { ChevronDown } from 'lucide-react';
 import { selectTargetMessageId } from '@/features/navigation/message-navigation/model/message-navigation.selectors';
 import { clearScrollTarget } from '@/features/navigation/message-navigation/model/message-navigation.slice';
+import { Loader } from '@/shared/ui/Loader';
 
 type Props = {
   messages: MessageVM[];
@@ -20,6 +21,10 @@ type Props = {
   chatId: string;
 
   onBottomChange: (value: boolean) => void;
+
+  fetchPreviousPage: () => Promise<unknown>;
+  hasPreviousPage?: boolean;
+  isFetchingPreviousPage?: boolean;
 };
 
 export const MessagesList = ({
@@ -27,6 +32,9 @@ export const MessagesList = ({
   mediaItems,
   chatId,
   onBottomChange,
+  fetchPreviousPage,
+  hasPreviousPage,
+  isFetchingPreviousPage,
 }: Props) => {
   const dispatch = useAppDispatch();
 
@@ -42,6 +50,9 @@ export const MessagesList = ({
 
   const listRef = useRef<HTMLDivElement>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
+  const fetchingRef = useRef(false);
+  const initialLoadRef = useRef(true);
+  const previousScrollHeightRef = useRef(0);
 
   const scrollToBottom = useCallback(() => {
     bottomRef.current?.scrollIntoView({
@@ -83,42 +94,66 @@ export const MessagesList = ({
   }, [chatId]);
 
   useEffect(() => {
-    if (!showScrollButton) {
-      bottomRef.current?.scrollIntoView({
-        behavior: 'smooth',
-      });
+    if (!initialLoadRef.current) return;
+
+    // messages prop length indicates when data arrived; scroll once.
+    if (messages.length > 0) {
+      bottomRef.current?.scrollIntoView({ behavior: 'auto' });
+      initialLoadRef.current = false;
+      readMessages.mutate(chatId);
     }
-  }, [messages.length]);
+  }, [messages.length, chatId, readMessages]);
 
   useEffect(() => {
     const container = listRef.current;
 
     if (!container) return;
 
-    const handleScroll = () => {
+    const handleScroll = async () => {
       const distanceFromBottom =
         container.scrollHeight - container.scrollTop - container.clientHeight;
 
-      const nearBottom = distanceFromBottom < 80;
+      onBottomChange(distanceFromBottom < 80);
 
-      onBottomChange(nearBottom);
+      setShowScrollButton(distanceFromBottom >= 80);
 
-      setShowScrollButton(!nearBottom);
+      if (container.scrollTop < 50 && hasPreviousPage && !fetchingRef.current) {
+        fetchingRef.current = true;
+
+        previousScrollHeightRef.current = container.scrollHeight;
+
+        try {
+          await fetchPreviousPage();
+
+          requestAnimationFrame(() => {
+            const newScrollHeight = container.scrollHeight;
+
+            const heightDiff =
+              newScrollHeight - previousScrollHeightRef.current;
+
+            container.scrollTop += heightDiff;
+
+            fetchingRef.current = false;
+          });
+        } catch (e) {
+          fetchingRef.current = false;
+          throw e;
+        }
+      }
     };
-
-    handleScroll();
 
     container.addEventListener('scroll', handleScroll);
 
     return () => {
       container.removeEventListener('scroll', handleScroll);
     };
-  }, [messages.length]);
+  }, [hasPreviousPage, fetchPreviousPage]);
 
   return (
     <div className={s.wrapper}>
       <div ref={listRef} className={s.root}>
         <div className={s.content}>
+          {isFetchingPreviousPage && <Loader />}
           {groups.map((group) => (
             <MessageGroup
               key={group.messages[0].id}

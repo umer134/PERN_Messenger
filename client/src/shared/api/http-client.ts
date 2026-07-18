@@ -17,7 +17,7 @@ export function setTokenRefreshHandler(handler: (token: string) => void) {
 }
 
 export const apiCLient = axios.create({
-  baseURL: env.API_URL,
+  baseURL: `${env.API_URL}`,
 
   timeout: 10000,
 

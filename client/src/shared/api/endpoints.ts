@@ -26,7 +26,10 @@ export const API_ENDPOINTS = {
   },
   MESSAGES: {
     GET: (chatId: string) => `/messages/${chatId}`,
-    GET2: (chatId: string) => `/chats/${chatId}/messages`,
+    GET2: (chatId: string, cursor?: string) =>
+      cursor
+        ? `/chats/${chatId}/messages?cursor=${encodeURIComponent(cursor)}`
+        : `/chats/${chatId}/messages`,
     GET_BY_ID: (id: string) => `/messages/${id}`,
     CREATE: `/messages`,
     READ: (chatId: string) => `/messages/read/${chatId}`,
