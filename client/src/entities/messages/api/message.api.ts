@@ -33,8 +33,11 @@ export class MessageApi {
     });
   }
 
-  static getMessages(chatId: string): Promise<AxiosResponse<MessageResponse>> {
-    return apiCLient.get(MESSAGES.GET2(chatId));
+  static getMessages(
+    chatId: string,
+    cursor?: string,
+  ): Promise<AxiosResponse<MessageResponse>> {
+    return apiCLient.get(MESSAGES.GET2(chatId, cursor));
   }
 
   static readMessages(chatId: string) {

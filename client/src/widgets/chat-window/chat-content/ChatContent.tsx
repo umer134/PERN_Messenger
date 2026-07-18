@@ -1,7 +1,7 @@
 import { ChatHeader } from '../chat-header/ChatHeader';
 import { MessagesList } from '../message-list/MessageList';
 import { MessageComposer } from '../message-composer/MessageComposer';
-import { useMessages } from '@/features/messages/hooks/crudHooks/useMessages';
+import { useInfiniteMessages } from '@/features/messages/hooks/crudHooks/useInfiniteMessages';
 import { useSendMessage } from '@/features/messages/hooks/crudHooks/useSendMessage';
 import { ChatPreview } from '@/entities/chat/model/chat.types';
 import { useChatSocket } from '@/shared/socket/hooks/useChatSocket';
@@ -31,9 +31,31 @@ export const ChatContent = ({ chat, onBack }: Props) => {
   const sendMessage = useSendMessage(chat.id);
   const editMessage = useEditMessage(chat.id);
 
-  const { data, isLoading, error } = useMessages(chat.id);
+  const {
+    data,
+    isLoading,
+    error,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useInfiniteMessages(chat.id);
 
-  const messages = data?.messages ?? [];
+  console.log('hasPrev and cursor:', {
+    hasNextPage,
+    cursor: data?.pages[0]?.previousCursor,
+  });
+
+  const messages = useMemo(() => {
+    // pages[0] is the newest page; when fetching older pages they are appended.
+    // Reverse pages so oldest pages come first, producing a global chronological
+    // order (oldest -> newest) for rendering.
+    return (
+      data?.pages
+        .slice()
+        .reverse()
+        .flatMap((page) => page.messages) ?? []
+    );
+  }, [data]);
 
   const mediaItems = useMemo(() => {
     return messages.flatMap(
@@ -85,6 +107,9 @@ export const ChatContent = ({ chat, onBack }: Props) => {
         mediaItems={mediaItems}
         chatId={chat.id}
         onBottomChange={setIsAtBottom}
+        fetchPreviousPage={fetchNextPage}
+        hasPreviousPage={hasNextPage}
+        isFetchingPreviousPage={isFetchingNextPage}
       />
 
       <MessageComposer

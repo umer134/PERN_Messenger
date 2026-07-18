@@ -54,3 +54,8 @@ export type MessageGroupVM = {
 };
 
 export type TMessageStatus = 'sending' | 'sent' | 'delivered' | 'read';
+
+export type MessagesPage = {
+  messages: MessageVM[];
+  previousCursor: string | null;
+};

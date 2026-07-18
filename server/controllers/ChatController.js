@@ -1,59 +1,65 @@
-const ApiError = require('../exceptions/api-error');
+const ApiError = require("../exceptions/api-error");
 //const { ChatModel, MessageModel, ChatMemberModel } = require('../models')
 const chatService = require("../service/chat-service");
 
 class ChatController {
+  async createChat(req, res, next) {
+    try {
+      const { recipientId } = req.body;
+      const senderId = user.id;
 
-    async createChat (req, res, next) {
-        try {
-            const { recipientId } = req.body;
-            const senderId = user.id;
-            
-            const chatData = await chatService.createChat(recipientId, senderId);
-            return res.json(chatData);
-        } catch (e) {
-            next(e);
-        }
+      const chatData = await chatService.createChat(recipientId, senderId);
+      return res.json(chatData);
+    } catch (e) {
+      next(e);
     }
-    async getUserChats (req, res, next) {
-        try {
-            const userId = req.user.id;
-            const usersData = await chatService.getUserChats(userId);
-            return res.json(usersData);
-        } catch(e) {
-            next(e);
-        }s
+  }
+  async getUserChats(req, res, next) {
+    try {
+      const userId = req.user.id;
+      const usersData = await chatService.getUserChats(userId);
+      return res.json(usersData);
+    } catch (e) {
+      next(e);
     }
-    async findUserChat(req, res, next) {
-        try {
-            const {userId: rawUserId} = req.params;
-            const senderId = req.user.id;
+    s;
+  }
+  async findUserChat(req, res, next) {
+    try {
+      const { userId: rawUserId } = req.params;
+      const senderId = req.user.id;
 
-            const userId = rawUserId;
-            const chat = await chatService.findUserChat(senderId, userId);
-            return res.json(chat);
-        } catch(e) {
-            next(e);
-        }
+      const userId = rawUserId;
+      const chat = await chatService.findUserChat(senderId, userId);
+      return res.json(chat);
+    } catch (e) {
+      next(e);
     }
+  }
 
-    async getMessages (req, res, next) {
-        try {
-            const { chatId: rawChatId } = req.params;
-            const userId = req.user.id;
-            const { cursor, limit: rawLimit } = req.query;
-            
-            // Валидация chatId
-            const chatId = rawChatId;
+  async getMessages(req, res, next) {
+    try {
+      const { chatId: rawChatId } = req.params;
+      const userId = req.user.id;
+      const { cursor, limit: rawLimit } = req.query;
+      console.log("CURSOR_:", cursor);
 
-            const limit = Math.min(parseInt(rawLimit) || 50, 100);
-            const messageData = await chatService.getMessages(chatId, userId, cursor, limit);
-            
-            return res.json(messageData);
-        } catch(e) {
-            next(e);
-        }
-    }    
+      // Валидация chatId
+      const chatId = rawChatId;
+
+      const limit = Math.min(parseInt(rawLimit) || 50, 100);
+      const messageData = await chatService.getMessages(
+        chatId,
+        userId,
+        cursor || null,
+        limit,
+      );
+
+      return res.json(messageData);
+    } catch (e) {
+      next(e);
+    }
+  }
 }
 
 module.exports = new ChatController();

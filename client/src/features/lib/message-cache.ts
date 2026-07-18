@@ -1,78 +1,109 @@
-import { MessageResponse } from '@/entities';
+import type { InfiniteData, QueryClient } from '@tanstack/react-query';
+import { MessagesPage, MessageVM } from '@/entities';
 
-type Old = MessageResponse;
+type Old = InfiniteData<MessagesPage>;
 
-export const appendMessage = (queryClient, chatId, message) => {
-  queryClient.setQueryData(['messages', chatId], (old: Old) => {
-    if (!old) return old;
+export const appendMessage = (
+  queryClient: QueryClient,
+  chatId: string,
+  message: MessageVM,
+) => {
+  queryClient.setQueryData<InfiniteData<MessagesPage>>(
+    ['messages', chatId],
+    (old) => {
+      if (!old) return old;
 
-    return {
-      ...old,
-      messages: [...old.messages, message],
-    };
-  });
+      return {
+        ...old,
+        pages: old.pages.map((page, index) => {
+          if (index !== 0) return page;
+
+          return {
+            ...page,
+            messages: [...page.messages, message],
+          };
+        }),
+      };
+    },
+  );
 };
 
 export const markMessageRead = (queryClient, chatId, messageIds) => {
-  queryClient.setQueryData(['messages', chatId], (old: Old) => {
-    if (!old) return old;
-
-    const updated = {
-      ...old,
-      messages: old.messages.map((msg) =>
-        messageIds.includes(msg.id)
-          ? {
-              ...msg,
-              status: 'read',
-              isRead: true,
-            }
-          : msg,
-      ),
-    };
-
-    return updated;
-  });
-};
-
-export const markMessagesDelivered = (queryClient, chatId, messageId) => {
-  queryClient.setQueryData(['messages', chatId], (old: Old) => {
+  queryClient.setQueryData(['messages', chatId], (old) => {
     if (!old) return old;
 
     return {
       ...old,
-      messages: old.messages.map((msg) =>
-        msg.id === messageId
-          ? {
-              ...msg,
-              status: 'delivered',
-            }
-          : msg,
-      ),
+      pages: old.pages.map((page) => ({
+        ...page,
+        messages: page.messages.map((msg) =>
+          messageIds.includes(msg.id)
+            ? {
+                ...msg,
+                status: 'read',
+                isRead: true,
+              }
+            : msg,
+        ),
+      })),
     };
   });
+};
+
+export const markMessagesDelivered = (
+  queryClient: QueryClient,
+  chatId: string,
+  messageId: string,
+) => {
+  queryClient.setQueryData<InfiniteData<MessagesPage>>(
+    ['messages', chatId],
+    (old) => {
+      if (!old) return old;
+
+      return {
+        ...old,
+        pages: old.pages.map((page) => ({
+          ...page,
+          messages: page.messages.map((msg) =>
+            msg.id === messageId
+              ? {
+                  ...msg,
+                  status: 'delivered',
+                }
+              : msg,
+          ),
+        })),
+      };
+    },
+  );
 };
 
 export const updateMessage = (queryClient, chatId, updated) => {
-  queryClient.setQueryData(['messages', chatId], (old: Old) => {
+  queryClient.setQueryData(['messages', chatId], (old) => {
     if (!old) return old;
 
     return {
       ...old,
-      messages: old.messages.map((msg) =>
-        msg.id === updated.id ? updated : msg,
-      ),
+      pages: old.pages.map((page) => ({
+        ...page,
+        messages: page.messages.map((msg) =>
+          msg.id === updated.id ? updated : msg,
+        ),
+      })),
     };
   });
 };
 
 export const removeMessage = (queryClient, chatId, messageId) => {
-  queryClient.setQueryData(['messages', chatId], (old: Old) => {
+  queryClient.setQueryData(['messages', chatId], (old) => {
     if (!old) return old;
 
     return {
       ...old,
-
-      messages: old.messages.filter((msg) => msg.id !== messageId),
+      pages: old.pages.map((page) => ({
+        ...page,
+        messages: page.messages.filter((msg) => msg.id !== messageId),
+      })),
     };
   });
 };

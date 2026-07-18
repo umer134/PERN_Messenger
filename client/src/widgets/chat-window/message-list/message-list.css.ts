@@ -55,6 +55,7 @@ export const content = style({
   flexDirection: 'column',
 
   gap: 12,
+  overflowAnchor: 'none',
 });
 
 import { keyframes } from '@vanilla-extract/css';
