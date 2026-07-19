@@ -29,6 +29,8 @@ export type MessageReplyVM = {
 export type MessageVM = {
   id: string;
 
+  clientId?: string;
+
   chatId: string;
 
   senderId: string | null;

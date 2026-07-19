@@ -40,11 +40,6 @@ export const ChatContent = ({ chat, onBack }: Props) => {
     isFetchingNextPage,
   } = useInfiniteMessages(chat.id);
 
-  console.log('hasPrev and cursor:', {
-    hasNextPage,
-    cursor: data?.pages[0]?.previousCursor,
-  });
-
   const messages = useMemo(() => {
     // pages[0] is the newest page; when fetching older pages they are appended.
     // Reverse pages so oldest pages come first, producing a global chronological
@@ -76,8 +71,13 @@ export const ChatContent = ({ chat, onBack }: Props) => {
     );
   }, [messages]);
 
-  const handleSend = async (content: string, files: File[]) => {
+  const handleSend = async (
+    clientId: string,
+    content: string,
+    files: File[],
+  ) => {
     await sendMessage.mutateAsync({
+      clientId,
       recipientId: chat.participantId,
       content,
       files,

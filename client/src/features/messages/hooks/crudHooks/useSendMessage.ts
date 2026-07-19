@@ -2,7 +2,9 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { MessageApi } from '@/entities/messages/api/message.api';
 import { useAppSelector } from '@/app/hooks';
 import { selectCurrentUserId } from '@/entities/current-user/model/currentUser.selectors';
-import { MessageResponse } from '@/entities/messages/model';
+
+import { InfiniteData } from '@tanstack/react-query';
+import { MessagesPage } from '@/entities/messages/model';
 
 export function useSendMessage(chatId: string) {
   const queryClient = useQueryClient();
@@ -17,41 +19,60 @@ export function useSendMessage(chatId: string) {
         queryKey: ['messages', chatId],
       });
 
-      const prev = queryClient.getQueryData(['messages', chatId]);
+      const previousMessages = queryClient.getQueryData<
+        InfiniteData<MessagesPage>
+      >(['messages', chatId]);
 
       const optimisticMessage = {
-        id: crypto.randomUUID(),
+        id: dto.clientId,
+
+        clientId: dto.clientId,
+
         chatId,
+
         senderId: id,
+
         content: dto.content ?? null,
+
         attachments: [],
+
         replyTo: null,
+
         sentAt: new Date().toISOString(),
+
         isRead: false,
+
         status: 'sending',
       };
 
-      queryClient.setQueryData(
+      queryClient.setQueryData<InfiniteData<MessagesPage>>(
         ['messages', chatId],
-        (old: Omit<MessageResponse, 'nextCursor'> = { messages: [] }) => {
+        (old) => {
+          if (!old) return old;
+
           return {
             ...old,
-            messages: [...(old?.messages ?? []), optimisticMessage],
+
+            pages: old.pages.map((page, index) => {
+              if (index !== 0) return page;
+
+              return {
+                ...page,
+
+                messages: [...page.messages, optimisticMessage],
+              };
+            }),
           };
         },
       );
 
-      return { prev };
+      return {
+        previousMessages,
+      };
     },
 
     onError: (_err, _dto, context) => {
-      queryClient.setQueryData(['messages', chatId], context?.prev);
-    },
-
-    onSuccess: (data) => {
-      queryClient.invalidateQueries({
-        queryKey: ['messages', chatId],
-      });
+      queryClient.setQueryData(['messages', chatId], context?.previousMessages);
     },
   });
 }

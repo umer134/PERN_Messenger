@@ -1,4 +1,6 @@
-export type SendMessageDto = {
+export interface SendMessageDto {
+  clientId: string;
+
   chatId?: string;
 
   recipientId?: string;
@@ -8,4 +10,4 @@ export type SendMessageDto = {
   replyToId?: string;
 
   files?: File[];
-};
+}

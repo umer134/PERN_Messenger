@@ -14,6 +14,7 @@ export class MessageApi {
   ): Promise<AxiosResponse<DirectMessageSendResponse>> {
     const formData = new FormData();
 
+    if (dto.clientId) formData.append('clientId', dto.clientId);
     if (dto.chatId) formData.append('chatId', dto.chatId);
     if (dto.recipientId) formData.append('recipientId', dto.recipientId);
     if (dto.content) formData.append('content', dto.content);

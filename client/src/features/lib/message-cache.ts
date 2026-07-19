@@ -3,7 +3,7 @@ import { MessagesPage, MessageVM } from '@/entities';
 
 type Old = InfiniteData<MessagesPage>;
 
-export const appendMessage = (
+export const upsertMessage = (
   queryClient: QueryClient,
   chatId: string,
   message: MessageVM,
@@ -13,16 +13,42 @@ export const appendMessage = (
     (old) => {
       if (!old) return old;
 
+      let replaced = false;
+
+      const pages = old.pages.map((page, index) => {
+        if (index !== 0) return page;
+
+        return {
+          ...page,
+          messages: page.messages.map((msg) => {
+            if (
+              message.clientId &&
+              msg.clientId &&
+              msg.clientId === message.clientId
+            ) {
+              replaced = true;
+
+              return {
+                ...message,
+                status: 'sent',
+              };
+            }
+
+            return msg;
+          }),
+        };
+      });
+
+      if (!replaced) {
+        pages[0] = {
+          ...pages[0],
+          messages: [...pages[0].messages, message],
+        };
+      }
+
       return {
         ...old,
-        pages: old.pages.map((page, index) => {
-          if (index !== 0) return page;
-
-          return {
-            ...page,
-            messages: [...page.messages, message],
-          };
-        }),
+        pages,
       };
     },
   );

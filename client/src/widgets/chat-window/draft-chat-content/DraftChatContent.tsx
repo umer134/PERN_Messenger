@@ -15,8 +15,13 @@ type Props = {
 export const DraftChatContent = ({ user, onChatCreated, onBack }: Props) => {
   const sendFirstMessage = useSendFirstMessage();
 
-  const handleSend = async (content: string, files: File[]) => {
+  const handleSend = async (
+    clientId: string,
+    content: string,
+    files: File[],
+  ) => {
     const result = await sendFirstMessage.mutateAsync({
+      clientId,
       recipientId: user.id,
       content,
       files,

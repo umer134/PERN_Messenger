@@ -1,15 +1,22 @@
 const ApiError = require("../exceptions/api-error");
-const { MessageModel, ChatModel, sequelize, MessageFilesModel, UserModel, ChatMemberModel } = require("../models");
-const MessageDto = require('../dtos/messageDto');
+const {
+  MessageModel,
+  ChatModel,
+  sequelize,
+  MessageFilesModel,
+  UserModel,
+  ChatMemberModel,
+} = require("../models");
+const MessageDto = require("../dtos/messageDto");
 const chatService = require("./chat-service");
 const { Op } = require("sequelize");
-const { getID } = require('../socket/socket');
-const detectFileType = require('../utils/detectFileType');
+const { getID } = require("../socket/socket");
+const detectFileType = require("../utils/detectFileType");
 const notifyChatUpdated = require("../helpers/notifyChatUpdated");
 
 class MessageService {
-
   async sendMessage({
+    clientId,
     senderId,
     chatId,
     recipientId,
@@ -18,185 +25,119 @@ class MessageService {
     files,
     type,
   }) {
-
-    const transaction =
-      await sequelize.transaction();
+    const transaction = await sequelize.transaction();
 
     try {
-
       let chat;
       let isNew = false;
 
       if (chatId) {
-
-        chat = await ChatModel.findByPk(
-          chatId,
-          { transaction }
-        );
+        chat = await ChatModel.findByPk(chatId, { transaction });
 
         if (!chat) {
-          throw ApiError.BadRequest(
-            "Chat not found"
-          );
+          throw ApiError.BadRequest("Chat not found");
         }
-
       } else {
-
         if (!recipientId) {
-          throw ApiError.BadRequest(
-            "recipientId required"
-          );
+          throw ApiError.BadRequest("recipientId required");
         }
 
-        const result =
-          await chatService.findOrCreatePrivateChat(
-            senderId,
-            recipientId,
-            transaction
-          );
+        const result = await chatService.findOrCreatePrivateChat(
+          senderId,
+          recipientId,
+          transaction,
+        );
 
         chat = result.chat;
         isNew = result.isNew;
       }
 
-      const message =
-        await MessageModel.create(
-          {
-            chat_id: chat.id,
-            sender_id: senderId,
-            content: content || null,
-            reply_to_id: replyToId || null,
-          },
-          {
-            transaction,
-          }
-        );
+      const message = await MessageModel.create(
+        {
+          chat_id: chat.id,
+          sender_id: senderId,
+          content: content || null,
+          reply_to_id: replyToId || null,
+        },
+        {
+          transaction,
+        },
+      );
 
       if (files?.length) {
+        const fileRecords = files.map((file) => ({
+          message_id: message.id,
+          file_path: `/uploads/message_files/${file.filename}`,
+          type: type || detectFileType(file),
+        }));
 
-        const fileRecords =
-          files.map(file => ({
-            message_id: message.id,
-            file_path:
-              `/uploads/message_files/${file.filename}`,
-            type:
-              type ||
-              detectFileType(file),
-          }));
-
-        await MessageFilesModel.bulkCreate(
-          fileRecords,
-          {
-            transaction,
-          }
-        );
+        await MessageFilesModel.bulkCreate(fileRecords, {
+          transaction,
+        });
       }
 
       await transaction.commit();
 
-      const fullMessage =
-        await MessageModel.findByPk(
-          message.id,
+      const fullMessage = await MessageModel.findByPk(message.id, {
+        include: [
           {
+            model: MessageFilesModel,
+            as: "attachedFiles",
+            attributes: ["file_path", "type"],
+          },
+          {
+            model: UserModel,
+            as: "sender",
+            attributes: ["id", "username", "avatar_url"],
+          },
+          {
+            model: MessageModel,
+            as: "replyTo",
+            attributes: ["id", "content", "sender_id"],
             include: [
-              {
-                model: MessageFilesModel,
-                as: "attachedFiles",
-                attributes: [
-                  "file_path",
-                  "type",
-                ],
-              },
               {
                 model: UserModel,
                 as: "sender",
-                attributes: [
-                  "id",
-                  "username",
-                  "avatar_url",
-                ],
+                attributes: ["id", "username"],
               },
               {
-                model: MessageModel,
-                as: "replyTo",
-                attributes: [
-                  "id",
-                  "content",
-                  "sender_id",
-                ],
-                include: [
-                  {
-                    model: UserModel,
-                    as: "sender",
-                    attributes: [
-                      "id",
-                      "username",
-                    ],
-                  },
-                  {
-                    model: MessageFilesModel,
-                    as: "attachedFiles",
-                    attributes: [
-                      "file_path",
-                      "type",
-                    ],
-                  },
-                ],
+                model: MessageFilesModel,
+                as: "attachedFiles",
+                attributes: ["file_path", "type"],
               },
             ],
-          }
-        );
+          },
+        ],
+      });
 
-      const messageDto =
-        new MessageDto(fullMessage);
+      const messageDto = new MessageDto(fullMessage);
+
+      messageDto.clientId = clientId;
 
       const io = getID();
 
-      io.to(chat.id)
-        .emit(
-          "messages:new",
-          messageDto
+      io.to(chat.id).emit("messages:new", messageDto);
+
+      await notifyChatUpdated(io, chat.id);
+
+      if (isNew && recipientId) {
+        const senderPreview = await chatService.buildConversationPreview(
+          chat.id,
+          senderId,
         );
 
-      await notifyChatUpdated(
-        io,
-        chat.id
-      );
+        const recipientPreview = await chatService.buildConversationPreview(
+          chat.id,
+          recipientId,
+        );
 
-      if (
-        isNew &&
-        recipientId
-      ) {
+        io.to(`user:${senderId}`).emit("chat:created", senderPreview);
 
-        const senderPreview =
-          await chatService.buildConversationPreview(
-            chat.id,
-            senderId
-          );
-
-        const recipientPreview =
-          await chatService.buildConversationPreview(
-            chat.id,
-            recipientId
-          );
-
-        io.to(`user:${senderId}`)
-          .emit(
-            "chat:created",
-            senderPreview
-          );
-
-        io.to(`user:${recipientId}`)
-          .emit(
-            "chat:created",
-            recipientPreview
-          );
+        io.to(`user:${recipientId}`).emit("chat:created", recipientPreview);
       }
 
       return messageDto;
-
     } catch (e) {
-
       if (!transaction.finished) {
         await transaction.rollback();
       }
@@ -206,7 +147,6 @@ class MessageService {
   }
 
   async markAsRead(chatId, userId) {
-    
     const unreadMessages = await MessageModel.findAll({
       attributes: ["id"],
       where: {
@@ -218,7 +158,7 @@ class MessageService {
       },
     });
 
-    const messageIds = unreadMessages.map(message => message.id);
+    const messageIds = unreadMessages.map((message) => message.id);
     if (!messageIds.length) {
       return { updated: 0 };
     }
@@ -229,12 +169,12 @@ class MessageService {
         where: {
           id: messageIds,
         },
-      }
+      },
     );
 
     const io = getID();
     io.to(chatId).emit("message:read", { messageIds: messageIds });
-  
+
     await notifyChatUpdated(io, chatId);
 
     return {
@@ -245,86 +185,72 @@ class MessageService {
   async editMessage(messageId, userId, newContent) {
     const message = await MessageModel.findByPk(messageId);
 
-    if (!message) throw ApiError.BadRequest('Message not found');
+    if (!message) throw ApiError.BadRequest("Message not found");
 
     if (message.sender_id !== userId) {
-      throw ApiError.Forbidden('No permission to edit this message');
+      throw ApiError.Forbidden("No permission to edit this message");
     }
 
     if (message.deleted_at) {
-      throw ApiError.BadRequest('Message was deleted');
+      throw ApiError.BadRequest("Message was deleted");
     }
 
     const chatId = message.chat_id;
 
     await message.update({
       content: newContent,
-      edited_at: new Date()
+      edited_at: new Date(),
     });
 
-    const fullMessage = await MessageModel.findByPk(
-      message.id,
-      {
-        include: [
-          {
-            model: MessageFilesModel,
-            as: "attachedFiles",
-            attributes: ["file_path", "type"],
-          },
-          {
-            model: UserModel,
-            as: "sender", 
-            attributes: [
-              "id",
-              "username",
-              "avatar_url",
-            ],
-          },
-          {
-            model: MessageModel, 
-            as: "replyTo",
-            attributes: [
-              "id",
-              "content",
-              "sender_id",
-            ],
-            include: [
-              {
-                model: UserModel,
-                as: "sender",
-                attributes: [
-                  "id", 
-                  "username",
-                ]
-              },
-              {
-                model: MessageFilesModel,
-                as: "attachedFiles",
-                attributes: ["file_path", "type"],
-              }
-            ]
-          }
-        ],
-      }
-    );
+    const fullMessage = await MessageModel.findByPk(message.id, {
+      include: [
+        {
+          model: MessageFilesModel,
+          as: "attachedFiles",
+          attributes: ["file_path", "type"],
+        },
+        {
+          model: UserModel,
+          as: "sender",
+          attributes: ["id", "username", "avatar_url"],
+        },
+        {
+          model: MessageModel,
+          as: "replyTo",
+          attributes: ["id", "content", "sender_id"],
+          include: [
+            {
+              model: UserModel,
+              as: "sender",
+              attributes: ["id", "username"],
+            },
+            {
+              model: MessageFilesModel,
+              as: "attachedFiles",
+              attributes: ["file_path", "type"],
+            },
+          ],
+        },
+      ],
+    });
 
     const updatedMessage = new MessageDto(fullMessage);
 
     const io = getID();
     io.to(chatId).emit("message:edited", updatedMessage);
-    
+
     await notifyChatUpdated(io, chatId);
-    
+
     return updatedMessage;
   }
 
   async deleteMessage(messageId, userId) {
     const message = await MessageModel.findByPk(messageId);
 
-    if (!message) throw ApiError.BadRequest('Message not found');
+    if (!message) throw ApiError.BadRequest("Message not found");
 
     if (message.sender_id !== userId) {
-      throw ApiError.Forbidden('No permission to delete this message');
+      throw ApiError.Forbidden("No permission to delete this message");
     }
 
     const chatId = message.chat_id;
@@ -343,6 +269,6 @@ class MessageService {
 
     return { success: true };
   }
-};
+}
 
 module.exports = new MessageService();

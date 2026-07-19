@@ -16,6 +16,8 @@ export class MessageAdapter {
     return {
       id: message.id || '',
 
+      clientId: message.clientId || '',
+
       chatId: message.chat_id || '',
 
       senderId: message.sender_id || null,

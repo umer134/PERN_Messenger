@@ -22,7 +22,7 @@ type Props = {
 
   onBottomChange: (value: boolean) => void;
 
-  fetchPreviousPage: () => Promise<unknown>;
+  fetchPreviousPage?: () => Promise<unknown>;
   hasPreviousPage?: boolean;
   isFetchingPreviousPage?: boolean;
 };
@@ -123,7 +123,7 @@ export const MessagesList = ({
         previousScrollHeightRef.current = container.scrollHeight;
 
         try {
-          await fetchPreviousPage();
+          fetchPreviousPage && (await fetchPreviousPage());
 
           requestAnimationFrame(() => {
             const newScrollHeight = container.scrollHeight;

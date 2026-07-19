@@ -4,7 +4,7 @@ import { useQueryClient } from '@tanstack/react-query';
 
 import { MessageAdapter } from '@/entities/messages/model';
 
-import { appendMessage } from '@/features/lib';
+import { upsertMessage } from '@/features/lib';
 
 import { emitDelivered } from '@/shared/socket/emitters';
 
@@ -25,9 +25,11 @@ export const useIncomingMessages = (chatId: string, isAtBottom: boolean) => {
 
   useEffect(() => {
     const handler = (rawMessage: MessageResponseModel) => {
+      console.log(rawMessage);
+
       const message = MessageAdapter.toVM(rawMessage);
 
-      appendMessage(queryClient, chatId, message);
+      upsertMessage(queryClient, chatId, message);
 
       if (message.senderId !== currentUserId && isAtBottom) {
         emitDelivered(message.id, chatId);

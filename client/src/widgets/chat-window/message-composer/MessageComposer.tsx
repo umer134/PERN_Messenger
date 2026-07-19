@@ -27,7 +27,7 @@ import {
 type Props = {
   chatId: string;
 
-  onSend: (content: string, files: File[]) => void;
+  onSend: (clientId: string, content: string, files: File[]) => void;
 
   onEdit: (messageId: string, content: string) => void;
 };
@@ -79,7 +79,9 @@ export const MessageComposer = ({ chatId, onSend, onEdit }: Props) => {
       return;
     }
 
-    onSend(trimmed, files);
+    const clientId = crypto.randomUUID();
+
+    onSend(clientId, trimmed, files);
 
     setMessage('');
     setFiles([]);
@@ -100,7 +102,9 @@ export const MessageComposer = ({ chatId, onSend, onEdit }: Props) => {
       type: 'audio/webm',
     });
 
-    onSend('', [file]);
+    const clientId = crypto.randomUUID();
+
+    onSend(clientId, '', [file]);
   };
 
   useEffect(() => {
