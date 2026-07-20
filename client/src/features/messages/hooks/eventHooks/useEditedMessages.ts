@@ -6,7 +6,7 @@ import {
   MessageResponseModel,
 } from '@/entities/messages/model';
 
-import { replaceMessage } from '@/features/lib';
+import { replaceMessage } from '@/features/messages/cache';
 
 import { subscribeMessageEdited } from '@/shared/socket/listeners/message.listeners';
 

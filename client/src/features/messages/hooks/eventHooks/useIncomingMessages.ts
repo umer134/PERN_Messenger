@@ -4,7 +4,7 @@ import { useQueryClient } from '@tanstack/react-query';
 
 import { MessageAdapter } from '@/entities/messages/model';
 
-import { upsertMessage } from '@/features/lib';
+import { upsertMessage } from '@/features/messages/cache';
 
 import { emitDelivered } from '@/shared/socket/emitters';
 

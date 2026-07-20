@@ -3,6 +3,29 @@ import { MessagesPage, MessageVM } from '@/entities';
 
 type Old = InfiniteData<MessagesPage>;
 
+export const patchMessage = (
+  queryClient: QueryClient,
+  chatId: string,
+  messageId: string,
+  patch: Partial<MessageVM>,
+) => {
+  queryClient.setQueryData<InfiniteData<MessagesPage>>(
+    ['messages', chatId],
+    (old) => {
+      if (!old) return old;
+      return {
+        ...old,
+        pages: old.pages.map((page) => ({
+          ...page,
+          messages: page.messages.map((msg) =>
+            msg.id === messageId ? { ...msg, ...patch } : msg,
+          ),
+        })),
+      };
+    },
+  );
+};
+
 export const upsertMessage = (
   queryClient: QueryClient,
   chatId: string,
@@ -15,7 +38,7 @@ export const upsertMessage = (
 
       let replaced = false;
 
-      const pages = old.pages.map((page, index) => {
+      const pages = old.pages.map((page, index): MessagesPage => {
         if (index !== 0) return page;
 
         return {
@@ -77,16 +100,23 @@ export const replaceMessage = (
   );
 };
 
-export const removeMessage = (queryClient, chatId, messageId) => {
-  queryClient.setQueryData(['messages', chatId], (old) => {
-    if (!old) return old;
+export const removeMessage = (
+  queryClient: QueryClient,
+  chatId: string,
+  messageId: string,
+) => {
+  queryClient.setQueryData<InfiniteData<MessagesPage>>(
+    ['messages', chatId],
+    (old) => {
+      if (!old) return old;
 
-    return {
-      ...old,
-      pages: old.pages.map((page) => ({
-        ...page,
-        messages: page.messages.filter((msg) => msg.id !== messageId),
-      })),
-    };
-  });
+      return {
+        ...old,
+        pages: old.pages.map((page) => ({
+          ...page,
+          messages: page.messages.filter((msg) => msg.id !== messageId),
+        })),
+      };
+    },
+  );
 };

@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 
 import { subscribeMessageRead } from '@/shared/socket/listeners/message.listeners';
-import { patchMessage } from '@/features/lib/helpers/pathMessage';
+import { patchMessage } from '@/features/messages/cache';
 
 export const useReadMessagesEvents = (chatId: string) => {
   const queryClient = useQueryClient();

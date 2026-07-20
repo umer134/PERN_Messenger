@@ -1,13 +1,8 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { MessageActionsApi } from '../api/messageActions.api';
-import {
-  MessageEditDto,
-  MessageResponse,
-} from '@/entities/messages/model/message.model';
-import { patchMessage } from '@/features/lib/helpers/pathMessage';
-import { removeMessage } from '@/features/lib';
-
-type Old = MessageResponse;
+import { MessageEditDto } from '@/entities/messages/model/message.model';
+import { patchMessage } from '@/features/messages/cache';
+import { removeMessage } from '@/features/messages/cache';
 
 export const useDeleteMessage = (chatId: string) => {
   const queryClient = useQueryClient();
