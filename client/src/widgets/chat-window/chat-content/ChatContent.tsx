@@ -41,9 +41,6 @@ export const ChatContent = ({ chat, onBack }: Props) => {
   } = useInfiniteMessages(chat.id);
 
   const messages = useMemo(() => {
-    // pages[0] is the newest page; when fetching older pages they are appended.
-    // Reverse pages so oldest pages come first, producing a global chronological
-    // order (oldest -> newest) for rendering.
     return (
       data?.pages
         .slice()
