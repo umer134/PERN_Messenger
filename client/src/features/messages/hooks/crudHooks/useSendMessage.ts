@@ -6,7 +6,7 @@ import { selectCurrentUserId } from '@/entities/current-user/model/currentUser.s
 import { InfiniteData } from '@tanstack/react-query';
 import { MessagesPage } from '@/entities/messages/model';
 
-export function useSendMessage(chatId: string) {
+export function useSendMessage(chatId?: string) {
   const queryClient = useQueryClient();
 
   const id = useAppSelector(selectCurrentUserId);
@@ -15,6 +15,8 @@ export function useSendMessage(chatId: string) {
     mutationFn: MessageApi.sendMessage,
 
     onMutate: async (dto) => {
+      if (!chatId) return;
+
       await queryClient.cancelQueries({
         queryKey: ['messages', chatId],
       });
@@ -72,7 +74,9 @@ export function useSendMessage(chatId: string) {
     },
 
     onError: (_err, _dto, context) => {
-      queryClient.setQueryData(['messages', chatId], context?.previousMessages);
+      if (!chatId || !context?.previousMessages) return;
+
+      queryClient.setQueryData(['messages', chatId], context.previousMessages);
     },
   });
 }
