@@ -11,8 +11,7 @@ import * as s from '../chat-view.css';
 import { useEffect, useMemo, useState } from 'react';
 import { useReadMessages } from '@/features/messages/hooks/crudHooks/useReadMessages';
 import { useEditMessage } from '@/features/message-actions/hooks/useMessageActions';
-import { useAppSelector } from '@/app/hooks';
-import { selectActiveMessage } from '@/features/message-actions/model/message-actions.selectors';
+import { MessageReplyVM } from '@/entities';
 
 type Props = {
   chat: ChatPreview;
@@ -24,8 +23,6 @@ export const ChatContent = ({ chat, onBack }: Props) => {
 
   useChatSocket(chat.id);
   useMessageEvents(chat.id, isAtBottom);
-
-  const activeMessage = useAppSelector(selectActiveMessage);
 
   const { mutate: readMessages } = useReadMessages();
   const sendMessage = useSendMessage(chat.id);
@@ -72,13 +69,15 @@ export const ChatContent = ({ chat, onBack }: Props) => {
     clientId: string,
     content: string,
     files: File[],
+    replyMessage?: MessageReplyVM | null,
   ) => {
     await sendMessage.mutateAsync({
       clientId,
       recipientId: chat.participantId,
       content,
       files,
-      replyToId: activeMessage?.id || undefined,
+      replyToId: replyMessage?.id || undefined,
+      replyMessage: replyMessage || null || undefined,
     });
   };
 

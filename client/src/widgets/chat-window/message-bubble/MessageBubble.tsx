@@ -57,6 +57,7 @@ export const MessageBubble = React.memo(
         window.removeEventListener('mousedown', handleClick);
       };
     }, [menu]);
+
     useEffect(() => {
       if (!menu) return;
 

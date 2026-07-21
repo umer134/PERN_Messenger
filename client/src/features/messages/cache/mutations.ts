@@ -1,5 +1,6 @@
 import type { InfiniteData, QueryClient } from '@tanstack/react-query';
 import { MessagesPage, MessageVM } from '@/entities';
+import { cleanupOptimisticAttachments } from '../lib/cleanupOptimisticAttachments';
 
 type Old = InfiniteData<MessagesPage>;
 
@@ -49,6 +50,8 @@ export const upsertMessage = (
               msg.clientId &&
               msg.clientId === message.clientId
             ) {
+              cleanupOptimisticAttachments(msg.attachments);
+
               replaced = true;
 
               return {

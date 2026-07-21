@@ -1,5 +1,3 @@
-import { env } from '@/config/env';
-
 export function resolveMediaUrl(path?: string | null): string {
   if (!path) return '';
 

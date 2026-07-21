@@ -23,11 +23,17 @@ import {
   emitTypingStart,
   emitTypingStop,
 } from '@/shared/socket/emitters/typing.emitters';
+import { MessageReplyVM } from '@/entities';
 
 type Props = {
   chatId: string;
 
-  onSend: (clientId: string, content: string, files: File[]) => void;
+  onSend: (
+    clientId: string,
+    content: string,
+    files: File[],
+    activeMessage?: MessageReplyVM | null,
+  ) => void;
 
   onEdit: (messageId: string, content: string) => void;
 };
@@ -81,7 +87,12 @@ export const MessageComposer = ({ chatId, onSend, onEdit }: Props) => {
 
     const clientId = crypto.randomUUID();
 
-    onSend(clientId, trimmed, files);
+    onSend(
+      clientId,
+      trimmed,
+      files,
+      actionType === 'reply' ? activeMessage : undefined,
+    );
 
     setMessage('');
     setFiles([]);
@@ -104,7 +115,12 @@ export const MessageComposer = ({ chatId, onSend, onEdit }: Props) => {
 
     const clientId = crypto.randomUUID();
 
-    onSend(clientId, '', [file]);
+    onSend(
+      clientId,
+      '',
+      [file],
+      actionType === 'reply' ? activeMessage : undefined,
+    );
   };
 
   useEffect(() => {

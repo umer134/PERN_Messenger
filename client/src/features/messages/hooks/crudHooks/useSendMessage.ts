@@ -1,15 +1,16 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { MessageApi } from '@/entities/messages/api/message.api';
 import { useAppSelector } from '@/app/hooks';
-import { selectCurrentUserId } from '@/entities/current-user/model/currentUser.selectors';
+import { selectCurrentUser } from '@/entities/current-user/model/';
 
 import { InfiniteData } from '@tanstack/react-query';
 import { MessagesPage } from '@/entities/messages/model';
+import { createOptimisticMessage } from '../../lib/createOptimisticMessage';
 
 export function useSendMessage(chatId?: string) {
   const queryClient = useQueryClient();
 
-  const id = useAppSelector(selectCurrentUserId);
+  const { id, username } = useAppSelector(selectCurrentUser);
 
   return useMutation({
     mutationFn: MessageApi.sendMessage,
@@ -25,27 +26,13 @@ export function useSendMessage(chatId?: string) {
         InfiniteData<MessagesPage>
       >(['messages', chatId]);
 
-      const optimisticMessage = {
-        id: dto.clientId,
-
-        clientId: dto.clientId,
-
+      const optimisticMessage = createOptimisticMessage(
+        dto,
         chatId,
-
-        senderId: id,
-
-        content: dto.content ?? null,
-
-        attachments: [],
-
-        replyTo: null,
-
-        sentAt: new Date().toISOString(),
-
-        isRead: false,
-
-        status: 'sending',
-      };
+        id!,
+        username!,
+        dto.replyMessage,
+      );
 
       queryClient.setQueryData<InfiniteData<MessagesPage>>(
         ['messages', chatId],

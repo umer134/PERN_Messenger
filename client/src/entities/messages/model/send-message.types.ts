@@ -1,3 +1,5 @@
+import { MessageReplyVM } from './message.types';
+
 export interface SendMessageDto {
   clientId: string;
 
@@ -8,6 +10,8 @@ export interface SendMessageDto {
   content?: string;
 
   replyToId?: string;
+
+  replyMessage?: MessageReplyVM;
 
   files?: File[];
 }
