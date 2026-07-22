@@ -23,11 +23,17 @@ import {
   emitTypingStart,
   emitTypingStop,
 } from '@/shared/socket/emitters/typing.emitters';
+import { MessageReplyVM } from '@/entities';
 
 type Props = {
   chatId: string;
 
-  onSend: (content: string, files: File[]) => void;
+  onSend: (
+    clientId: string,
+    content: string,
+    files: File[],
+    activeMessage?: MessageReplyVM | null,
+  ) => void;
 
   onEdit: (messageId: string, content: string) => void;
 };
@@ -79,7 +85,14 @@ export const MessageComposer = ({ chatId, onSend, onEdit }: Props) => {
       return;
     }
 
-    onSend(trimmed, files);
+    const clientId = crypto.randomUUID();
+
+    onSend(
+      clientId,
+      trimmed,
+      files,
+      actionType === 'reply' ? activeMessage : undefined,
+    );
 
     setMessage('');
     setFiles([]);
@@ -100,7 +113,14 @@ export const MessageComposer = ({ chatId, onSend, onEdit }: Props) => {
       type: 'audio/webm',
     });
 
-    onSend('', [file]);
+    const clientId = crypto.randomUUID();
+
+    onSend(
+      clientId,
+      '',
+      [file],
+      actionType === 'reply' ? activeMessage : undefined,
+    );
   };
 
   useEffect(() => {

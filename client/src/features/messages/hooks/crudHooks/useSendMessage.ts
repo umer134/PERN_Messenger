@@ -1,57 +1,78 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { MessageApi } from '@/entities/messages/api/message.api';
 import { useAppSelector } from '@/app/hooks';
-import { selectCurrentUserId } from '@/entities/current-user/model/currentUser.selectors';
-import { MessageResponse } from '@/entities/messages/model';
+import { selectCurrentUser } from '@/entities/current-user/model/';
 
-export function useSendMessage(chatId: string) {
+import { InfiniteData } from '@tanstack/react-query';
+import { MessageAdapter, MessagesPage } from '@/entities/messages/model';
+import { createOptimisticMessage } from '../../lib/createOptimisticMessage';
+import { upsertMessage } from '../../cache';
+
+export function useSendMessage(chatId?: string) {
   const queryClient = useQueryClient();
 
-  const id = useAppSelector(selectCurrentUserId);
+  const { id, username } = useAppSelector(selectCurrentUser);
 
   return useMutation({
     mutationFn: MessageApi.sendMessage,
 
     onMutate: async (dto) => {
+      if (!chatId) return;
+
       await queryClient.cancelQueries({
         queryKey: ['messages', chatId],
       });
 
-      const prev = queryClient.getQueryData(['messages', chatId]);
+      const previousMessages = queryClient.getQueryData<
+        InfiniteData<MessagesPage>
+      >(['messages', chatId]);
 
-      const optimisticMessage = {
-        id: crypto.randomUUID(),
+      const optimisticMessage = createOptimisticMessage(
+        dto,
         chatId,
-        senderId: id,
-        content: dto.content ?? null,
-        attachments: [],
-        replyTo: null,
-        sentAt: new Date().toISOString(),
-        isRead: false,
-        status: 'sending',
-      };
+        id!,
+        username!,
+        dto.replyMessage,
+      );
 
-      queryClient.setQueryData(
+      queryClient.setQueryData<InfiniteData<MessagesPage>>(
         ['messages', chatId],
-        (old: Omit<MessageResponse, 'nextCursor'> = { messages: [] }) => {
+        (old) => {
+          if (!old) return old;
+
           return {
             ...old,
-            messages: [...(old?.messages ?? []), optimisticMessage],
+
+            pages: old.pages.map((page, index) => {
+              if (index !== 0) return page;
+
+              return {
+                ...page,
+
+                messages: [...page.messages, optimisticMessage],
+              };
+            }),
           };
         },
       );
 
-      return { prev };
+      return {
+        previousMessages,
+      };
+    },
+
+    onSuccess: (response, dto) => {
+      if (!chatId) return;
+
+      const message = MessageAdapter.toVM(response.data);
+
+      upsertMessage(queryClient, chatId, message);
     },
 
     onError: (_err, _dto, context) => {
-      queryClient.setQueryData(['messages', chatId], context?.prev);
-    },
+      if (!chatId || !context?.previousMessages) return;
 
-    onSuccess: (data) => {
-      queryClient.invalidateQueries({
-        queryKey: ['messages', chatId],
-      });
+      queryClient.setQueryData(['messages', chatId], context.previousMessages);
     },
   });
 }

@@ -11,8 +11,7 @@ import * as s from '../chat-view.css';
 import { useEffect, useMemo, useState } from 'react';
 import { useReadMessages } from '@/features/messages/hooks/crudHooks/useReadMessages';
 import { useEditMessage } from '@/features/message-actions/hooks/useMessageActions';
-import { useAppSelector } from '@/app/hooks';
-import { selectActiveMessage } from '@/features/message-actions/model/message-actions.selectors';
+import { MessageReplyVM } from '@/entities';
 
 type Props = {
   chat: ChatPreview;
@@ -24,8 +23,6 @@ export const ChatContent = ({ chat, onBack }: Props) => {
 
   useChatSocket(chat.id);
   useMessageEvents(chat.id, isAtBottom);
-
-  const activeMessage = useAppSelector(selectActiveMessage);
 
   const { mutate: readMessages } = useReadMessages();
   const sendMessage = useSendMessage(chat.id);
@@ -40,15 +37,7 @@ export const ChatContent = ({ chat, onBack }: Props) => {
     isFetchingNextPage,
   } = useInfiniteMessages(chat.id);
 
-  console.log('hasPrev and cursor:', {
-    hasNextPage,
-    cursor: data?.pages[0]?.previousCursor,
-  });
-
   const messages = useMemo(() => {
-    // pages[0] is the newest page; when fetching older pages they are appended.
-    // Reverse pages so oldest pages come first, producing a global chronological
-    // order (oldest -> newest) for rendering.
     return (
       data?.pages
         .slice()
@@ -76,12 +65,19 @@ export const ChatContent = ({ chat, onBack }: Props) => {
     );
   }, [messages]);
 
-  const handleSend = async (content: string, files: File[]) => {
+  const handleSend = async (
+    clientId: string,
+    content: string,
+    files: File[],
+    replyMessage?: MessageReplyVM | null,
+  ) => {
     await sendMessage.mutateAsync({
+      clientId,
       recipientId: chat.participantId,
       content,
       files,
-      replyToId: activeMessage?.id || undefined,
+      replyToId: replyMessage?.id || undefined,
+      replyMessage: replyMessage || null || undefined,
     });
   };
 

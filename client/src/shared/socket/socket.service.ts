@@ -16,13 +16,13 @@ export class SocketService {
       token,
     };
 
-    if (socket.connected) {
-      socket.disconnect();
-    }
+    // if (socket.connected) {
+    //   socket.disconnect();
+    // }
 
-    if (!socket.connected) {
-      socket.connect();
-    }
+    // if (!socket.connected) {
+    //   socket.connect();
+    // }
   }
 
   static disconnect() {

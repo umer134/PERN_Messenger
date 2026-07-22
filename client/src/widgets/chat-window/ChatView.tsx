@@ -25,9 +25,14 @@ export const ChatView = ({
       {!selectedChat ? (
         <EmptyState />
       ) : selectedChat.type === 'chat' ? (
-        <ChatContent chat={selectedChat.data} onBack={onBack} />
+        <ChatContent
+          key={selectedChat.data.id}
+          chat={selectedChat.data}
+          onBack={onBack}
+        />
       ) : (
         <DraftChatContent
+          key={selectedChat.draft.id}
           user={selectedChat.draft.participant}
           onChatCreated={onDraftChatCreated}
           onBack={onBack}

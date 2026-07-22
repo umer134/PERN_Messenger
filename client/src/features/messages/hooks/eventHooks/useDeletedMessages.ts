@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 
-import { removeMessage } from '@/features/lib';
+import { removeMessage } from '@/features/messages/cache';
 
 import { subscribeMessageDeleted } from '@/shared/socket/listeners/message.listeners';
 

@@ -1,4 +1,4 @@
-import { useSendFirstMessage } from '@/features/messages/hooks/crudHooks/useSendFirstMessage';
+import { useSendMessage } from '@/features/messages/hooks/crudHooks';
 import { UserPreview } from '@/entities/user/model/user.types';
 import { ChatHeader } from '../chat-header/ChatHeader';
 import { MessageComposer } from '../message-composer/MessageComposer';
@@ -13,16 +13,21 @@ type Props = {
 };
 
 export const DraftChatContent = ({ user, onChatCreated, onBack }: Props) => {
-  const sendFirstMessage = useSendFirstMessage();
+  const sendMessage = useSendMessage();
 
-  const handleSend = async (content: string, files: File[]) => {
-    const result = await sendFirstMessage.mutateAsync({
+  const handleSend = async (
+    clientId: string,
+    content: string,
+    files: File[],
+  ) => {
+    const result = await sendMessage.mutateAsync({
+      clientId,
       recipientId: user.id,
       content,
       files,
     });
 
-    if (result.chat_id) onChatCreated(result.chat_id);
+    if (result.data.chat_id) onChatCreated(result.data.chat_id);
   };
 
   return (

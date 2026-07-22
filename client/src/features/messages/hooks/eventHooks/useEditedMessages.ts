@@ -6,7 +6,7 @@ import {
   MessageResponseModel,
 } from '@/entities/messages/model';
 
-import { updateMessage } from '@/features/lib';
+import { replaceMessage } from '@/features/messages/cache';
 
 import { subscribeMessageEdited } from '@/shared/socket/listeners/message.listeners';
 
@@ -17,7 +17,7 @@ export const useEditedMessages = (chatId: string) => {
     const handler = (rawMessage: MessageResponseModel) => {
       const message = MessageAdapter.toVM(rawMessage);
 
-      updateMessage(queryClient, chatId, message);
+      replaceMessage(queryClient, chatId, message);
     };
 
     return subscribeMessageEdited(handler);

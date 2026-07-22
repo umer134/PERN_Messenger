@@ -1,4 +1,8 @@
-export type SendMessageDto = {
+import { MessageReplyVM } from './message.types';
+
+export interface SendMessageDto {
+  clientId: string;
+
   chatId?: string;
 
   recipientId?: string;
@@ -7,5 +11,7 @@ export type SendMessageDto = {
 
   replyToId?: string;
 
+  replyMessage?: MessageReplyVM;
+
   files?: File[];
-};
+}
