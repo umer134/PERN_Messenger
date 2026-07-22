@@ -17,4 +17,6 @@ export type DirectMessageSendDto =
   paths['/api/messages']['post']['requestBody']['content']['multipart/form-data'];
 
 export type DirectMessageSendResponse =
-  paths['/api/messages']['post']['responses']['200']['content']['application/json'];
+  paths['/api/messages']['post']['responses']['200']['content']['application/json'] & {
+    clientId: string;
+  };

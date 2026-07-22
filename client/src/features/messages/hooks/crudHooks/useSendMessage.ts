@@ -4,8 +4,9 @@ import { useAppSelector } from '@/app/hooks';
 import { selectCurrentUser } from '@/entities/current-user/model/';
 
 import { InfiniteData } from '@tanstack/react-query';
-import { MessagesPage } from '@/entities/messages/model';
+import { MessageAdapter, MessagesPage } from '@/entities/messages/model';
 import { createOptimisticMessage } from '../../lib/createOptimisticMessage';
+import { upsertMessage } from '../../cache';
 
 export function useSendMessage(chatId?: string) {
   const queryClient = useQueryClient();
@@ -58,6 +59,14 @@ export function useSendMessage(chatId?: string) {
       return {
         previousMessages,
       };
+    },
+
+    onSuccess: (response, dto) => {
+      if (!chatId) return;
+
+      const message = MessageAdapter.toVM(response.data);
+
+      upsertMessage(queryClient, chatId, message);
     },
 
     onError: (_err, _dto, context) => {
